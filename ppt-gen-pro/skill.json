@@ -1,0 +1,58 @@
+{
+  "name": "ppt-gen-pro",
+  "version": "0.1.0",
+  "status": "router-alpha",
+  "runtime": {
+    "python": ">=3.9",
+    "entrypoint": "scripts/validate_skill.py",
+    "dependencies": "standard-library-only; git required for extension installation"
+  },
+  "provider": {
+    "name": "not-selected",
+    "base_url": null,
+    "auth_env": []
+  },
+  "capabilities": [
+    "mandatory_ppt_generation_trigger",
+    "route_intro_before_generation",
+    "user_route_choice_gate",
+    "route_recommendation",
+    "svg_ppt_route",
+    "image_first_ppt_route",
+    "web_html_ppt_route",
+    "extension_source_registry",
+    "extension_install_check",
+    "extension_delegation",
+    "deck_planning",
+    "outline_and_storyboard_planning",
+    "source_of_truth_governance",
+    "repository_validation"
+  ],
+  "extensions": [
+    {
+      "route": "image-first-ppt",
+      "name": "PPT Image First",
+      "repo": "https://github.com/NyxTides/ppt-image-first",
+      "install_name": "ppt-image-first",
+      "best_for": "default standard PPT route, high-fidelity visual pages, image-first deck, style previews, image-level retouch"
+    },
+    {
+      "route": "web-html-ppt",
+      "name": "Guizang PPT Skill",
+      "repo": "https://github.com/op7418/guizang-ppt-skill",
+      "install_name": "guizang-ppt-skill",
+      "best_for": "main text, speech content, storytelling, animation, single-file HTML deck, magazine style, Swiss style, talks, covers, image prompts"
+    },
+    {
+      "route": "svg-ppt",
+      "name": "PPT Master",
+      "repo": "https://github.com/hugohe3/ppt-master",
+      "install_name": "ppt-master",
+      "best_for": "natively editable PPTX, real PowerPoint shapes, native animations, PowerPoint object-level editing, SVG-to-PPTX export"
+    }
+  ],
+  "not_implemented": [
+    "native_ppt_renderer",
+    "bundled_external_extension_code"
+  ]
+}

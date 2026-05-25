@@ -1,0 +1,41 @@
+{
+  "name": "indieark-skills",
+  "version": "2026.05.25",
+  "repository": "https://github.com/indieark/indieark-skills",
+  "install_target": "%USERPROFILE%\\.codex\\skills",
+  "skills": [
+    {
+      "name": "image-gen-pro",
+      "path": "image-gen-pro",
+      "version": "0.1.0-beta.29",
+      "source": "skills/image-gen-pro/skills/image-gen-pro",
+      "cli": [
+        {
+          "name": "imagen",
+          "entrypoint": "scripts/imagen.py",
+          "wrapper": "imagen.cmd"
+        }
+      ]
+    },
+    {
+      "name": "ppt-gen-pro",
+      "path": "ppt-gen-pro",
+      "version": "0.1.0",
+      "source": "skills/ppt-gen-pro/skills/ppt-gen-pro",
+      "cli": []
+    },
+    {
+      "name": "seedance2-video-pro",
+      "path": "seedance2-video-pro",
+      "version": "0.4.2",
+      "source": "skills/video-gen-pro/skills/seedance2-video-pro",
+      "cli": [
+        {
+          "name": "seedance2",
+          "entrypoint": "scripts/seedance2_video.py",
+          "wrapper": "seedance2.cmd"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "model": "doubao-seedance-2-0-260128",
+  "content": [
+    {
+      "type": "text",
+      "text": "8 秒霓虹雨夜街道角色奔跑短片。参考图1用于主角面部、发型、外套主色和体型，不允许漂移；参考视频1只用于跑步动作节奏与侧后方跟拍方式，不复制原视频背景；参考音频1用于鼓点节奏与紧张情绪。镜头：低角度侧后方跟拍，2 秒后推近，5 秒后随主角加速。动作绑定鼓点：0-2 秒第 1 个重拍开始迈步；2-5 秒脚步踩过积水每拍水花更高；5-8 秒随鼓点密度加快主角加速冲向远处白色光源。使用参考音频1鼓点 + 低频氛围 + 雨声，不生成对白。保持主角身份与服装主色一致，不加入文字或 logo。"
+    },
+    {
+      "type": "image_url",
+      "image_url": {
+        "url": "https://example.com/character.png"
+      },
+      "role": "reference_image"
+    },
+    {
+      "type": "video_url",
+      "video_url": {
+        "url": "https://example.com/motion.mp4"
+      },
+      "role": "reference_video"
+    },
+    {
+      "type": "audio_url",
+      "audio_url": {
+        "url": "https://example.com/beat.mp3"
+      },
+      "role": "reference_audio"
+    }
+  ],
+  "resolution": "720p",
+  "ratio": "9:16",
+  "duration": 8,
+  "generate_audio": true,
+  "watermark": false
+}

@@ -1,0 +1,49 @@
+{
+  "name": "image-gen-pro",
+  "version": "0.1.0-beta.29",
+  "status": "beta",
+  "runtime": {
+    "python": ">=3.9",
+    "entrypoint": "scripts/imagen.py",
+    "dependencies": "standard-library-only baseline; optional Pillow for media normalization, transparent output post-processing, and multi-image preview contact sheets"
+  },
+  "provider": {
+    "name": "provider-neutral",
+    "base_url": null,
+    "auth_env": []
+  },
+  "capabilities": [
+    "mandatory_image_generation_trigger",
+    "first_run_setup",
+    "config_inspect_and_edit",
+    "health_check",
+    "planning",
+    "dry_run_artifacts",
+    "codex_cli_route",
+    "api_key_http_route",
+    "model_capability_matrix",
+    "model_size_parameter_limits",
+    "official_mask_validation",
+    "default_model_preference",
+    "first_use_config_preflight",
+    "skipped_config_resume_prompt",
+    "batch_generation_workflow",
+    "model_specific_api_key_env",
+    "nano_banana_route",
+    "mj_proxy_route",
+    "image_to_image_edit_route",
+    "local_media_normalization",
+    "transparent_output_postprocessing",
+    "transparent_edge_decontamination",
+    "hard_cli_execution_routing",
+    "reference_image_reverse_prompting",
+    "artifact_backed_result_reporting",
+    "output_dimension_and_preview_reporting",
+    "skill_output_format_standardization",
+    "fine_grained_routing_snapshot",
+    "local_job_state",
+    "provider_adapter_contract",
+    "skill_governance",
+    "artifact_manifest"
+  ]
+}

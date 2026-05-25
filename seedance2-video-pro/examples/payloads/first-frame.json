@@ -1,0 +1,21 @@
+{
+  "model": "doubao-seedance-2-0-260128",
+  "content": [
+    {
+      "type": "text",
+      "text": "以首帧为开场，6 秒内出现一个克制可见的变化。0-2 秒人物呼吸发丝轻动；2-4 秒微微转头看向镜头外；4-6 秒目光收回到镜头方向，画面随之轻微推近。保持首帧人物身份、服装主色和发型，不替换背景，不加入文字或 logo。"
+    },
+    {
+      "type": "image_url",
+      "image_url": {
+        "url": "https://example.com/frame.png"
+      },
+      "role": "first_frame"
+    }
+  ],
+  "resolution": "720p",
+  "ratio": "9:16",
+  "duration": 6,
+  "generate_audio": false,
+  "watermark": false
+}

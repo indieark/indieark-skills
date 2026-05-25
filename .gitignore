@@ -1,0 +1,15 @@
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+*.gz
+*.pyc
+*.pyo
+__pycache__/
+.pytest_cache/
+dist/
+_work/
+outputs/
+.DS_Store

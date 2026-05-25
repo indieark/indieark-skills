@@ -1,0 +1,118 @@
+{
+  "name": "seedance2-video-pro",
+  "version": "0.4.2",
+  "status": "alpha",
+  "long_term_direction": "video-gen-pro (provider-neutral, multi-adapter); see docs/planning/video-gen-pro-migration.md",
+  "current_adapter": "Seedance 2.0 (first adapter; provider fields below are intentionally adapter-specific until second provider triggers abstraction per migration plan stage 5)",
+  "runtime": {
+    "python": ">=3.9",
+    "entrypoint": "scripts/seedance2_video.py",
+    "dependencies": "standard-library-only"
+  },
+  "provider": {
+    "name": "Volcengine Ark",
+    "base_url": "https://ark.cn-beijing.volces.com/api/v3",
+    "auth_env": [
+      "ARK_API_KEY",
+      "SEEDANCE_API_KEY"
+    ]
+  },
+  "models": [
+    "doubao-seedance-2-0-260128",
+    "doubao-seedance-2-0-fast-260128"
+  ],
+  "capabilities": [
+    "first_run_setup",
+    "config_inspect_and_edit",
+    "health_check",
+    "dry_run_payload",
+    "redacted_payload_archive",
+    "reference_index_manifest",
+    "prompt_reference_warnings",
+    "media_url_preflight",
+    "local_media_preparation",
+    "cloudflare_asset_tunnel",
+    "callback_url",
+    "callback_receiver",
+    "callback_smoke_test",
+    "execution_expiry",
+    "safety_identifier",
+    "text_to_video",
+    "first_frame",
+    "first_last_frame",
+    "omnireference_image",
+    "omnireference_video",
+    "omnireference_audio",
+    "video_edit",
+    "video_extend",
+    "generate_audio",
+    "task_status",
+    "task_list",
+    "task_delete",
+    "poll_and_download",
+    "creative_project_library",
+    "character_scene_asset_registry",
+    "asset_show",
+    "asset_search",
+    "asset_reuse",
+    "cross_project_asset_reuse",
+    "asset_tag_filtering",
+    "pre_generation_asset_lookup",
+    "script_and_style_registry",
+    "visual_storyboard_registry",
+    "storyboard_approval_gate",
+    "project_storyboard_generation",
+    "generation_history_records",
+    "visual_asset_prompt_planning",
+    "adaptive_storyboard_board_planning",
+    "script_composed_storyboard_planning",
+    "per_cut_character_scene_card_binding",
+    "single_reference_storyboard_board",
+    "multi_segment_continuity_planning",
+    "complexity_duration_split_planning",
+    "per_segment_reference_load_balancing",
+    "shot_boundary_segment_planning",
+    "director_process_guard",
+    "natural_language_shot_breakdown_gate",
+    "scene_card_generation_gate",
+    "scene_card_routing_gate",
+    "scene_asset_density_decision",
+    "no_default_simple_scene_card",
+    "continuity_mode_selection",
+    "tail_frame_handoff_guidance",
+    "implicit_video_generation_trigger",
+    "feature_intro_guide_mode",
+    "detailed_feature_intro_guide",
+    "no_cli_guide_mode",
+    "on_demand_feature_guide",
+    "storyboard_concise_prompt_mode",
+    "detailed_per_shot_prompt_mode",
+    "speech_and_text_track_control",
+    "mandatory_cli_execution_protocol",
+    "standard_completion_response",
+    "director_workflow",
+    "feedback_iteration"
+  ],
+  "archived_capabilities": [
+    {
+      "name": "agent_html_review_gates",
+      "status": "paused",
+      "reason": "Implemented and validated in 0.4.2, but not part of the current default workflow. Keep the CLI/archive for future restart only when explicitly requested."
+    },
+    {
+      "name": "agent_html_response_template",
+      "status": "paused",
+      "reason": "Replaced in the active workflow by text confirmation plus structured JSON fields."
+    },
+    {
+      "name": "final_input_review_gate",
+      "status": "paused",
+      "reason": "Use text final-input confirmation by default; archived Agent-HTML command remains for traceability."
+    },
+    {
+      "name": "result_review_gate",
+      "status": "paused",
+      "reason": "Use text result recap by default; archived Agent-HTML command remains for traceability."
+    }
+  ]
+}

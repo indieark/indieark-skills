@@ -1,0 +1,35 @@
+{
+  "model": "doubao-seedance-2-0-260128",
+  "content": [
+    {
+      "type": "text",
+      "text": "参考图1用于主角外观和服装，参考视频1用于跑步动作节奏和侧后方跟拍方式，参考音频1用于鼓点节奏和紧张情绪。雨夜城市街道，低角度侧后方跟拍，主角随鼓点逐步加速冲向远处光源。"
+    },
+    {
+      "type": "image_url",
+      "image_url": {
+        "url": "https://example.com/character.png"
+      },
+      "role": "reference_image"
+    },
+    {
+      "type": "video_url",
+      "video_url": {
+        "url": "https://example.com/motion.mp4"
+      },
+      "role": "reference_video"
+    },
+    {
+      "type": "audio_url",
+      "audio_url": {
+        "url": "https://example.com/beat.mp3"
+      },
+      "role": "reference_audio"
+    }
+  ],
+  "resolution": "720p",
+  "ratio": "9:16",
+  "duration": 8,
+  "generate_audio": true,
+  "watermark": false
+}

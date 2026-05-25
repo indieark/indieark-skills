@@ -1,0 +1,3 @@
+name: ppt-gen-pro
+description: Mandatory presentation generation router. Trigger for PPT/PPTX/slides/decks, introduce image-first PPT, web/HTML PPT, and SVG/editable PPT routes, recommend one, ask the user to choose, then delegate to the selected installed extension.
+entrypoint: SKILL.md

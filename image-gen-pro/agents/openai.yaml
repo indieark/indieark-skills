@@ -1,0 +1,3 @@
+display_name: Image Gen Pro
+short_description: Professional image generation Skill with the imagen CLI.
+default_prompt: Plan or execute an image generation workflow with imagen, using dry-run artifacts or the configured generation route.
