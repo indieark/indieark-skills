@@ -42,9 +42,9 @@
   <sub>HTML / 网页 / Landing</sub></p>
 </td>
 <td width="50%" align="center" valign="top">
-  <a href="#seedance2-video-pro"><img src="./assets/skills/seedance2-video-pro.webp" alt="seedance2-video-pro" width="100%"></a>
-  <p><a href="#seedance2-video-pro"><b>seedance2-video-pro</b></a> · <code>视</code><br/>
-  <sub>Seedance 2.0 视频导演</sub></p>
+  <a href="#video-gen-pro"><img src="./assets/skills/seedance2-video-pro.webp" alt="video-gen-pro" width="100%"></a>
+  <p><a href="#video-gen-pro"><b>video-gen-pro</b></a> · <code>视</code><br/>
+  <sub>视频导演（当前适配器：Seedance 2.0）</sub></p>
 </td>
 </tr>
 </table>
@@ -96,7 +96,7 @@
 | Skill | 调度的外部能力 |
 |---|---|
 | `image-gen-pro` | OpenAI image API / GPT Image 2 / Codex CLI 委托 |
-| `seedance2-video-pro` | Volcengine Ark · Seedance 2.0 API（当前唯一适配器，未来演进为 `video-gen-pro` provider-neutral） |
+| `video-gen-pro` | Volcengine Ark · Seedance 2.0 API（当前唯一适配器；多供方落地后即为 provider-neutral 形态） |
 | `ppt-gen-pro` | **router 委托** → `ppt-image-first` / `guizang-ppt-skill` / `ppt-master` 三家外部 extension |
 | `html-gen-pro` | **router 委托** → `ui-ux-pro-max` / `taste-skill` 两家外部 extension |
 | `search-pro` | `smart-search-cli` · `scrapling` · `agent-browser` · `yt-dlp` · `pandoc` · `ffmpeg` · `imagemagick` |
@@ -161,18 +161,18 @@
 
 ---
 
-### `seedance2-video-pro` · 视
-<a id="seedance2-video-pro"></a>
+### `video-gen-pro` · 视
+<a id="video-gen-pro"></a>
 
-![seedance2-video-pro](./assets/skills/seedance2-video-pro.webp)
+![video-gen-pro](./assets/skills/seedance2-video-pro.webp)
 
 > 把镜头脚本与 API 拉起合成一层，让 agent 真的能"拍片"。
 
 `alpha` · `v0.4.2` · CLI: `seedance2`
 
-- `seedance2` CLI 包装，**统一参数与产物路径**
 - **导演工作流** — natural-language 镜头拆解 → scene card → 多段连续性规划 + tail-frame hand-off
-- **当前唯一适配器**：Volcengine Ark · Seedance 2.0（`doubao-seedance-2-0-260128` / `*-fast`）；二供方接入时将演进为 `video-gen-pro` provider-neutral
+- **当前适配器**：Volcengine Ark · Seedance 2.0（`doubao-seedance-2-0-260128` / `*-fast`），仓内目前只有这一个适配器实现
+- **包名向后兼容**：实际安装目录仍是 [`seedance2-video-pro/`](./seedance2-video-pro)，CLI 仍是 `seedance2`；待二供方接入后才把顶层入口收敛到 `video-gen-pro`
 
 → [skill 目录](./seedance2-video-pro) · [SKILL.md](./seedance2-video-pro/SKILL.md) · [README](./seedance2-video-pro/README.md)
 
@@ -335,7 +335,7 @@ git status --short ; git diff --stat
 
 - `beta` — 仓内含可执行实现 + CLI，处于迭代细化（如 `image-gen-pro`）
 - `router-alpha` — 仓内只做路由 + 规划，渲染层委托给外部 extension（如 `ppt-gen-pro` / `html-gen-pro`）
-- `alpha` — 仓内含首个适配器实现，未来扩展为 provider-neutral（如 `seedance2-video-pro` → `video-gen-pro`）
+- `alpha` — 仓内含首个适配器实现，未来扩展为 provider-neutral（如 `video-gen-pro`，当前物理包名 `seedance2-video-pro`）
 - `preview` — `v0.1.0-skeleton`，可被 agent 加载，CLI 与下游链未就位（如 `search-pro` / `office-pro` / `struct-pro` / `write-pro`）
 
 新增 skill 流程见各私库的 `plans/<编号>-new-skill-<name>.md`。
