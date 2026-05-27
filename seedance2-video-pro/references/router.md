@@ -18,6 +18,7 @@
 
 ```text
 用户请求
+-> 模式判定（executor / guide / advisor，见 ../SKILL.md `## Execution Modes`）
 -> 交互问询门
 -> 需求完整度
 -> 任务类型
@@ -62,6 +63,7 @@ Ask 时一次最多问 3 个会影响生成结果的问题。Propose options 时
 | 任意非抽象镜头缺 `scene_ref` | 回到资产规划，不生成故事板，不写最终视频 prompt |
 | 场景卡只想默认出一张单图 | 先读 `scene-sheet.md` 的 `Scene Card Routing Contract`，按镜头角度数、复用强度和空间风险选择类型 |
 | 用户明确说快速抽样或绕过项目化流程 | 可以走快速路径，但仍输出简短镜头拆分，并在完成回复说明未登记完整资产 |
+| 用户说「参考模式 / 我自己去 Sora\|Veo3\|... 跑 / 只要素材包 / 不要生成」 | 进入 advisor mode；读 `advisor-mode.md`，按 `completion.md` 的 Advisor Reference Pack 模板输出参考包；不进入 API 操作分支，只允许只读 CLI 和 `--dry-run-payload` |
 
 ## 3. Intelligent Orchestration / Split
 

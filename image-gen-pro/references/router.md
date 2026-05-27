@@ -10,6 +10,7 @@
 
 ```text
 用户请求
+-> 模式判定（executor / advisor，见 ../SKILL.md `## Execution Modes`）
 -> 交付物类型
 -> 输入角色
 -> 任务类型 / 子路线
@@ -17,10 +18,10 @@
 -> 模型与 route 约束
 -> 必读 reference
 -> 方法选择
--> 执行确认（真实生成/编辑/批量执行前）
--> imagen CLI operation
+-> 执行确认（真实生成/编辑/批量执行前；advisor 模式越界时同样需要）
+-> imagen CLI operation（advisor 模式仅允许 plan / dry-run / payload-dry-run / inspect 类命令）
 -> artifact / 输出验证
--> reporting.md 用户回复
+-> reporting.md 用户回复（advisor 用 Advisor Reference Pack 模板）
 ```
 
 ## Routing Dimensions
@@ -86,6 +87,7 @@ After any CLI operation, read `reporting.md` before replying to the user.
 | 用户要求“一组 / 批量 / 每个 prompt 一张 / 多素材组合” | `manifest-batch` | 先把需求转成 batch manifest 并 dry-run；真实执行只用 `imagen batches run` |
 | 用户说“继续上一张 / 改刚才结果 / 换一种” | `prior-run-iteration` | 先 `runs show` 或 `jobs show` 找证据，再按 `iteration.md` 修改 |
 | 用户只要“提示词 / 方案 / prompt 模板” | `non-output-craft` | 不提交 provider；可按需用 `imagen plan` 写 artifact |
+| 用户说“参考模式 / 我自己去 MJ\|Sora\|... 跑 / 只要素材包 / 给我提示词” | `advisor-reference-pack` | 进入 advisor mode；按 `reporting/templates.md` 的 Advisor Reference Pack 输出；只允许 plan / dry-run / payload-dry-run / inspect 类 CLI |
 | 用户要检查路由、key、模型、为什么失败 | `diagnostic-route` | 先 `config list` / `doctor` / `runs show`，不要重新生成 |
 
 ## Conflict Priority

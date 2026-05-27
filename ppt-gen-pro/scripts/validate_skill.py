@@ -29,7 +29,7 @@ def main() -> int:
         "默认推荐策略",
         "标准 PPT 优先推荐图片 PPT",
         "只有用户明确强调可编辑",
-        "不在用户未选择路线前直接进入某个扩展生成",
+        "不在用户未选择 L1 路线前直接进入某个扩展生成",
     ]:
         if phrase not in skill_text:
             return fail(f"SKILL.md missing route phrase: {phrase}")
@@ -92,7 +92,7 @@ def main() -> int:
         "hugohe3/ppt-master",
         "链路更复杂",
         "按推荐来",
-        "不要把 SVG 描述成更高级的默认路线",
+        "不要把 SVG / design 描述成更高级的默认路线",
     ]:
         if phrase not in introduction:
             return fail(f"route-introduction.md missing phrase: {phrase}")
@@ -138,7 +138,10 @@ def main() -> int:
         if phrase not in install:
             return fail(f"install.md missing install/update phrase: {phrase}")
 
-    installer = (SKILL_DIR.parents[1] / "scripts/install_extensions.py").read_text(encoding="utf-8")
+    installer_path = SKILL_DIR / "scripts/install_extensions.py"
+    if not installer_path.exists():
+        installer_path = SKILL_DIR.parents[1] / "scripts/install_extensions.py"
+    installer = installer_path.read_text(encoding="utf-8")
     if "git\", \"pull\", \"--ff-only" not in installer:
         return fail("install_extensions.py must update existing checkouts with git pull --ff-only")
     if "https://github.com/hugohe3/ppt-master" not in installer:

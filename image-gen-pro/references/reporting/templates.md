@@ -71,6 +71,43 @@ Method：dry-run，artifact-only validation.
 验证：provider_api_call=false，artifact=<summary/request path>。
 ```
 
+## Advisor Reference Pack
+
+advisor mode 专用。用于回应「参考模式 / 我自己去跑 / 不要生成 / 只要素材包」等触发场景；本卡片不调用 `imagen generate|edit|batches run` 非 dry-run 命令，也不声称已生成图片。
+
+```text
+已完成：已输出参考包，未调用 provider，未生成图片。
+模式：advisor mode（参考模式）
+目标平台：<MJ / Sora / Flux / SD ComfyUI / 即梦 / 可灵 / ... 按用户指定>
+
+Original Prompt：<user request>
+Master Prompt（中性主提示词）：<不绑定任何平台语法的描述>
+
+平台适配变体：
+- MJ：<MJ 语法版本，含 --ar / --v / --sd|--hd / --style / --sref 等需要时；不需要的字段不填占位>
+- Sora：<Sora 语法版本，含镜头/时长/相机运动等需要时>
+- Flux：<Flux/Replicate/Krea 等接受的自然语言提示词版本>
+- SD ComfyUI：<正向 prompt + 负向 prompt + 关键节点建议>
+- <其他用户指定平台>：<对应语法版本>
+
+参考图收集 checklist：
+- 结构 / 构图：<建议参考素材类型>
+- 风格 / 笔触：<建议参考素材类型>
+- 配色 / 光照：<建议参考素材类型>
+- 材质 / 细节：<建议参考素材类型>
+- 角色 / 主体（如适用）：<建议参考素材类型>
+
+评判 checklist（出图回来后用以下维度判断）：
+- <维度 1：例如主体识别度>
+- <维度 2：例如光线方向一致性>
+- <维度 3：例如构图比例还原>
+- <维度 N>
+
+可选证据：<imagen plan / --dry-run-payload artifact 路径，或「未生成证据 artifact」>
+Method：advisor，资产 + 方法论交付；不提交 provider，不写 outputs。
+验证：provider_api_call=false；artifact=<plan/payload artifact 路径或「无」>。
+```
+
 ## Inspection / Config / Doctor
 
 ```text

@@ -19,7 +19,7 @@ Every visible reply should be easy to scan, pleasant to read, and backed by arti
 | Need | Load |
 | --- | --- |
 | Shared tone, field labels, preview rendering, no-secret rules | `reporting/common.md` |
-| Exact templates for generate/edit, batch, transparent, dry-run, inspection, failure | `reporting/templates.md` |
+| Exact templates for generate/edit, batch, transparent, dry-run, inspection, advisor, failure | `reporting/templates.md` |
 | How the Skill should render the final chat reply | `reporting/common.md` and `reporting/templates.md` |
 
 Do not duplicate the long templates in `SKILL.md`. `SKILL.md` should only point here.
@@ -29,6 +29,7 @@ Do not duplicate the long templates in `SKILL.md`. `SKILL.md` should only point 
 - Report only facts supported by `imagen` stdout JSON, run artifacts, batch artifacts, transparent metadata, or the current user request.
 - Do not say an image was generated unless a real `imagen generate/edit` output file exists.
 - Do not say a dry-run generated an image; say it wrote artifacts only.
+- Advisor mode replies must say no image was generated; they deliver a reference pack (master prompt, per-platform prompt variants, reference-image checklist, evaluation checklist) and may point to optional `imagen plan` / `--dry-run-payload` artifacts when they were created.
 - Do not expose API keys, Authorization headers, raw provider responses, long base64 payloads, or raw Codex session text.
 - Every completion or failure report must include prompt information when a prompt exists.
 - Prompt fields are standardized as `Original Prompt` and `Final Prompt`; method fields are standardized as `Method`.
@@ -49,6 +50,7 @@ Do not duplicate the long templates in `SKILL.md`. `SKILL.md` should only point 
 | Batch | Batch summary card with counts, batch state path, batch preview, representative outputs, run artifact pointer |
 | Transparent output | Completion card with final transparent PNG, preview, source image, alpha verification, metadata path |
 | Dry-run / payload dry-run | Artifact-only card; output line must say no image was generated |
+| Advisor reference pack | Reference-pack card with neutral master prompt, per-platform prompt variants, reference-image collection checklist, evaluation checklist, and optional plan/dry-run artifact pointers |
 | Runs/jobs/config/doctor | Inspection card with key state, paths, active model/route, and no raw secrets |
 | Failure | Failure card with failed layer, saved artifact path, prompt, method, and exactly one next corrective action |
 

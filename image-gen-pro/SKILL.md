@@ -12,13 +12,40 @@ description: Mandatory Skill for image generation, image-to-image, image editing
 - 只要用户要生成新图片、批量生成、图生图/以图改图、编辑图片、参考图出图、透明 PNG/去底/cutout、图片 prompt、route 配置、API/CLI 调试，就进入本 Skill。
 - 正式生成、正式编辑、dry-run payload、输出保存、历史 run/job 查询和透明后处理都必须调用 `imagen`。不要绕过 `imagen` 直接调用 provider、本机 `codex`、环境内置图片工具或临时脚本作为最终执行路径。
 - 批量生成必须用 `imagen batches run --file ...` 的 manifest 系统；不要让 Agent 临时写循环脚本。batch item 只能复用已验证的 `generate` / `edit` 路由。
-- 非执行型任务可以只做方法、prompt、方案或文档；一旦要产出图片文件、提交 provider、保存证据或复盘历史，就切回 CLI。
+- 非执行型任务可以只做方法、prompt、方案或文档；一旦要产出图片文件、提交 provider、保存证据或复盘历史，就切回 CLI。模式切换规则见 `## Execution Modes`。
 - 正式执行前必须先读取本机偏好和凭据来源：运行 `imagen config list`，再运行 `imagen doctor` 或 `imagen doctor --model <requested-model>`；用户未指定模型时使用 config 的 `default_model`，不要临场改用其他模型或其他生成方法。
 - 不要用 `imagen --help` 判断用户是否配置好了。配置状态只看 `imagen config list` 和 `imagen doctor` / `imagen doctor --model <model>`；配置好了就按已保存的 `default_model`、`default_route`、`enabled_routes` 和 `route_priority` 快速路由。
 - 首次真实生成、缺少默认模型/route/key/base URL、doctor 显示目标 route 不可用、或用户上次选择 skipped config 时，读 `references/routes.md` 的 Config Preflight Protocol，引导用户选择：现在保存配置、仅本次临时使用、改用可用 route、或先做 dry-run/方案。用户跳过配置时，不阻塞非执行任务；下次真实生成前再次进入同一 preflight。
 - 正式生成/编辑/批量真实执行前必须先输出执行确认，至少列出模型、route、处理方法、分辨率/尺寸比例、最终提示词、参考图/源图/遮罩和输出目标；等待用户明确确认后才调用 `imagen`。确认规则以 `references/interaction.md` 为准。
 - 用户需要透明 PNG、去底、抠图、扣图、cutout 或 sprite/icon alpha 交付时，AI 必须先用 `imagen generate` 专门生成易扣除的单一纯色背景源图，再用 `imagen transparent` 抠图并验证真实 alpha。
 - 每次执行后读取 stdout JSON 和 `_work/image_gen_runs/<run-id>/` artifact，再按 `references/reporting.md` 的层级模板向用户报告输出路径、预览、实际分辨率、尺寸比例、route、验证结果和必要限制。
+
+## Execution Modes
+
+Skill 默认是 **executor mode**（生成模式）；用户用自然语言可以临时切到 **advisor mode**（参考模式）。两种模式共用路由、方法论和反推规则，只在「最终产物」和「是否调 provider」上不同。
+
+### Executor Mode（默认）
+
+- 触发：用户表达「生成 / 出图 / 批量 / 编辑 / 抠图 / 修图」等需要真实图片产物的语义。
+- 行为：按 Hard Contract 走 `imagen` CLI 实际生成或后处理；输出按 `references/reporting/templates.md` 的 Real / Batch / Transparent / Dry-Run 模板。
+- 退出：当前任务完成，或用户主动切到 advisor mode。
+
+### Advisor Mode（参考模式 / 自然语言开启）
+
+- 触发词（用户消息任一出现即进入，不要追问确认）：
+  - 「参考模式」/「advisor mode」/「不要生成」/「别生成」/「不要调 imagen」/「不要出图」
+  - 「我自己去跑」/「我自己用 MJ / Sora / Flux / 即梦 / 可灵 / SD / ComfyUI / WebUI / Leonardo / Ideogram / Recraft / Krea 跑」
+  - 「只要 prompt」/「只给提示词」/「只要素材包」/「给我素材包」/「给我参考包」/「给我资产」
+- 允许调用：`imagen config list`、`imagen doctor`、`imagen runs|jobs show`、`imagen plan`、`imagen dry-run`、`imagen generate|edit|batches run ... --dry-run-payload`。
+- 禁止调用：`imagen generate` / `imagen edit` / `imagen batches run`（非 dry-run 形式）/ `imagen transparent`（不实际后处理图）。
+- 输出契约：按 `references/reporting/templates.md` 的 Advisor Reference Pack 模板，至少给出：
+  - 中性主提示词（不绑定任何平台语法，描述视觉事实）。
+  - 平台适配变体（按用户提到的目标平台逐个产出；用户未指定时默认列 MJ / Sora / Flux / SD ComfyUI 四档）。
+  - 参考图收集 checklist（结构 / 风格 / 配色 / 光照 / 材质各维度建议什么样的参考素材）。
+  - 评判 checklist（用户出图回来后用什么维度判断是否合格）。
+  - 可选证据：`imagen plan` 或 `--dry-run-payload` 的 artifact 路径。
+- 退出：用户明确说「开始生成 / 现在出图 / 真实跑 / 执行 / run it」时切回 executor mode，并按 Hard Contract 做执行确认；不要默默切回。
+- 模式越界：advisor mode 下若用户要求真实出图，先复述请求并要求一次明确确认，再按 executor mode 流程执行；触发词冲突时以最后一条用户消息为准。
 
 ## Skill Output Contract
 
@@ -33,7 +60,7 @@ description: Mandatory Skill for image generation, image-to-image, image editing
 ## Required Workflow
 
 ```text
-1. Classify deliverable, input roles, task family, execution mode, and model/route constraints.
+1. Classify mode (executor vs advisor), deliverable, input roles, task family, execution mode, and model/route constraints.
 2. For real execution, preflight saved config with `imagen config list` and `imagen doctor`; only ask setup questions when config/readiness is missing.
 3. Resolve route-changing ambiguity; when unclear, ask only the questions that change route, cost, or output.
 4. Load only the required reference files.

@@ -16,7 +16,7 @@ $excludedDirs = @(".git", "_work", "dist", "extensions", "__pycache__", ".pytest
 $excludedExtensions = @(".pyc", ".pyo")
 $excludedArchiveExtensions = @(".zip", ".tar", ".tgz", ".rar", ".7z", ".gz")
 
-function Copy-RuntimeSkill([object] $Skill) {
+function Resolve-SkillSource([object] $Skill) {
     $source = Join-Path (Split-Path -Parent $RepoRoot) $Skill.source
     if (-not (Test-Path -LiteralPath $source)) {
         $source = Join-Path $SourceRoot ($Skill.source -replace "^skills[\\/]", "")
@@ -24,7 +24,11 @@ function Copy-RuntimeSkill([object] $Skill) {
     if (-not (Test-Path -LiteralPath $source)) {
         throw "Missing source for $($Skill.name): $source"
     }
+    return $source
+}
 
+function Copy-RuntimeSkill([object] $Skill) {
+    $source = Resolve-SkillSource $Skill
     $target = Join-Path $RepoRoot $Skill.path
     if ($PSCmdlet.ShouldProcess($target, "Refresh $($Skill.name) from $source")) {
         if (Test-Path -LiteralPath $target) {
@@ -32,6 +36,24 @@ function Copy-RuntimeSkill([object] $Skill) {
         }
         Copy-Item -LiteralPath $source -Destination $target -Recurse -Force
     }
+}
+
+# Convention: a Skill repo root may carry scripts/install_extensions.py as an
+# external-extension installer (not part of the agentskills.io Skill container).
+# On publish we flatten it into the distributed <skill>/scripts/ so internal
+# validators like validate_skill.py can find it from the same relative path.
+function Copy-RepoExtras([object] $Skill) {
+    $source = Resolve-SkillSource $Skill
+    $skillRepoRoot = Split-Path -Parent (Split-Path -Parent $source)
+    $extraInstaller = Join-Path $skillRepoRoot "scripts/install_extensions.py"
+    if (-not (Test-Path -LiteralPath $extraInstaller)) {
+        return
+    }
+    $targetScriptsDir = Join-Path (Join-Path $RepoRoot $Skill.path) "scripts"
+    if (-not (Test-Path -LiteralPath $targetScriptsDir)) {
+        New-Item -ItemType Directory -Path $targetScriptsDir -Force | Out-Null
+    }
+    Copy-Item -LiteralPath $extraInstaller -Destination (Join-Path $targetScriptsDir "install_extensions.py") -Force
 }
 
 function Get-SkillRoots {
@@ -101,6 +123,7 @@ function Assert-Distribution {
 
 foreach ($skill in @($manifest.skills)) {
     Copy-RuntimeSkill $skill
+    Copy-RepoExtras $skill
 }
 
 Remove-ExcludedFiles

@@ -111,6 +111,62 @@
 - 可以输出本地路径，因为用户和 Agent 在同一台机器上；但商业素材路径只作为复盘证据，不做公开外链。
 - 如果使用 Cloudflare tunnel，只汇报它用于本次临时本地视频暴露，并确认命令结束后已关闭。
 
+## Advisor Reference Pack
+
+advisor mode（参考模式，见 `advisor-mode.md`）专用。用户不要本 Skill 真实出片，而要拿参考包去 Sora / Veo3 / Kling / Runway 等平台自己跑时使用本模板。**不要在 advisor 回复里说"已生成视频"或"已提交任务"**；如果有 `--dry-run-payload` artifact 可以作为可选证据指向。
+
+```text
+已完成：已输出参考包，未调用火山方舟 API，未生成视频。
+模式：advisor mode（参考模式）
+目标平台：<Sora / Veo3 / Kling / Runway Gen-3 / Pixverse / Hailuo MiniMax / Pika / 即梦 / Vidu / Seedance ... 按用户指定>
+
+Original Creative：<用户原始诉求>
+
+镜头清单 Shot List：
+- Shot 1：<时长>s, <画幅>, <镜头运动>, <主体+动作>
+- Shot 2：...
+- 总时长 / 拆段建议：<是否需要拆段及为什么>
+
+Master Prompt（中性主提示词，按镜头组织）：
+<不绑定任何平台语法，描述视觉事实和动作；过长时给摘要 + 本地 prompt.txt 路径>
+
+平台适配变体：
+- Sora：<相机运动 / 时长 / 风格关键词的 Sora 写法>
+- Veo3：<sound effects / dialogue 等 Veo3 特有字段写法>
+- Kling：<motion control / start-end frame 等 Kling 写法>
+- Runway Gen-3：<motion brush / camera move 建议>
+- <其他用户指定平台>：<对应语法版本>
+
+资产 brief（让用户自己去图像平台生成）：
+- 角色卡：<人设三视图 / 多视图建议；服饰/材质/比例描述；解决哪个一致性问题>
+- 场景卡：<空间结构 / 光线 / 道具 / 视角覆盖建议；选基本场景卡 / 正交四视图 / 多视角联合图的依据>
+- 道具/产品卡：<品牌物件 / 材质细节描述；何时需要单独锁定>
+- 故事板母图（可选）：<是否需要 + 九宫格 / 四栏 / 8 镜头 / 制作设定板 版式建议>
+
+声音 brief：
+- 音乐：<风格 / 情绪 / BPM 建议>
+- 环境音：<场景音特征>
+- 动作音效：<关键动作的同步音效>
+- 对白 / 旁白 / 无说话人声：<台词文本或明确无对白>
+- 字幕 / 标题文字：<文字内容 / 时间线 / 是否禁止画面新增文字>
+
+多段连续性建议（仅长视频）：
+- 拆段方案：<X 段 × Y 秒>
+- 连续性锚点：<角色 / 场景 / 道具 / 光线>
+- 段间衔接：<硬切 / 尾帧硬衔接 / 延续运镜 / extend>
+
+评判 checklist：
+- <维度 1：例如主体识别度>
+- <维度 2：例如镜头运动准确性>
+- <维度 3：例如角色一致性>
+- <维度 4：例如声画同步 / 字幕命中>
+- <维度 N>
+
+可选证据：<seedance2 <mode> ... --dry-run-payload artifact 路径，或「未生成证据 artifact」>
+Method：advisor，资产 + 方法论交付；不提交火山方舟 API，不写真实 outputs。
+验证：provider_api_call=false；artifact=<payload artifact 路径或「无」>。
+```
+
 ## 简短模板
 
 信息很多时仍保持简短，默认 7 行以内；用户要求详细复盘时再展开。
