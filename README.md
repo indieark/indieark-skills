@@ -80,34 +80,29 @@
 
 ## 协同关系
 
-```mermaid
-graph LR
-    subgraph A["创作四件 · active"]
-      direction TB
-      I["图<br/>image-gen-pro"]
-      P["片<br/>ppt-gen-pro"]
-      H["网<br/>html-gen-pro"]
-      V["视<br/>seedance2-video-pro"]
-    end
-    subgraph B["能力四件 · preview"]
-      direction TB
-      S["搜<br/>search-pro"]
-      O["办<br/>office-pro"]
-      T["构<br/>struct-pro"]
-      W["写<br/>write-pro"]
-    end
-    P -. 首屏配图 .-> I
-    H -. 首屏配图 .-> I
-    V -. 关键帧 .-> I
-    W ==>|编排| I
-    W ==>|编排| P
-    W ==>|编排| H
-```
+八件套设计上是**正交工具集** — 每件单装可用，互不依赖。**唯一显式的跨件关系**是 [`write-pro`](#write-pro) 在 router 边界外声明的 hand-off：
 
-- **图** 是创作四件的视觉底座，`片` / `网` / `视` 都向它取首屏 / 配图 / 关键帧
-- **写** 是创作侧的编排层，长文 / 短文 / 文案 / 工程文档都从这里起手
-- **搜 / 办 / 构** 是能力底座：信息进入、办公接入、结构治理，分别管 agent 与外部世界的三类接口
-- 任一件单装可用；组合更香
+| 写完后需要⋯ | → hand-off 到 |
+|---|---|
+| 出 deck | [`ppt-gen-pro`](#ppt-gen-pro) |
+| 出网页 | [`html-gen-pro`](#html-gen-pro) |
+| 多渠道发布（飞书 / Notion / 公众号 / 邮件） | [`office-pro`](#office-pro) |
+| 找资料 / 抓素材 | [`search-pro`](#search-pro) |
+
+每件 skill 自身的真实下游依赖：
+
+| Skill | 调度的外部能力 |
+|---|---|
+| `image-gen-pro` | OpenAI image API / GPT Image 2 / Codex CLI 委托 |
+| `seedance2-video-pro` | Seedance 2.0 视频 API |
+| `ppt-gen-pro` | 内置多模板风格库 |
+| `html-gen-pro` | 内置 inline React / Babel / CSS tokens |
+| `search-pro` | `smart-search-cli` · `scrapling` · `agent-browser` · `yt-dlp` · `pandoc` · `ffmpeg` · `imagemagick` |
+| `office-pro` | 全局 40+ `lark-*` 子 skill（飞书 OpenAPI） |
+| `struct-pro` | 文件系统操作（默认 dry-run） |
+| `write-pro` | 全局 9 个 `pro-*` 方法论原子（`copy`/`exp`/`explain`/`idea`/`must`/`rule`/`struct`/`summary`/`test`） |
+
+> 创作四件（`图/片/网/视`）之间**不互相调用**；只是 `_work/html_runs/` · `_work/image_gen_runs/` · `_work/seedance_upload/` 这类本地留痕目录的命名风格保持对齐。
 
 ---
 
@@ -141,7 +136,7 @@ graph LR
 
 - **按受众 / 平台 / 风格** 做 L1 路由判定
 - **多模板风格** 切换，不再每次从零拼版
-- 与 [`image-gen-pro`](#image-gen-pro) 联动取首屏
+- 内置 deck 结构 + 文案产出规约
 
 → [skill 目录](./ppt-gen-pro) · [SKILL.md](./ppt-gen-pro/SKILL.md)
 
@@ -175,7 +170,7 @@ graph LR
 
 - `seedance2` CLI 包装，**统一参数与产物路径**
 - **镜头脚本生成** + 多机位序列编排
-- 与 [`image-gen-pro`](#image-gen-pro) 联动取首帧 / 关键帧
+- `_work/seedance_upload/` 本地留痕，方便回看与重跑
 
 → [skill 目录](./seedance2-video-pro) · [SKILL.md](./seedance2-video-pro/SKILL.md) · [README](./seedance2-video-pro/README.md)
 
