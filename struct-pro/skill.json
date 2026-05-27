@@ -1,0 +1,42 @@
+{
+  "name": "struct-pro",
+  "version": "0.1.0-skeleton",
+  "status": "skeleton",
+  "octet": "构",
+  "octet_family": "IndieArk *-pro 八件套",
+  "form": "CLI + Skill dual (CLI scaffolding TBD per plans/009)",
+  "safety": {
+    "default_mode": "non-destructive / dry-run",
+    "apply_requires": "explicit user confirmation",
+    "cross_repo_mv": "disabled in v0.1.0 (Q7 待拍板)"
+  },
+  "principles": [
+    "single source of truth",
+    "layered indexing",
+    "info consistency"
+  ],
+  "routes": [
+    "folder-tidy",
+    "code-structure",
+    "doc-structure"
+  ],
+  "doc_audiences": [
+    "ai-memory",
+    "ai-parsing",
+    "human-reading"
+  ],
+  "downstream_skills": [
+    "ccg:gen-docs",
+    "ccg:verify-module",
+    "ccg:verify-quality",
+    "init-architect",
+    "team-architect"
+  ],
+  "boundary_out": [
+    "frontend-design",
+    "write-pro"
+  ],
+  "output_dir": "_work/struct_runs/",
+  "plan": "skills/plans/009-new-skill-struct-pro.md",
+  "open_questions_blocking_ready": [1, 2, 4, 5]
+}

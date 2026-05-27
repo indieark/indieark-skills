@@ -1,6 +1,6 @@
 {
   "name": "indieark-skills",
-  "version": "2026.05.25",
+  "version": "2026.05.27",
   "repository": "https://github.com/indieark/indieark-skills",
   "install_target": "%USERPROFILE%\\.codex\\skills",
   "skills": [
@@ -8,6 +8,7 @@
       "name": "image-gen-pro",
       "path": "image-gen-pro",
       "version": "0.1.0-beta.29",
+      "status": "active",
       "source": "skills/image-gen-pro/skills/image-gen-pro",
       "cli": [
         {
@@ -21,13 +22,23 @@
       "name": "ppt-gen-pro",
       "path": "ppt-gen-pro",
       "version": "0.1.0",
+      "status": "active",
       "source": "skills/ppt-gen-pro/skills/ppt-gen-pro",
+      "cli": []
+    },
+    {
+      "name": "html-gen-pro",
+      "path": "html-gen-pro",
+      "version": "0.2.0",
+      "status": "active",
+      "source": "skills/html-gen-pro/skills/html-gen-pro",
       "cli": []
     },
     {
       "name": "seedance2-video-pro",
       "path": "seedance2-video-pro",
       "version": "0.4.2",
+      "status": "active",
       "source": "skills/video-gen-pro/skills/seedance2-video-pro",
       "cli": [
         {
@@ -36,6 +47,38 @@
           "wrapper": "seedance2.cmd"
         }
       ]
+    },
+    {
+      "name": "search-pro",
+      "path": "search-pro",
+      "version": "0.1.0-skeleton",
+      "status": "preview",
+      "source": "skills/search-pro/skills/search-pro",
+      "cli": []
+    },
+    {
+      "name": "office-pro",
+      "path": "office-pro",
+      "version": "0.1.0-skeleton",
+      "status": "preview",
+      "source": "skills/office-pro/skills/office-pro",
+      "cli": []
+    },
+    {
+      "name": "struct-pro",
+      "path": "struct-pro",
+      "version": "0.1.0-skeleton",
+      "status": "preview",
+      "source": "skills/struct-pro/skills/struct-pro",
+      "cli": []
+    },
+    {
+      "name": "write-pro",
+      "path": "write-pro",
+      "version": "0.1.0-skeleton",
+      "status": "preview",
+      "source": "skills/write-pro/skills/write-pro",
+      "cli": []
     }
   ]
 }

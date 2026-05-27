@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>NULL // RUN — a 0-day hacker escape</title>
+    <meta
+      name="description"
+      content="NULL // RUN — escape seven forgotten sectors of a post-collapse net. A solo-dev cyberpunk infiltration roguelite. Wishlist now."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Major+Mono+Display&family=IBM+Plex+Mono:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap"
+    />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <!-- top boot strip — not navigation, posture -->
+    <div class="boot-strip" role="presentation" aria-hidden="true">
+      <span class="boot-dot" data-state="live"></span>
+      <span class="boot-text">SYSTEM 0xN-7 ::&nbsp;boot ok&nbsp;::&nbsp;uplink degraded&nbsp;::&nbsp;0 trusted peers</span>
+      <span class="boot-clock" id="boot-clock">--:--:--&nbsp;UTC</span>
+    </div>
+
+    <header class="topbar" aria-label="Primary">
+      <a class="topbar-mark" href="#top">
+        <span class="mark-bracket">[</span>
+        <span class="mark-word">NULL</span>
+        <span class="mark-sep">//</span>
+        <span class="mark-word">RUN</span>
+        <span class="mark-bracket">]</span>
+      </a>
+      <nav class="topbar-nav" aria-label="Sections">
+        <a href="#about">/about</a>
+        <a href="#sectors">/sectors</a>
+        <a href="#req">/req</a>
+        <a href="#wishlist">/wishlist</a>
+      </nav>
+      <span class="topbar-build">build&nbsp;0.7.3-pre&nbsp;//&nbsp;SECTOR_7 leak</span>
+    </header>
+
+    <main id="top">
+      <!-- CCTV MONITOR HERO ============================================ -->
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-grid">
+          <div class="cctv" role="img" aria-label="A surveillance feed of a faceless runner in a decayed neon corridor.">
+            <div class="cctv-bezel">
+              <div class="cctv-screen">
+                <div class="cctv-overlay">
+                  <span class="cctv-rec">
+                    <span class="cctv-rec-dot"></span>
+                    REC&nbsp;&middot;&nbsp;CAM 07
+                  </span>
+                  <span class="cctv-coords">38.711 N&nbsp;//&nbsp;-9.143 E</span>
+                  <span class="cctv-time">2087-11-04&nbsp;03:47:22</span>
+                  <span class="cctv-meta">SIGNAL&nbsp;-91&nbsp;dBm&nbsp;::&nbsp;CRT&nbsp;7.5kHz</span>
+                </div>
+                <div class="cctv-art" aria-hidden="true">
+                  <div class="cctv-figure">
+                    <div class="cctv-fig-head"></div>
+                    <div class="cctv-fig-coat"></div>
+                  </div>
+                  <div class="cctv-corridor"></div>
+                  <div class="cctv-floor"></div>
+                  <div class="cctv-lamp cctv-lamp--a"></div>
+                  <div class="cctv-lamp cctv-lamp--b"></div>
+                  <div class="cctv-noise"></div>
+                </div>
+              </div>
+            </div>
+            <p class="cctv-caption">
+              &lt; NO_FACE &gt;&nbsp;//&nbsp;last seen: SECTOR_7
+            </p>
+          </div>
+
+          <div class="hero-copy">
+            <p class="kicker">CLASSIFIED&nbsp;::&nbsp;FILE 0xN-7</p>
+            <h1 id="hero-title" class="title" data-text="NULL // RUN">NULL // RUN</h1>
+            <p class="subtitle">
+              You are a name they could not finish writing.
+              <br />
+              Seven sectors. One un-traceable runner. No checkpoint.
+            </p>
+
+            <ul class="hero-stats" aria-label="At a glance">
+              <li>
+                <span class="stat-k">type</span>
+                <span class="stat-v">infiltration roguelite</span>
+              </li>
+              <li>
+                <span class="stat-k">crew</span>
+                <span class="stat-v">solo dev&nbsp;//&nbsp;1 composer</span>
+              </li>
+              <li>
+                <span class="stat-k">eta</span>
+                <span class="stat-v">Q3 2087&nbsp;<em>(internal time)</em></span>
+              </li>
+              <li>
+                <span class="stat-k">drop</span>
+                <span class="stat-v">PC&nbsp;//&nbsp;Linux&nbsp;//&nbsp;Steam Deck</span>
+              </li>
+            </ul>
+
+            <div class="hero-cta">
+              <a class="cta cta--primary" href="#wishlist">
+                <span class="cta-bracket">&gt;</span>
+                <span>WISHLIST_ON_STEAM</span>
+                <span class="cta-bracket">_</span>
+              </a>
+              <a class="cta cta--ghost" href="#about">
+                <span>read the file</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- HORIZONTAL INTRO ============================================== -->
+      <section id="about" class="intro" aria-labelledby="intro-title">
+        <aside class="intro-terminal" aria-hidden="true">
+          <div class="term-bar">
+            <span>~/sector_7$&nbsp;cat&nbsp;./runner.profile</span>
+            <span class="term-cursor"></span>
+          </div>
+          <pre class="term-out">
++---------------------------------------+
+| ALIAS    : &lt;NO_FACE&gt;                  |
+| ORIGIN   : sector_7, level -3         |
+| RECORD   : <span class="term-red">REDACTED &mdash; 14 entries</span>    |
+| LAST PING: 2087-11-04 03:47           |
+| TRUST    : 0.000 / 1.000              |
+| CARRY    : 1x deck, 1x null-card,     |
+|            1x photo (face removed)    |
++---------------------------------------+
+.. uplink lost ..
+.. retrying ..█</pre>
+        </aside>
+
+        <div class="intro-copy">
+          <h2 id="intro-title">
+            They redacted your face<span class="dot">.</span>
+            <br />
+            <span class="muted">You still remember the corridor.</span>
+          </h2>
+          <p>
+            The Authority calls it a clean network. We call it a corpse you cannot bury.
+            Seven sectors collapsed at once&mdash;and someone wrote you out of every camera
+            log between them. Including yours.
+          </p>
+          <p>
+            <strong>NULL // RUN</strong> is a single-player infiltration roguelite that
+            takes place inside the abandoned mesh. You write a payload, ride it past the
+            Sentinels, and re-attach a face to the file before sector watch syncs. Every
+            failed attempt leaves a piece of you behind. Eventually the level remembers
+            you better than you do.
+          </p>
+          <p class="muted small">
+            // not for players who need a tutorial holding their hand. there isn&rsquo;t one.
+          </p>
+        </div>
+      </section>
+
+      <!-- ASYMMETRIC SECTOR CARDS ======================================== -->
+      <section id="sectors" class="sectors" aria-labelledby="sectors-title">
+        <header class="section-head">
+          <p class="kicker">REGISTRY&nbsp;//&nbsp;7 forgotten sectors</p>
+          <h2 id="sectors-title">Pick where you go missing.</h2>
+        </header>
+
+        <div class="sector-board">
+          <article class="card card--wide" aria-labelledby="sec-1-title">
+            <header class="card-tag">
+              <span class="card-tag-num">01</span>
+              <span class="card-tag-state" data-state="live">LIVE</span>
+            </header>
+            <h3 id="sec-1-title">Sector 7 &mdash; The Drowned Mall</h3>
+            <p>
+              A four-story shopping district sealed behind cracked acrylic. The mannequins
+              still smile. The cameras still rotate. The escalators still hum a single note,
+              an octave too low.
+            </p>
+            <dl class="card-meta">
+              <div><dt>hazard</dt><dd>Sentinel-class drone, slow scan</dd></div>
+              <div><dt>tempo</dt><dd>slow, claustrophobic</dd></div>
+              <div><dt>loot</dt><dd>1x null-card, 1x ad-jingle worm</dd></div>
+            </dl>
+          </article>
+
+          <article class="card card--tall" aria-labelledby="sec-2-title">
+            <header class="card-tag">
+              <span class="card-tag-num">02</span>
+              <span class="card-tag-state" data-state="cold">COLD</span>
+            </header>
+            <h3 id="sec-2-title">Sector 3 &mdash; Heat Pipeline</h3>
+            <p>
+              Three kilometres of cooling tunnel that doesn&rsquo;t cool anything anymore.
+              The Authority forgot to switch off the pumps. You hear your own footsteps
+              arrive before you do.
+            </p>
+          </article>
+
+          <article class="card" aria-labelledby="sec-3-title">
+            <header class="card-tag">
+              <span class="card-tag-num">03</span>
+              <span class="card-tag-state" data-state="alert">ALERT</span>
+            </header>
+            <h3 id="sec-3-title">Sector 9 &mdash; Billboard Garden</h3>
+            <p>
+              A field of dead ad-screens that occasionally remember a face. If they
+              remember yours&mdash;run. The Authority is hiring photographers again.
+            </p>
+          </article>
+
+          <article class="card card--inverse" aria-labelledby="sec-4-title">
+            <header class="card-tag">
+              <span class="card-tag-num">04</span>
+              <span class="card-tag-state" data-state="redacted">REDACTED</span>
+            </header>
+            <h3 id="sec-4-title">Sector ▒▒ &mdash; ▒▒▒▒▒▒▒▒▒▒</h3>
+            <p>
+              This entry has been removed from the public registry. Three runners say it
+              exists. Two never came back to confirm. The third came back, but not all of
+              her.
+            </p>
+            <p class="muted small">// unlock condition: finish any other sector with a 0-kill rating.</p>
+          </article>
+
+          <article class="card card--wide card--quiet" aria-labelledby="sec-5-title">
+            <header class="card-tag">
+              <span class="card-tag-num">05&ndash;07</span>
+              <span class="card-tag-state" data-state="locked">LOCKED</span>
+            </header>
+            <h3 id="sec-5-title">Three sectors we haven&rsquo;t named yet.</h3>
+            <p>
+              Designed last. Tuned last. Spoiled never. Wishlist now and you&rsquo;ll get
+              the reveal cut, not the marketing cut.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <!-- TERMINAL SYSTEM REQUIREMENTS =================================== -->
+      <section id="req" class="req" aria-labelledby="req-title">
+        <header class="section-head">
+          <p class="kicker">UPLINK&nbsp;//&nbsp;minimum spec</p>
+          <h2 id="req-title">What your rig has to survive.</h2>
+        </header>
+
+        <div class="req-grid">
+          <div class="req-term" role="group" aria-label="Minimum system requirements">
+            <div class="term-bar">
+              <span>~/uplink$&nbsp;cat&nbsp;./spec.min</span>
+              <span class="term-cursor"></span>
+            </div>
+            <pre class="term-out">
+OS .......... Windows 10 (1909+) / Linux (glibc 2.31+)
+CPU ......... 4 cores @ 2.4 GHz (Zen+ / Skylake)
+RAM ......... 6 GB
+GPU ......... anything with shaders. yes, that thing.
+DISK ........ 4.8 GB (no day-one bloat patch)
+INPUT ....... keyboard. one (1).
+NETWORK ..... <span class="term-cyan">none required.</span> we don&rsquo;t phone home.</pre>
+          </div>
+
+          <div class="req-term req-term--alt" role="group" aria-label="Recommended system requirements">
+            <div class="term-bar term-bar--alt">
+              <span>~/uplink$&nbsp;cat&nbsp;./spec.recommended</span>
+              <span class="term-cursor"></span>
+            </div>
+            <pre class="term-out">
+OS .......... Windows 11 / Linux (Steam Deck verified)
+CPU ......... 6 cores @ 3.4 GHz
+RAM ......... 12 GB
+GPU ......... RX 6600 / RTX 3060 (8 GB)
+DISK ........ SSD &mdash; CRT shader hates HDD seek
+INPUT ....... keyboard + a steady hand
+NETWORK ..... <span class="term-cyan">still none.</span> seriously, none.</pre>
+          </div>
+        </div>
+
+        <p class="req-note">
+          // no anti-cheat. no telemetry. no kernel driver. if you find one, you&rsquo;re running someone else&rsquo;s build.
+        </p>
+      </section>
+
+      <!-- WISHLIST CTA =================================================== -->
+      <section id="wishlist" class="wishlist" aria-labelledby="wishlist-title">
+        <div class="wishlist-frame">
+          <div class="wishlist-corner wishlist-corner--tl"></div>
+          <div class="wishlist-corner wishlist-corner--tr"></div>
+          <div class="wishlist-corner wishlist-corner--bl"></div>
+          <div class="wishlist-corner wishlist-corner--br"></div>
+
+          <p class="wishlist-warn">
+            <span aria-hidden="true">&#9888;</span>&nbsp;PAYLOAD READY&nbsp;//&nbsp;UPLOAD ON RELEASE
+          </p>
+          <h2 id="wishlist-title">
+            Wishlist <span class="muted">NULL // RUN</span> and we send you<br />
+            the dev log the publisher said we couldn&rsquo;t.
+          </h2>
+          <p class="wishlist-sub">
+            Two emails a year. No "thank you for your interest" template. Written by the
+            person actually shipping the build, on the day they shipped it.
+          </p>
+          <a class="cta cta--primary cta--big" href="#" rel="noopener">
+            <span class="cta-bracket">&gt;&gt;</span>
+            <span>WISHLIST_ON_STEAM</span>
+            <span class="cta-bracket">_</span>
+          </a>
+          <p class="wishlist-foot muted small">
+            // we will never sell your address. we don&rsquo;t have a marketing seat yet.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer" role="contentinfo">
+      <div class="footer-row">
+        <span>
+          &copy; 2087 SECTOR_7 unofficial archive
+          &middot;
+          built by one person, mostly at night
+        </span>
+        <span class="footer-meta">
+          last commit&nbsp;<code>a91ef03</code>&nbsp;&middot;&nbsp;status&nbsp;
+          <span class="footer-dot" data-state="live"></span>&nbsp;dev-online
+        </span>
+      </div>
+      <pre class="footer-art" aria-hidden="true">
+.--- end of file ---.
+|  if you read this  |
+|  you are already   |
+|  in the registry   |
+'---///---///---///-'</pre>
+    </footer>
+
+    <script>
+      // tiny boot clock — no tracking, no analytics, no fetch
+      (function () {
+        var el = document.getElementById('boot-clock');
+        if (!el) return;
+        function tick() {
+          var d = new Date();
+          var pad = function (n) {
+            return n < 10 ? '0' + n : '' + n;
+          };
+          el.textContent =
+            pad(d.getUTCHours()) +
+            ':' +
+            pad(d.getUTCMinutes()) +
+            ':' +
+            pad(d.getUTCSeconds()) +
+            ' UTC';
+        }
+        tick();
+        setInterval(tick, 1000);
+      })();
+    </script>
+  </body>
+</html>

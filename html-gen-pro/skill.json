@@ -1,0 +1,97 @@
+{
+  "name": "html-gen-pro",
+  "version": "0.2.0",
+  "status": "router-alpha",
+  "runtime": {
+    "python": ">=3.9",
+    "entrypoint": "scripts/validate_repository.py",
+    "dependencies": "standard-library-only; git required for extension installation"
+  },
+  "provider": {
+    "name": "not-selected",
+    "base_url": null,
+    "auth_env": []
+  },
+  "capabilities": [
+    "mandatory_web_page_and_frontend_design_trigger",
+    "route_intro_before_generation",
+    "user_route_choice_gate",
+    "aesthetic_direction_gate",
+    "five_axis_visual_critique",
+    "anti_ai_slop_methodology",
+    "indieark_case_library",
+    "starter_template_library",
+    "extension_source_registry",
+    "extension_install_check",
+    "extension_delegation",
+    "landing_page_route",
+    "app_frontend_route",
+    "existing_project_frontend_optimization",
+    "style_mockup_route",
+    "stack_agnostic_routing",
+    "boundary_with_ppt_gen_pro",
+    "boundary_with_global_frontend_design",
+    "boundary_with_global_web_design_guidelines",
+    "global_style_skill_linkage",
+    "playwright_mcp_visual_verification_handoff",
+    "source_of_truth_governance",
+    "repository_validation"
+  ],
+  "extensions": [
+    {
+      "route": "landing-page",
+      "name": "UI UX Pro Max",
+      "repo": "https://github.com/nextlevelbuilder/ui-ux-pro-max-skill",
+      "install_name": "ui-ux-pro-max",
+      "best_for": "marketing landing pages, dashboards, app frontends, style mockups; 67 styles + 161 palettes + 57 font pairings + 161 industry rules + 99 UX guidelines; design system generator with pre-delivery checklist; serves landing-page / app-frontend / style-mockup routes (mode switched by prompt)"
+    },
+    {
+      "route": "style-mockup",
+      "name": "Taste Skill (Leonxlnx)",
+      "repo": "https://github.com/Leonxlnx/taste-skill",
+      "install_name": "taste-skill",
+      "best_for": "style-mockup route only — multi-child-Skill repo; delegate brutalist-skill for brutalist/swiss aesthetics (hard mechanical + Swiss type + sharp contrast + 1-10 dials), soft-skill for luxury(soft/calm-premium) aesthetics (softer contrast + spring motion). Together with premium-design-skill (relay-mode) covers 4 of 8 community style gaps. Other child Skills (redesign-skill / brandkit / minimalist-skill) remain in boundary.md §6 relay mode."
+    }
+  ],
+  "boundaries": {
+    "out_of_scope": [
+      "ppt_slides_deck_generation",
+      "pure_ui_audit_without_generation",
+      "pure_methodology_q_and_a",
+      "backend_or_cli_or_data_pipelines"
+    ],
+    "route_out_to": {
+      "ppt_slides_or_deck": "../../../ppt-gen-pro/skills/ppt-gen-pro/SKILL.md",
+      "ui_audit_only": "global skill: web-design-guidelines",
+      "methodology_only": "global skill: frontend-design"
+    }
+  },
+  "artifact_destinations": {
+    "throwaway_demo_or_mockup": "_work/html_runs/<slug-or-timestamp>/",
+    "existing_project_optimization": "the target IndieArk project directory (e.g. 20009-feedback/, 1-showcase/) — no copy kept inside this skill",
+    "extension_checkouts": "extensions/<install_name>/ — gitignored, never committed"
+  },
+  "not_implemented": [
+    "native_html_renderer_or_screenshot",
+    "bundled_external_extension_code",
+    "industry_rules_or_style_database",
+    "pre_delivery_checklist_external_assets",
+    "automated_visual_diff",
+    "bundled_scaffolding_cli"
+  ],
+  "external_references": {
+    "global_skills": [
+      "frontend-design",
+      "web-design-guidelines",
+      "claymorphism",
+      "glassmorphism",
+      "liquid-glass",
+      "neubrutalism"
+    ],
+    "inspiration_sources": [
+      "ConardLi/garden-skills/web-design-engineer",
+      "nextlevelbuilder/ui-ux-pro-max-skill (vendored as extension)",
+      "Leonxlnx/taste-skill (vendored as extension; style-mockup route only)"
+    ]
+  }
+}

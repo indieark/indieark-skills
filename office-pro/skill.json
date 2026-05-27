@@ -1,0 +1,40 @@
+{
+  "name": "office-pro",
+  "version": "0.1.0-skeleton",
+  "status": "skeleton",
+  "octet": "办",
+  "octet_family": "IndieArk *-pro 八件套",
+  "runtime": {
+    "entrypoint": null,
+    "dependencies": "本 Skill 仅做路由；办公接入委托全局 lark-* 系列；数据分析使用 ad-hoc Python 脚本（pandas/polars/duckdb 待 plans/008 Q2 拍板后固化）"
+  },
+  "routes": [
+    "office-connect",
+    "data-analysis"
+  ],
+  "subroutes": {
+    "office-connect": ["feishu", "notion (TBD)", "outlook (TBD)", "slack (TBD)", "dingtalk (TBD)"],
+    "data-analysis": ["explore", "clean", "stat", "viz", "report"]
+  },
+  "downstream_skills": [
+    "lark-im",
+    "lark-doc",
+    "lark-drive",
+    "lark-sheets",
+    "lark-calendar",
+    "lark-task",
+    "lark-vc",
+    "lark-base",
+    "lark-workflow-meeting-summary",
+    "lark-workflow-standup-report"
+  ],
+  "boundary_out": [
+    "ppt-gen-pro",
+    "write-pro",
+    "image-gen-pro",
+    "search-pro"
+  ],
+  "output_dir": "_work/office_runs/",
+  "plan": "skills/plans/008-new-skill-office-pro.md",
+  "open_questions_blocking_ready": [1, 2, 4]
+}

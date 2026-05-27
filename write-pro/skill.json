@@ -1,0 +1,40 @@
+{
+  "name": "write-pro",
+  "version": "0.1.0-skeleton",
+  "status": "skeleton",
+  "octet": "写",
+  "octet_family": "IndieArk *-pro 八件套",
+  "routes": [
+    "long-form",
+    "short-form",
+    "commercial-copy",
+    "engineering-doc"
+  ],
+  "atom_skills": [
+    "pro-copy",
+    "pro-exp",
+    "pro-explain",
+    "pro-idea",
+    "pro-must",
+    "pro-rule",
+    "pro-struct",
+    "pro-summary",
+    "pro-test"
+  ],
+  "anti_slop": {
+    "enforced": true,
+    "checkpoint": "end-of-route",
+    "minimum_differentiation_points": 3
+  },
+  "deliverable_stages": ["outline", "draft", "final"],
+  "boundary_out": [
+    "ccg:gen-docs",
+    "ppt-gen-pro",
+    "html-gen-pro",
+    "office-pro",
+    "search-pro"
+  ],
+  "output_dir": "_work/writing_runs/",
+  "plan": "skills/plans/010-new-skill-write-pro.md",
+  "open_questions_blocking_ready": [1, 2, 3, 5]
+}

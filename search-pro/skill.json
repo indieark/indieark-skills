@@ -1,0 +1,36 @@
+{
+  "name": "search-pro",
+  "version": "0.1.0-skeleton",
+  "status": "skeleton",
+  "octet": "搜",
+  "octet_family": "IndieArk *-pro 八件套",
+  "runtime": {
+    "entrypoint": null,
+    "dependencies": "本 Skill 仅做路由；执行委托给全局 smart-search-cli / agent-browser / scrapling / yt-dlp / pandoc / imagemagick / ffmpeg"
+  },
+  "routes": [
+    "search-web",
+    "crawl-static",
+    "crawl-render",
+    "download-media",
+    "convert-format"
+  ],
+  "downstream_skills": [
+    "smart-search-cli",
+    "agent-browser",
+    "use-internet"
+  ],
+  "boundary_out": [
+    "lark-doc",
+    "lark-drive",
+    "lark-wiki",
+    "image-gen-pro",
+    "video-gen-pro",
+    "ppt-gen-pro",
+    "html-gen-pro",
+    "mcp__fast-context"
+  ],
+  "output_dir": "_work/search_runs/",
+  "plan": "skills/plans/007-new-skill-search-pro.md",
+  "open_questions_blocking_ready": [1, 2, 3, 7]
+}
