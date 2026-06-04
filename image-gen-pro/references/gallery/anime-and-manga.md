@@ -8,7 +8,7 @@ Source: adapted from `gpt_image_2_skill` gallery category `Anime & Manga`; promp
 
 ## Character Key Visual
 
-- Size: `1024x1536`
+- Example canvas: `1024x1536`
 - Quality: `high`
 
 ```text
@@ -21,7 +21,7 @@ Avoid: extra characters, fake text, cluttered effects over the face.
 
 ## Manga Panel Mood
 
-- Size: `1536x1024`
+- Example canvas: `1536x1024`
 - Quality: `medium`
 
 ```text

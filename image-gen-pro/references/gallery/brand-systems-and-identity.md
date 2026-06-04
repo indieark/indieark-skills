@@ -8,7 +8,7 @@ Source: adapted from `gpt_image_2_skill` gallery category `Brand Systems & Ident
 
 ## Brand Mood Board
 
-- Size: `1536x1024`
+- Example canvas: `1536x1024`
 - Quality: `high`
 
 ```text
@@ -21,7 +21,7 @@ Avoid: copying real brands, fake legal marks, unreadable text.
 
 ## Packaging System
 
-- Size: `1536x1024`
+- Example canvas: `1536x1024`
 - Quality: `high`
 
 ```text

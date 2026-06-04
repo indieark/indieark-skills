@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import json
 import os
-import shutil
 import sys
 from importlib import util as importlib_util
 from pathlib import Path
@@ -27,6 +26,7 @@ from .errors import ImageGenError
 from .parser import build_parser
 from .planning import build_neutral_request, resolve_prompt, summarize_request, validate_provider
 from .providers.api_key_http import API_KEY_ENV, BASE_URL_ENV, DEFAULT_BASE_URL, MODEL_API_KEY_ENVS, MODEL_BASE_URL_ENVS, resolve_base_url
+from .providers.codex_cli import find_codex
 from .providers.image_models import normalize_image_model
 from .transparent import make_transparent
 
@@ -75,7 +75,7 @@ def handle_setup(args) -> int:
 def handle_doctor(args) -> int:
     data = load_config()
     model = normalize_image_model(args.model or data.get("default_model"))
-    codex_command = shutil.which("codex")
+    codex_command = find_codex()
     api_key_value, api_key_source = _resolve_api_key_for_doctor(args, data, model)
     api_key_available = bool(api_key_value)
     base_url_value, base_url_source = resolve_base_url(args, data, model)

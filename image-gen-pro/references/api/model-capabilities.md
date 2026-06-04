@@ -23,15 +23,13 @@
 
 Load this section before choosing a model or explaining why a parameter is rejected. Then load the per-model file for payload details.
 
-All literal and shortcut `--size` values pass the shared CLI size validator before model mapping.
+Use the shared CLI size validator as the capability source for model size limits.
 
 | Limit | `gpt-image-2` | `nano-banana-2` | `mj` |
 | --- | --- | --- | --- |
 | Real route | `codex-cli` or `api-key` | `api-key` | `api-key` |
-| Size shortcuts | `auto`, `square`, `portrait`, `landscape`, `2k`, `wide`, `4k`, `tall` | Same shared shortcuts | Same shared shortcuts |
-| Literal `WIDTHxHEIGHT` | each edge <= `3840`; each edge is a multiple of `16`; aspect ratio <= `3:1`; total pixels `655360..8294400` | Same validator before ratio mapping | Same validator before prompt mapping |
+| Size limits | `auto`, size tier `1080p|2k|4k` plus `--aspect`, or literal `WIDTHxHEIGHT`; concrete canvases use each edge <= `3840`, multiple of `16`, aspect ratio <= `3:1`, total pixels `655360..8294400` | Uses `--aspect` or literal `WIDTHxHEIGHT` for ratio mapping | Uses `--aspect` or literal `WIDTHxHEIGHT` for prompt ratio mapping |
 | Size mapping | gpt-image-2 sends normalized size as API `size` | nano-banana-2 sends reduced aspect_ratio; `auto` omits it | mj appends --ar W:H unless prompt already contains `--ar` or `--aspect`; `auto` injects nothing |
-| Large-size warning | `> 2560x1440` total pixels warns as experimental | Inherits shared warning only when a literal/shortcut size is normalized | Inherits shared warning only when a literal/shortcut size is normalized |
 | Quality | `auto`, `low`, `medium`, `high` | `auto` omitted; `low/medium/high` -> `0.5K/1K/2K`; accepts `0.5K/1K/2K/4K` | CLI `--quality` must be `auto`; native `--sd`, `--hd`, `--q` stay in prompt |
 | Count | `-n/--n >= 1` | `-n/--n` must be `1` | `-n/--n` must be `1` |
 | Mask | Edit-only; same format and dimensions as first image; each submitted file less than 50MB; alpha required; prompt-based guidance | Rejected | Rejected |
@@ -53,8 +51,10 @@ Routing rules:
 | `--prompt` | `prompt` | `prompt` | `prompt`; may include native MJ params |
 | `--image` | edit image input | edit image input | converted to data URL in `base64Array` |
 | `--mask` | edit-only mask; same format and dimensions as first image; alpha required | rejected | rejected |
-| `--size auto` | API `size=auto` | omit `aspect_ratio` | no `--ar` injection |
-| `--size WIDTHxHEIGHT` / shortcut | normalized `size` | reduced `aspect_ratio` | appends `--ar W:H` unless prompt already has `--ar` / `--aspect` |
+| `--size auto` | API `size=auto` | omit `aspect_ratio` unless `--aspect` is set | no `--ar` injection unless `--aspect` is set |
+| `--size 1080p\|2k\|4k --aspect WIDTH:HEIGHT` | normalized concrete `size` | `--aspect WIDTH:HEIGHT` controls ratio; `--quality` controls NB output quality | `--aspect WIDTH:HEIGHT` controls ratio; native MJ params stay in prompt |
+| `--size WIDTHxHEIGHT` | normalized `size` | reduced `aspect_ratio` | appends `--ar W:H` unless prompt already has `--ar` / `--aspect` |
+| `--aspect WIDTH:HEIGHT` | derives size only with `--size 1080p\|2k\|4k` | reduced `aspect_ratio` | appends `--ar W:H` unless prompt already has `--ar` / `--aspect` |
 | `--quality` | `auto`, `low`, `medium`, `high` | `low/medium/high` -> `0.5K/1K/2K`; also accepts `0.5K/1K/2K/4K` | only `auto`; native V8 `--sd` / `--hd` or older `--q` belongs in prompt |
 | `--output-format` | provider output format | local output extension; request stays `response_format=b64_json` | local output extension for downloaded/decoded result |
 | `--output-compression` | JPEG/WebP only | rejected | rejected |

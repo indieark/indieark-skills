@@ -75,7 +75,8 @@ MJ is prompt-parameter driven. The CLI only maps a small shared surface:
 | `--prompt` | MJ `prompt`; native params such as `--v`, `--q`, `--sref`, `--cref`, `--style`, `--stylize`, `--chaos`, and `--seed` stay inside this text |
 | `--image` | converted to data URLs in `base64Array` |
 | `--size auto` | no aspect ratio injection |
-| `--size WIDTHxHEIGHT` / shortcut | appends `--ar W:H` unless prompt already contains `--ar` or `--aspect` |
+| `--aspect WIDTH:HEIGHT` | appends `--ar W:H` unless prompt already contains `--ar` or `--aspect` |
+| `--size WIDTHxHEIGHT` | appends `--ar W:H` unless prompt already contains `--ar` or `--aspect` |
 | `--quality` | must stay `auto`; native quality belongs in prompt as V8 `--sd` / `--hd` or older `--q ...` |
 | `--output-format` | local output extension only |
 | `--timeout-sec` | submit + poll deadline |
@@ -89,8 +90,9 @@ MJ is prompt-parameter driven. The CLI only maps a small shared surface:
 
 | Parameter | Rule |
 | --- | --- |
-| Size shortcuts | `auto`, `square`, `portrait`, `landscape`, `2k`, `wide`, `4k`, `tall`. |
-| Literal `WIDTHxHEIGHT` | each edge <= `3840`; each edge is a multiple of `16`; aspect ratio <= `3:1`; total pixels `655360..8294400`. |
+| `--aspect WIDTH:HEIGHT` | Aspect ratio dimensions must be positive; long side / short side <= `3:1`. |
+| `--size WIDTHxHEIGHT` | Each edge <= `3840`; each edge is a multiple of `16`; aspect ratio <= `3:1`; total pixels `655360..8294400`. |
+| `--size 1080p` / `2k` / `4k` | GPT Image route size tiers; MJ ratio uses `--aspect WIDTH:HEIGHT`. |
 | MJ size mapping | mj appends --ar W:H unless prompt already contains `--ar` or `--aspect`; `auto` injects nothing. |
 | Prompt `--ar` / `--aspect` | Existing prompt ratio wins; CLI does not override it. |
 | `--quality` | Must stay `auto`; native quality belongs in prompt as V8 `--sd` / `--hd` or older `--q ...`. |

@@ -11,7 +11,7 @@ Source: adapted from `gpt_image_2_skill` gallery category `Infographics & Field 
 ### Field Guide Plate
 
 - Use when: 展示一组对象、物种、部件或分类。
-- Size: `1536x1024`
+- Example canvas: `1536x1024`
 - Quality: `high`
 - Prompt skeleton:
 
@@ -27,7 +27,7 @@ Avoid: fake scientific names, crowded microtext, inconsistent item scale.
 ### Explainer Infographic
 
 - Use when: 用区域解释概念、流程或系统。
-- Size: `1536x1024`
+- Example canvas: `1536x1024`
 - Quality: `medium` or `high`
 - Prompt skeleton:
 
@@ -43,7 +43,7 @@ Avoid: dense paragraphs, random numbers, decorative arrows.
 ### Anatomy / Parts Diagram
 
 - Use when: 标注物体结构、产品部件、生物结构或机器部件。
-- Size: `1536x1024`
+- Example canvas: `1536x1024`
 - Quality: `high`
 - Prompt skeleton:
 
@@ -58,7 +58,7 @@ Avoid: incorrect hidden internals, overlapping callouts, tiny text.
 ### Process Steps
 
 - Use when: 展示步骤、工作流、制作过程、生命周期。
-- Size: `1536x1024`
+- Example canvas: `1536x1024`
 - Quality: `medium`
 - Prompt skeleton:
 

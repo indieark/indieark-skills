@@ -8,7 +8,7 @@ Source: adapted from `gpt_image_2_skill` gallery category `Fine Art Painting`; p
 
 ## Oil Portrait
 
-- Size: `1024x1536`
+- Example canvas: `1024x1536`
 - Quality: `high`
 
 ```text
@@ -21,7 +21,7 @@ Avoid: naming living artists, fake signature, photographic smoothness.
 
 ## Still Life Painting
 
-- Size: `1024x1024`
+- Example canvas: `1024x1024`
 - Quality: `high`
 
 ```text

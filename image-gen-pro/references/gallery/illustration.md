@@ -8,7 +8,7 @@ Source: adapted from `gpt_image_2_skill` gallery category `Illustration`; prompt
 
 ## Editorial Illustration
 
-- Size: `1536x1024`
+- Example canvas: `1536x1024`
 - Quality: `medium` or `high`
 
 ```text
@@ -21,7 +21,7 @@ Avoid: generic stock icons, fake text, overloaded symbolism.
 
 ## Storybook Scene
 
-- Size: `1536x1024`
+- Example canvas: `1536x1024`
 - Quality: `high`
 
 ```text

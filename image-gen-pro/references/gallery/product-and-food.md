@@ -11,7 +11,7 @@ Source: adapted from `gpt_image_2_skill` gallery category `Product & Food`; prom
 ### Premium Product Still Life
 
 - Use when: 单个商品需要高级、干净、可上架的主图。
-- Size: `1024x1024` or `1024x1536`
+- Example canvas: `1024x1024` or `1024x1536`
 - Quality: `high`
 - Prompt skeleton:
 
@@ -27,7 +27,7 @@ Avoid: extra logos, fake text, clutter, distorted packaging.
 ### Food Editorial Close-Up
 
 - Use when: 食物需要真实诱人、餐厅菜单或社媒质感。
-- Size: `1024x1536`
+- Example canvas: `1024x1536`
 - Quality: `high`
 - Prompt skeleton:
 
@@ -43,7 +43,7 @@ Avoid: messy plate, unrealistic portions, unreadable text.
 ### Ingredient / Material Spread
 
 - Use when: 展示食材、配方、香调、材质或制作过程。
-- Size: `1536x1024`
+- Example canvas: `1536x1024`
 - Quality: `medium` or `high`
 - Prompt skeleton:
 
@@ -58,7 +58,7 @@ Avoid: overlapping items, labels, messy shadows.
 ### Product In Use
 
 - Use when: 商品需要放入使用场景，展示用途和生活方式。
-- Size: `1536x1024`
+- Example canvas: `1536x1024`
 - Quality: `high`
 - Prompt skeleton:
 

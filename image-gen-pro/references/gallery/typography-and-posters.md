@@ -11,7 +11,7 @@ Source: adapted from `gpt_image_2_skill` gallery category `Typography & Posters`
 ### Text-Safe Poster
 
 - Use when: 视觉先生成，文字后期排版。
-- Size: `1024x1536`
+- Example canvas: `1024x1536`
 - Quality: `high`
 - Prompt skeleton:
 
@@ -27,7 +27,7 @@ Avoid: clutter in the safe area, unreadable small details.
 ### Exact Short Title
 
 - Use when: 标题非常短，并且用户明确要模型生成文字。
-- Size: `1024x1536`
+- Example canvas: `1024x1536`
 - Quality: `high`
 - Prompt skeleton:
 
@@ -42,7 +42,7 @@ Avoid: any extra letters, misspelled words, subtitles or watermarks.
 ### Editorial Cover
 
 - Use when: 杂志封面、专辑封面、书封面或专题视觉。
-- Size: `1024x1536`
+- Example canvas: `1024x1536`
 - Quality: `high`
 - Prompt skeleton:
 
@@ -57,7 +57,7 @@ Avoid: random text blocks, crowded layout, fake barcode unless requested.
 ### Event Announcement
 
 - Use when: 活动图、发布会、展览、线上宣传。
-- Size: `1536x1024` or `1024x1536`
+- Example canvas: `1536x1024` or `1024x1536`
 - Quality: `medium` or `high`
 - Prompt skeleton:
 

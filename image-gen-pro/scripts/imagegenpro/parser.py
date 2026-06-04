@@ -16,6 +16,7 @@ def add_gpt_image_2_args(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--route", choices=ROUTE_CHOICES)
     parser.add_argument("--model", choices=IMAGE_MODEL_CHOICES)
     parser.add_argument("--size", default="auto")
+    parser.add_argument("--aspect")
     parser.add_argument("--quality", default="auto")
     parser.add_argument("-n", "--n", type=int, default=1)
     parser.add_argument("--background")

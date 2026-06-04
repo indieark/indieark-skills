@@ -11,7 +11,7 @@ Source: adapted from `gpt_image_2_skill` gallery category `UI/UX Mockups`; promp
 ### SaaS Dashboard
 
 - Use when: 运营工具、分析后台、数据平台或管理控制台。
-- Size: `1536x1024`
+- Example canvas: `1536x1024`
 - Quality: `high`
 - Prompt skeleton:
 
@@ -27,7 +27,7 @@ Avoid: oversized hero blocks, unreadable microtext, decorative clutter.
 ### Mobile App Screen
 
 - Use when: 单屏移动应用、设置页、个人页、任务流或消费类 App。
-- Size: `1024x1536`
+- Example canvas: `1024x1536`
 - Quality: `high`
 - Prompt skeleton:
 
@@ -43,7 +43,7 @@ Avoid: fake brand logos, tiny unreadable text, impossible controls.
 ### Web App Editor
 
 - Use when: 图像、文档、视频、地图、设计或内容编辑器界面。
-- Size: `1536x1024`
+- Example canvas: `1536x1024`
 - Quality: `high`
 - Prompt skeleton:
 
@@ -59,7 +59,7 @@ Avoid: empty hero page, decorative cards inside cards, unreadable labels.
 ### Design System Snapshot
 
 - Use when: 展示组件库、主题、tokens、UI kit。
-- Size: `1536x1024`
+- Example canvas: `1536x1024`
 - Quality: `medium` or `high`
 - Prompt skeleton:
 

@@ -8,7 +8,7 @@ Source: adapted from `gpt_image_2_skill` gallery category `Technical Illustratio
 
 ## Exploded View
 
-- Size: `1536x1024`
+- Example canvas: `1536x1024`
 - Quality: `high`
 
 ```text
@@ -21,7 +21,7 @@ Avoid: impossible parts, fake serial text, decorative clutter.
 
 ## Instruction Diagram
 
-- Size: `1536x1024`
+- Example canvas: `1536x1024`
 - Quality: `medium`
 
 ```text

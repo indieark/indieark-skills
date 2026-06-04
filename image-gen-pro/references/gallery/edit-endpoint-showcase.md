@@ -11,7 +11,7 @@ Source: adapted from `gpt_image_2_skill` gallery category `Edit Endpoint Showcas
 ### Background Replacement
 
 - Use when: 保留主体，只换背景或环境。
-- Size: `auto`
+- Example canvas: `auto`
 - Quality: `high`
 - Prompt skeleton:
 
@@ -26,7 +26,7 @@ Avoid: changing the subject, adding extra objects over the subject, fake text.
 ### Local Object Change
 
 - Use when: 只改一个区域、物件、颜色、材质或细节。
-- Size: `auto`
+- Example canvas: `auto`
 - Quality: `high`
 - Prompt skeleton:
 
@@ -41,7 +41,7 @@ Avoid: repainting unrelated areas or changing identity/product labels.
 ### Style Transfer With Structure Locked
 
 - Use when: 保留构图和主体，把视觉风格改成另一种媒介。
-- Size: `auto`
+- Example canvas: `auto`
 - Quality: `medium` or `high`
 - Prompt skeleton:
 

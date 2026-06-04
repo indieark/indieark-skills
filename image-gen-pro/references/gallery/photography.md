@@ -11,7 +11,7 @@ Source: adapted from `gpt_image_2_skill` gallery category `Photography`; prompts
 ### Natural Lifestyle Photo
 
 - Use when: 人物、商品或场景需要可信生活化照片。
-- Size: `1536x1024`
+- Example canvas: `1536x1024`
 - Quality: `high`
 - Prompt skeleton:
 
@@ -27,7 +27,7 @@ Avoid: staged stock-photo look, fake text, over-smoothed skin or surfaces.
 ### Studio Portrait / Object
 
 - Use when: 头像、人物半身、物体或产品需要干净棚拍。
-- Size: `1024x1536`
+- Example canvas: `1024x1536`
 - Quality: `high`
 - Prompt skeleton:
 
@@ -43,7 +43,7 @@ Avoid: busy background, extra accessories, exaggerated retouching.
 ### Documentary Scene
 
 - Use when: 想要纪实、街拍、工作现场或真实环境感。
-- Size: `1536x1024`
+- Example canvas: `1536x1024`
 - Quality: `medium` or `high`
 - Prompt skeleton:
 
@@ -59,7 +59,7 @@ Avoid: cinematic over-staging, fake signage, impossible camera angles.
 ### Macro Detail
 
 - Use when: 需要材质、纹理、珠宝、植物、食物或产品细节。
-- Size: `1024x1024`
+- Example canvas: `1024x1024`
 - Quality: `high`
 - Prompt skeleton:
 

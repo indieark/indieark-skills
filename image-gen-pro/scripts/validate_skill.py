@@ -24,8 +24,8 @@ def main() -> int:
         return fail("missing description")
 
     metadata = json.loads((SKILL_DIR / "skill.json").read_text(encoding="utf-8"))
-    if metadata.get("version") != "0.1.0-beta.29":
-        return fail("skill.json version must be 0.1.0-beta.29")
+    if metadata.get("version") != "0.1.0-beta.30":
+        return fail("skill.json version must be 0.1.0-beta.30")
 
     required_skill_phrases = [
         "正式生成、正式编辑、dry-run payload、输出保存、历史 run/job 查询和透明后处理都必须调用 `imagen`",
@@ -45,7 +45,11 @@ def main() -> int:
         "先反推成干净 prompt，再 `imagen generate",
         "最终回复必须包含 `Original Prompt`、`Final Prompt`、`Method`、输出路径、预览、实际分辨率、尺寸比例和实际验证结果",
         "这里规范的是 Skill 对用户的最终回复，不是新增 CLI 命令",
-        "Classify deliverable, input roles, task family, execution mode, and model/route constraints",
+        "Classify mode (executor vs advisor), deliverable, input roles, task family, execution mode, and model/route constraints",
+        "## Execution Modes",
+        "Skill 默认是 **executor mode**",
+        "### Advisor Mode",
+        "禁止调用：`imagen generate` / `imagen edit` / `imagen batches run`",
         "Resolve route-changing ambiguity",
     ]
     for phrase in required_skill_phrases:
@@ -251,6 +255,7 @@ def main() -> int:
         "each edge <= `3840`",
         "multiple of `16`",
         "total pixels `655360..8294400`",
+        "size tier `1080p|2k|4k` plus `--aspect`",
         "same format and dimensions as first image; each submitted file less than 50MB; alpha required; prompt-based guidance",
         "gpt-image-2 sends normalized size",
         "nano-banana-2 sends reduced aspect_ratio",
@@ -271,7 +276,8 @@ def main() -> int:
         "## Parameter Limits",
         "Shared CLI size validator runs before payload construction",
         "gpt-image-2 sends normalized size",
-        "The shared CLI size validator enforces these rules before the GPT payload is built",
+        "Derives a canvas from a 3840x2160 target pixel budget",
+        "Use the shared CLI size validator as the capability source for `gpt-image-2` output sizes",
         "Official mask rule is enforced locally",
         "Masking with GPT Image is prompt-based guidance",
     ]:
@@ -285,6 +291,7 @@ def main() -> int:
         "## Size / Parameter Limits",
         "shared CLI size validator",
         "mj appends --ar W:H",
+        "`--aspect WIDTH:HEIGHT`",
         "Existing prompt ratio wins",
         "native quality belongs in prompt as V8 `--sd` / `--hd` or older `--q ...`",
         "does not retry hardcoded fallback prefixes",
@@ -300,6 +307,7 @@ def main() -> int:
         "## Size / Parameter Limits",
         "shared CLI size validator",
         "nano-banana-2 sends reduced aspect_ratio",
+        "`--aspect WIDTH:HEIGHT` maps to reduced `aspect_ratio`",
         "repeated multipart `image` fields",
         "configured-base-without-/v1",
         "does not retry hardcoded fallback prefixes",

@@ -21,10 +21,14 @@ IMAGE_MAGIC_PREFIXES = {
     "UklGR": "webp",
 }
 SESSIONS_DIR_ENV = "IMAGE_GEN_PRO_CODEX_SESSIONS_DIR"
+CODEX_CMD_ENV = "IMAGE_GEN_PRO_CODEX_CMD"
+HOST_PATH_ENV = "IMAGE_GEN_PRO_HOST_PATH"
+_MSYS_DRIVE_RE = re.compile(r"^/(?:cygdrive/)?([A-Za-z])(/.*)?$")
+_CODEX_NAMES = ("codex.cmd", "codex.exe", "codex.bat", "codex")
 
 
 def submit(payload: dict[str, Any], prompt: str, timeout_sec: int, output_path: Path) -> dict[str, Any]:
-    codex = shutil.which("codex")
+    codex = find_codex()
     if not codex:
         raise RuntimeRouteError("codex-cli route unavailable: codex command not found", 3)
     sessions_root = _sessions_root()
@@ -53,6 +57,7 @@ def submit(payload: dict[str, Any], prompt: str, timeout_sec: int, output_path: 
             capture_output=True,
             timeout=timeout_sec,
             check=False,
+            env=subprocess_env(),
         )
     except subprocess.TimeoutExpired as exc:
         _cleanup_new_session_files(sessions_root, before)
@@ -119,6 +124,70 @@ def _instruction(prompt: str, has_refs: bool) -> str:
         text += " Use the attached image(s) as visual reference / input for image-to-image."
     text += "\nRequirements: generate the image directly, return only the image, no explanation.\n\nRequest:\n"
     return text + prompt
+
+
+def find_codex() -> str | None:
+    override = os.environ.get(CODEX_CMD_ENV)
+    if override:
+        candidate = _msys_to_windows(override.strip().strip('"'))
+        if Path(candidate).is_file():
+            return candidate
+        found_override = shutil.which(candidate)
+        if found_override:
+            return found_override
+    found = shutil.which("codex")
+    if found:
+        return found
+    if os.name != "nt":
+        return None
+    for directory in _path_dirs():
+        for name in _CODEX_NAMES:
+            candidate = Path(directory) / name
+            if candidate.is_file():
+                return str(candidate)
+    return None
+
+
+def subprocess_env() -> dict[str, str]:
+    env = dict(os.environ)
+    if os.name == "nt":
+        path_value = os.pathsep.join(_path_dirs())
+        for key in list(env):
+            if key.lower() == "path":
+                del env[key]
+        env["PATH"] = path_value
+    return env
+
+
+def _path_dirs() -> list[str]:
+    on_windows = os.name == "nt"
+    dirs: list[str] = []
+    seen: set[str] = set()
+
+    def _add(entry: str) -> None:
+        value = (_msys_to_windows(entry) if on_windows else entry).strip().strip('"')
+        key = os.path.normcase(os.path.normpath(value)) if on_windows else value
+        if value and key not in seen:
+            seen.add(key)
+            dirs.append(value)
+
+    # Git Bash/MSYS may pass this as either Windows ';' or POSIX ':' PATH.
+    host = os.environ.get(HOST_PATH_ENV, "")
+    if on_windows and host:
+        for entry in host.split(";" if ";" in host else ":"):
+            _add(entry)
+    for entry in os.environ.get("PATH", "").split(os.pathsep):
+        _add(entry)
+    return dirs
+
+
+def _msys_to_windows(entry: str) -> str:
+    match = _MSYS_DRIVE_RE.match(entry)
+    if not match:
+        return entry
+    drive = match.group(1).upper()
+    rest = (match.group(2) or "").replace("/", "\\")
+    return f"{drive}:{rest}"
 
 
 def _sessions_root() -> Path:

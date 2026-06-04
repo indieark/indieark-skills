@@ -60,7 +60,7 @@ python scripts\imagen.py edit --prompt "..." --image .\input.png --mask .\mask.p
 python scripts\imagen.py edit --prompt "..." --image .\input.png --prepare-local-media off --dry-run-payload
 python scripts\imagen.py edit --prompt "图生图：基于源图生成一版新图，保持主体结构并调整风格" --image .\input.png --route auto --output-file .\outputs\image-to-image.png
 python scripts\imagen.py generate --prompt "..." --route codex-cli --output-file .\outputs\image.png
-python scripts\imagen.py generate --prompt "..." --route api-key --output-file .\outputs\image.png
+python scripts\imagen.py generate --prompt "..." --size 2k --aspect 16:9 --route api-key --output-file .\outputs\image.png
 python scripts\imagen.py generate --model nano-banana-2 --prompt "..." --route api-key --output-file .\outputs\nb.png
 python scripts\imagen.py generate --model mj --prompt "... --ar 16:9" --route api-key --output-file .\outputs\mj.png
 python scripts\imagen.py edit --prompt "..." --image .\input.png --route auto --output-file .\outputs\edit.png
@@ -80,7 +80,7 @@ imagen config set default_model nano-banana-2
 imagen setup --non-interactive --route-preset api-key-first
 imagen setup --non-interactive --api-key "<provider-api-key>" --base-url "https://api.openai.com"
 imagen config set route_priority api-key,codex-cli
-imagen generate --prompt "..." --route api-key --api-key "<temporary-key>" --base-url "http://127.0.0.1:8080/v1" --output-file .\outputs\image.png
+imagen generate --prompt "..." --size 2k --aspect 16:9 --route api-key --api-key "<temporary-key>" --base-url "http://127.0.0.1:8080/v1" --output-file .\outputs\image.png
 imagen doctor --model mj
 imagen generate --model mj --prompt "... --ar 1:1" --route api-key --output-file .\outputs\mj.png
 imagen generate --model mj --prompt "... --v 8.1 --hd --ar 1:1" --route api-key --output-file .\outputs\mj.png
@@ -98,6 +98,10 @@ imagen batches show product-icons-001
 - `--model` accepts `gpt-image-2`, `nano-banana`, `nano-banana-2`, `nb`, and `mj`; `nano-banana` / `nb` normalize to `nano-banana-2`.
 - Use either `--prompt` or `--prompt-file`; the prompt must not be empty.
 - `--prompt-file` is read as UTF-8 text.
+- `--size auto` keeps model default sizing.
+- `--size 1080p|2k|4k` is a GPT size tier and must be paired with `--aspect WIDTH:HEIGHT`.
+- `--size WIDTHxHEIGHT` is an explicit canvas and must pass the shared size validator.
+- `--aspect WIDTH:HEIGHT` controls aspect ratio separately; for NB and MJ it can be used with `--size auto`.
 - `--reference` may be repeated.
 - Local references must exist and be files; the CLI records path, size, and SHA-256.
 - HTTP(S) references are not fetched; query strings and fragments are stripped before writing artifacts.
@@ -129,6 +133,7 @@ imagen batches show product-icons-001
 - `generate` / `edit --route codex-cli` uses the local `codex` command for `gpt-image-2`, extracts the image from new session rollout files, then deletes those rollout files and records only a redacted session summary plus cleanup result.
 - `generate` / `edit --route api-key` submits through the standard-library HTTP adapter.
 - `gpt-image-2` and `nano-banana-2` use `/v1/images/generations` and `/v1/images/edits`; NB edit uses repeated `image` multipart fields.
+- GPT size tiers are `1080p`, `2k`, and `4k`; concrete canvases are derived from the tier plus `--aspect`.
 - Base URL prefixes are explicit: set the shared or model-specific base URL to the provider root or mounted prefix; the CLI does not probe project-specific fallback paths.
 - `nano-banana-2` also supports async proxy responses: if submit returns `taskId` + `PENDING`, the CLI polls `/task/<task-id>` under the configured base URL prefix and records `remote_task`.
 - `mj` uses `/mj/submit/imagine` plus `/mj/task/<task-id>/fetch`, sends `mj-api-secret`, and records `remote_task` when a task id is returned.

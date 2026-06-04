@@ -8,7 +8,7 @@ Source: adapted from `gpt_image_2_skill` gallery category `Data Visualization`; 
 
 ## Abstract Data Poster
 
-- Size: `1536x1024`
+- Example canvas: `1536x1024`
 - Quality: `medium`
 
 ```text
@@ -21,7 +21,7 @@ Avoid: fake precise values, unreadable labels, misleading statistics.
 
 ## Dashboard Chart Mockup
 
-- Size: `1536x1024`
+- Example canvas: `1536x1024`
 - Quality: `medium`
 
 ```text

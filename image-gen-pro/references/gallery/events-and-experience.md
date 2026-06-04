@@ -8,7 +8,7 @@ Source: adapted from `gpt_image_2_skill` gallery category `Events & Experience`;
 
 ## Event Key Visual
 
-- Size: `1536x1024`
+- Example canvas: `1536x1024`
 - Quality: `high`
 
 ```text
@@ -21,7 +21,7 @@ Avoid: generated dates, fake sponsors, crowded signage.
 
 ## Exhibition Space
 
-- Size: `1536x1024`
+- Example canvas: `1536x1024`
 - Quality: `high`
 
 ```text

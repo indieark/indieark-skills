@@ -8,7 +8,7 @@ Source: adapted from `gpt_image_2_skill` gallery category `Screen Photography`; 
 
 ## Device In Context
 
-- Size: `1536x1024`
+- Example canvas: `1536x1024`
 - Quality: `high`
 
 ```text
@@ -21,7 +21,7 @@ Avoid: fake brand marks, unreadable dense UI, distorted device shape.
 
 ## Product Demo Screen
 
-- Size: `1536x1024`
+- Example canvas: `1536x1024`
 - Quality: `high`
 
 ```text

@@ -8,7 +8,7 @@ Source: adapted from `gpt_image_2_skill` gallery category `Retro & Cyberpunk`; p
 
 ## Neon Street Scene
 
-- Size: `1536x1024`
+- Example canvas: `1536x1024`
 - Quality: `high`
 
 ```text
@@ -21,7 +21,7 @@ Avoid: readable fake text, excessive signs, hidden main subject.
 
 ## Retro Tech Poster
 
-- Size: `1024x1536`
+- Example canvas: `1024x1536`
 - Quality: `high`
 
 ```text

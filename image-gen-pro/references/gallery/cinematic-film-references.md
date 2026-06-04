@@ -8,7 +8,7 @@ Source: adapted from `gpt_image_2_skill` gallery category `Cinematic Film Refere
 
 ## Genre Frame
 
-- Size: `1536x1024`
+- Example canvas: `1536x1024`
 - Quality: `high`
 
 ```text
@@ -21,7 +21,7 @@ Avoid: copying a specific film shot, fake subtitles, celebrity likeness.
 
 ## Storyboard Frame
 
-- Size: `1536x1024`
+- Example canvas: `1536x1024`
 - Quality: `medium`
 
 ```text

@@ -8,7 +8,7 @@ Source: adapted from `gpt_image_2_skill` gallery category `Pixel Art`; prompts a
 
 ## Pixel Character / Item
 
-- Size: `1024x1024`
+- Example canvas: `1024x1024`
 - Quality: `medium`
 
 ```text
@@ -21,7 +21,7 @@ Avoid: anti-aliased smooth painting, tiny unreadable details, text labels.
 
 ## Pixel Environment
 
-- Size: `1536x1024`
+- Example canvas: `1536x1024`
 - Quality: `medium`
 
 ```text

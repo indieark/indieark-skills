@@ -8,7 +8,7 @@ Source: adapted from `gpt_image_2_skill` gallery category `Gaming`; prompts are 
 
 ## Game Key Art
 
-- Size: `1536x1024`
+- Example canvas: `1536x1024`
 - Quality: `high`
 
 ```text
@@ -21,7 +21,7 @@ Avoid: fake title text, crowded tiny enemies, unclear main subject.
 
 ## Game Asset Icon
 
-- Size: `1024x1024`
+- Example canvas: `1024x1024`
 - Quality: `medium`
 
 ```text

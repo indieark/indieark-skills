@@ -8,7 +8,7 @@ Source: adapted from `gpt_image_2_skill` gallery category `Cinematic & Animation
 
 ## Cinematic Moment
 
-- Size: `1536x1024`
+- Example canvas: `1536x1024`
 - Quality: `high`
 
 ```text
@@ -21,7 +21,7 @@ Avoid: montage collage, random extra characters, fake subtitles.
 
 ## Animated Film Still
 
-- Size: `1536x1024`
+- Example canvas: `1536x1024`
 - Quality: `high`
 
 ```text

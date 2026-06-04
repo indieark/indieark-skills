@@ -8,7 +8,7 @@ Source: adapted from `gpt_image_2_skill` gallery category `Research Paper Figure
 
 ## Pipeline Figure
 
-- Size: `1536x1024`
+- Example canvas: `1536x1024`
 - Quality: `medium`
 
 ```text
@@ -21,7 +21,7 @@ Avoid: invented numbers, dense paragraphs, decorative gradients.
 
 ## Experimental Setup
 
-- Size: `1536x1024`
+- Example canvas: `1536x1024`
 - Quality: `medium`
 
 ```text

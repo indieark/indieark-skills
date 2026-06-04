@@ -8,7 +8,7 @@ Source: adapted from `gpt_image_2_skill` gallery category `Isometric`; prompts a
 
 ## Isometric Room / Space
 
-- Size: `1024x1024`
+- Example canvas: `1024x1024`
 - Quality: `high`
 
 ```text
@@ -21,7 +21,7 @@ Avoid: impossible perspective, clutter, text labels.
 
 ## Isometric System Map
 
-- Size: `1536x1024`
+- Example canvas: `1536x1024`
 - Quality: `medium`
 
 ```text

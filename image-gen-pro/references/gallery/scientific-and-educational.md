@@ -8,7 +8,7 @@ Source: adapted from `gpt_image_2_skill` gallery category `Scientific & Educatio
 
 ## Educational Diagram
 
-- Size: `1536x1024`
+- Example canvas: `1536x1024`
 - Quality: `medium`
 
 ```text
@@ -21,7 +21,7 @@ Avoid: fake formulas, invented data, dense paragraphs.
 
 ## Scientific Illustration
 
-- Size: `1024x1024`
+- Example canvas: `1024x1024`
 - Quality: `high`
 
 ```text

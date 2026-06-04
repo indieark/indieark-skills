@@ -8,7 +8,7 @@ Source: adapted from `gpt_image_2_skill` gallery category `Tattoo Design`; promp
 
 ## Linework Tattoo
 
-- Size: `1024x1024`
+- Example canvas: `1024x1024`
 - Quality: `medium`
 
 ```text
@@ -21,7 +21,7 @@ Avoid: tiny fragile details, fake text, hateful symbols.
 
 ## Blackwork / Geometric
 
-- Size: `1024x1024`
+- Example canvas: `1024x1024`
 - Quality: `medium`
 
 ```text

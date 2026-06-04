@@ -8,7 +8,7 @@ Source: adapted from `gpt_image_2_skill` gallery category `Ink & Chinese`; promp
 
 ## Ink Landscape
 
-- Size: `1536x1024`
+- Example canvas: `1536x1024`
 - Quality: `high`
 
 ```text
@@ -21,7 +21,7 @@ Avoid: fake calligraphy, crowded buildings, glossy digital finish.
 
 ## Ink Object Study
 
-- Size: `1024x1024`
+- Example canvas: `1024x1024`
 - Quality: `medium`
 
 ```text

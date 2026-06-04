@@ -6,7 +6,7 @@
 
 `图` · `片` · `网` · `视` · `搜` · `办` · `构` · `写` — 一字一格，一格一件。
 
-[![License](https://img.shields.io/badge/license-Proprietary-blue?style=flat-square)](./LICENSE)
+[![License](https://img.shields.io/badge/license-Proprietary-blue?style=flat-square)](#license)
 [![Skills](https://img.shields.io/badge/skills-8-orange?style=flat-square)](#八件套--已起步)
 [![Started](https://img.shields.io/badge/started-4-brightgreen?style=flat-square)](#八件套--已起步)
 [![Preview](https://img.shields.io/badge/preview-4-yellow?style=flat-square)](#八件套--预览)
@@ -344,4 +344,4 @@ git status --short ; git diff --stat
 
 ## License
 
-[Proprietary](./LICENSE) © IndieArk
+Proprietary © IndieArk

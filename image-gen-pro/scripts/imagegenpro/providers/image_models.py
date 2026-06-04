@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from math import gcd
+from math import gcd, sqrt
 from pathlib import Path
 from typing import Any
 
@@ -15,16 +15,16 @@ from ..errors import UsageError
 from ..media import prepare_media_item
 
 
-SIZE_SHORTCUTS = {
-    "auto": "auto",
-    "square": "1024x1024",
-    "portrait": "1024x1536",
-    "landscape": "1536x1024",
-    "2k": "2048x2048",
-    "wide": "2048x1152",
-    "4k": "3840x2160",
-    "tall": "2160x3840",
+SIZE_TIERS = {
+    "1080p": 1920 * 1080,
+    "2k": 2560 * 1440,
+    "4k": 3840 * 2160,
 }
+MIN_PIXELS = 655_360
+MAX_PIXELS = 8_294_400
+MAX_EDGE = 3840
+SIZE_MULTIPLE = 16
+MAX_ASPECT_RATIO = 3
 GPT_QUALITIES = {"auto", "low", "medium", "high"}
 NB_QUALITY_MAP = {
     "auto": None,
@@ -117,7 +117,7 @@ def _gpt_request(args, prompt: str) -> tuple[dict[str, Any], list[str]]:
         "model": GPT_IMAGE_2_MODEL,
         "prompt": prompt,
         "n": args.n,
-        "size": _normalize_size(args.size),
+        "size": _normalize_gpt_size(args.size, args.aspect),
         "quality": args.quality,
         "output_format": output_format,
     }
@@ -128,8 +128,6 @@ def _gpt_request(args, prompt: str) -> tuple[dict[str, Any], list[str]]:
         request["output_compression"] = args.output_compression
     if args.user:
         request["user"] = args.user
-    if _large_experimental_size(request["size"]):
-        warnings.append("size is above 2560x1440 total pixels and should be treated as experimental")
     return request, warnings
 
 
@@ -150,7 +148,7 @@ def _nb_request(args, prompt: str, model: str) -> tuple[dict[str, Any], list[str
         "prompt": prompt,
         "response_format": "b64_json",
     }
-    aspect_ratio = _aspect_ratio_from_size(args.size)
+    aspect_ratio = _aspect_ratio_from_args(args.size, args.aspect)
     if aspect_ratio:
         request["aspect_ratio"] = aspect_ratio
     quality = _nb_quality(args.quality)
@@ -176,7 +174,7 @@ def _mj_request(args, prompt: str, model: str) -> tuple[dict[str, Any], list[str
     if output_format not in OUTPUT_FORMATS:
         raise UsageError("--output-format must be one of: png, jpeg, webp")
     final_prompt = prompt
-    aspect_ratio = _aspect_ratio_from_size(args.size)
+    aspect_ratio = _aspect_ratio_from_args(args.size, args.aspect)
     if aspect_ratio and "--ar " not in final_prompt and "--aspect " not in final_prompt:
         final_prompt = f"{final_prompt} --ar {aspect_ratio}".strip()
     return {
@@ -203,53 +201,111 @@ def _payload(provider: str, command: str, method: str, endpoint: str, request: d
     }
 
 
-def _normalize_size(value: str) -> str:
-    size = SIZE_SHORTCUTS.get(value, value)
+def _normalize_gpt_size(value: str, aspect: str | None = None) -> str:
+    size = value.strip().lower()
     if size == "auto":
+        if aspect:
+            raise UsageError("--aspect requires --size 1080p, 2k, 4k, or WIDTHxHEIGHT for gpt-image-2")
         return size
-    try:
-        width_s, height_s = size.lower().split("x", 1)
-        width = int(width_s)
-        height = int(height_s)
-    except ValueError as exc:
-        allowed = ", ".join(SIZE_SHORTCUTS)
-        raise UsageError(f"--size must be a shortcut ({allowed}) or WIDTHxHEIGHT") from exc
-    if width <= 0 or height <= 0:
-        raise UsageError("--size dimensions must be positive")
-    if width > 3840 or height > 3840:
-        raise UsageError("--size dimensions must be <= 3840")
-    if width % 16 != 0 or height % 16 != 0:
-        raise UsageError("--size dimensions must be multiples of 16")
-    long_edge = max(width, height)
-    short_edge = min(width, height)
-    if long_edge / short_edge > 3:
-        raise UsageError("--size aspect ratio must be <= 3:1")
-    pixels = width * height
-    if pixels < 655360 or pixels > 8294400:
-        raise UsageError("--size total pixels must be between 655360 and 8294400")
+    if size in SIZE_TIERS:
+        if not aspect:
+            allowed = ", ".join(SIZE_TIERS)
+            raise UsageError(f"--aspect is required when --size is one of: {allowed}")
+        width, height = _dimensions_from_tier(size, aspect)
+        return f"{width}x{height}"
+    if aspect:
+        raise UsageError("--aspect cannot be combined with explicit WIDTHxHEIGHT")
+    width, height = _parse_literal_size(size)
+    _validate_size_dimensions(width, height)
     return f"{width}x{height}"
 
 
-def _aspect_ratio_from_size(value: str) -> str | None:
-    size = SIZE_SHORTCUTS.get(value, value).strip().lower()
-    if size == "auto":
+def _parse_literal_size(size: str) -> tuple[int, int]:
+    try:
+        width_s, height_s = size.lower().split("x", 1)
+        return int(width_s), int(height_s)
+    except ValueError as exc:
+        allowed = ", ".join(["auto", *SIZE_TIERS, "WIDTHxHEIGHT"])
+        raise UsageError(f"--size must be one of: {allowed}") from exc
+
+
+def _validate_size_dimensions(width: int, height: int) -> None:
+    if width <= 0 or height <= 0:
+        raise UsageError("--size dimensions must be positive")
+    if width > MAX_EDGE or height > MAX_EDGE:
+        raise UsageError(f"--size dimensions must be <= {MAX_EDGE}")
+    if width % SIZE_MULTIPLE != 0 or height % SIZE_MULTIPLE != 0:
+        raise UsageError(f"--size dimensions must be multiples of {SIZE_MULTIPLE}")
+    long_edge = max(width, height)
+    short_edge = min(width, height)
+    if long_edge / short_edge > MAX_ASPECT_RATIO:
+        raise UsageError(f"--size aspect ratio must be <= {MAX_ASPECT_RATIO}:1")
+    pixels = width * height
+    if pixels < MIN_PIXELS or pixels > MAX_PIXELS:
+        raise UsageError(f"--size total pixels must be between {MIN_PIXELS} and {MAX_PIXELS}")
+
+
+def _dimensions_from_tier(size: str, aspect: str) -> tuple[int, int]:
+    width_ratio, height_ratio = _parse_aspect(aspect)
+    target_pixels = SIZE_TIERS[size]
+    raw_width = sqrt(target_pixels * width_ratio / height_ratio)
+    raw_height = sqrt(target_pixels * height_ratio / width_ratio)
+    max_raw_edge = max(raw_width, raw_height)
+    if max_raw_edge > MAX_EDGE:
+        scale = MAX_EDGE / max_raw_edge
+        raw_width *= scale
+        raw_height *= scale
+    width = _round_to_multiple(raw_width)
+    height = _round_to_multiple(raw_height)
+    if width * height > MAX_PIXELS:
+        scale = sqrt(MAX_PIXELS / (width * height))
+        width = _floor_to_multiple(width * scale)
+        height = _floor_to_multiple(height * scale)
+    _validate_size_dimensions(width, height)
+    return width, height
+
+
+def _round_to_multiple(value: float) -> int:
+    return max(SIZE_MULTIPLE, int(round(value / SIZE_MULTIPLE)) * SIZE_MULTIPLE)
+
+
+def _floor_to_multiple(value: float) -> int:
+    return max(SIZE_MULTIPLE, int(value // SIZE_MULTIPLE) * SIZE_MULTIPLE)
+
+
+def _aspect_ratio_from_args(size_value: str, aspect: str | None) -> str | None:
+    size = size_value.strip().lower()
+    if aspect:
+        if size in SIZE_TIERS:
+            raise UsageError(f"--size {size} is only available for gpt-image-2")
+        if size != "auto":
+            raise UsageError("--aspect cannot be combined with explicit WIDTHxHEIGHT")
+        width, height = _parse_aspect(aspect)
+    elif size == "auto":
         return None
-    if ":" in size and "x" not in size:
-        left, right = size.split(":", 1)
-        try:
-            width = int(left)
-            height = int(right)
-        except ValueError as exc:
-            raise UsageError("--size aspect ratio must be WIDTH:HEIGHT") from exc
-        if width <= 0 or height <= 0:
-            raise UsageError("--size aspect ratio dimensions must be positive")
+    elif size in SIZE_TIERS:
+        raise UsageError(f"--size {size} is only available for gpt-image-2")
     else:
-        normalized = _normalize_size(size)
-        width_s, height_s = normalized.split("x", 1)
-        width = int(width_s)
-        height = int(height_s)
+        width, height = _parse_literal_size(size)
+        _validate_size_dimensions(width, height)
     divisor = gcd(width, height)
     return f"{width // divisor}:{height // divisor}"
+
+
+def _parse_aspect(value: str) -> tuple[int, int]:
+    try:
+        width_s, height_s = value.strip().lower().split(":", 1)
+        width = int(width_s)
+        height = int(height_s)
+    except ValueError as exc:
+        raise UsageError("--aspect must be WIDTH:HEIGHT") from exc
+    if width <= 0 or height <= 0:
+        raise UsageError("--aspect dimensions must be positive")
+    long_edge = max(width, height)
+    short_edge = min(width, height)
+    if long_edge / short_edge > MAX_ASPECT_RATIO:
+        raise UsageError(f"--aspect ratio must be <= {MAX_ASPECT_RATIO}:1")
+    return width, height
 
 
 def _nb_quality(value: str) -> str | None:
@@ -258,13 +314,6 @@ def _nb_quality(value: str) -> str | None:
         allowed = ", ".join(["auto", "low", "medium", "high", "0.5K", "1K", "2K", "4K"])
         raise UsageError(f"--quality for nano-banana must be one of: {allowed}")
     return NB_QUALITY_MAP[key]
-
-
-def _large_experimental_size(size: str) -> bool:
-    if size == "auto":
-        return False
-    width_s, height_s = size.split("x", 1)
-    return int(width_s) * int(height_s) > 2560 * 1440
 
 
 def _validate_gpt_mask(first_image: dict[str, Any], mask: dict[str, Any]) -> None:

@@ -62,7 +62,8 @@ The adapter always uses the configured base URL plus the normal `/v1/images/*` p
 
 | CLI option | Mapping |
 | --- | --- |
-| `--size` | API `size`; accepts shortcuts and validated `WIDTHxHEIGHT`; gpt-image-2 sends normalized size |
+| `--size` | API `size`; accepts `auto`, a size tier with `--aspect`, or validated `WIDTHxHEIGHT`; gpt-image-2 sends normalized size |
+| `--aspect` | Used with `--size 1080p|2k|4k` to derive a concrete GPT Image canvas |
 | `--quality` | API `quality=auto|low|medium|high` |
 | `--output-format` | API `output_format=png|jpeg|webp` |
 | `--output-compression` | API `output_compression`, only for JPEG/WebP |
@@ -75,7 +76,7 @@ The adapter always uses the configured base URL plus the normal `/v1/images/*` p
 
 | Parameter | Rule |
 | --- | --- |
-| `--size` | Shared CLI size validator runs before payload construction; see Size Rules below. |
+| `--size` / `--aspect` | Shared CLI size validator runs before payload construction; see Size Rules below. |
 | `--quality` | Must be `auto`, `low`, `medium`, or `high`. |
 | `--output-format` | Must be `png`, `jpeg`, or `webp`. |
 | `--output-compression` | Only valid with `jpeg` or `webp`; value must be `0..100`. |
@@ -146,22 +147,19 @@ Local rules:
 
 ## Size Rules
 
-The shared CLI size validator enforces these rules before the GPT payload is built.
+Use the shared CLI size validator as the capability source for `gpt-image-2` output sizes.
 
-Supported shortcuts:
+Supported forms:
 
-| CLI shortcut | API size |
+| Form | Rule |
 | --- | --- |
-| `auto` | `auto` |
-| `square` | `1024x1024` |
-| `portrait` | `1024x1536` |
-| `landscape` | `1536x1024` |
-| `2k` | `2048x2048` |
-| `wide` | `2048x1152` |
-| `4k` | `3840x2160` |
-| `tall` | `2160x3840` |
+| `--size auto` | Sends API `size=auto`. |
+| `--size 1080p --aspect WIDTH:HEIGHT` | Derives a canvas from a 1920x1080 target pixel budget and the requested aspect. |
+| `--size 2k --aspect WIDTH:HEIGHT` | Derives a canvas from a 2560x1440 target pixel budget and the requested aspect. |
+| `--size 4k --aspect WIDTH:HEIGHT` | Derives a canvas from a 3840x2160 target pixel budget and the requested aspect. |
+| `--size WIDTHxHEIGHT` | Sends the validated literal canvas. |
 
-Literal `WIDTHxHEIGHT` values are allowed when all constraints pass:
+All concrete canvas values must pass these constraints:
 
 - each edge <= `3840`
 - each edge is a multiple of `16`
@@ -169,7 +167,7 @@ Literal `WIDTHxHEIGHT` values are allowed when all constraints pass:
 - total pixels >= `655360`
 - total pixels <= `8294400`
 
-Note: output above `2560x1440` total pixels is experimental in official docs; emit a warning in CLI summary.
+Tier-derived canvases are recorded in the request payload and run artifacts.
 
 ## Response Handling
 

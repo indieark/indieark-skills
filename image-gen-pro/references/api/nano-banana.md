@@ -71,8 +71,9 @@ In that case the adapter polls `GET <configured-base-without-/v1>/task/<taskId>`
 
 CLI mapping:
 
-- `--size auto` omits `aspect_ratio`.
-- `--size WIDTHxHEIGHT` or shortcut maps to reduced `aspect_ratio`.
+- `--size auto` omits `aspect_ratio` unless `--aspect` is set.
+- `--aspect WIDTH:HEIGHT` maps to reduced `aspect_ratio`.
+- `--size WIDTHxHEIGHT` maps to reduced `aspect_ratio`.
 - `--quality low|medium|high` maps to `0.5K|1K|2K`.
 - `--quality 0.5K|1K|2K|4K` is accepted for NB.
 
@@ -82,8 +83,9 @@ CLI mapping:
 
 | Parameter | Rule |
 | --- | --- |
-| Size shortcuts | `auto`, `square`, `portrait`, `landscape`, `2k`, `wide`, `4k`, `tall`. |
-| Literal `WIDTHxHEIGHT` | each edge <= `3840`; each edge is a multiple of `16`; aspect ratio <= `3:1`; total pixels `655360..8294400`. |
+| `--aspect WIDTH:HEIGHT` | Aspect ratio dimensions must be positive; long side / short side <= `3:1`. |
+| `--size WIDTHxHEIGHT` | Each edge <= `3840`; each edge is a multiple of `16`; aspect ratio <= `3:1`; total pixels `655360..8294400`. |
+| `--size 1080p` / `2k` / `4k` | GPT Image route size tiers; NB ratio uses `--aspect WIDTH:HEIGHT`. |
 | NB size mapping | nano-banana-2 sends reduced aspect_ratio; `auto` omits `aspect_ratio`. |
 | `--quality` | `auto` omitted; `low/medium/high` -> `0.5K/1K/2K`; accepts `0.5K`, `1K`, `2K`, `4K`. |
 | `-n` / `--n` | Must be `1`. |

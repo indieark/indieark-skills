@@ -8,7 +8,7 @@ Source: adapted from `gpt_image_2_skill` gallery category `Watercolor`; prompts 
 
 ## Botanical Watercolor
 
-- Size: `1024x1536`
+- Example canvas: `1024x1536`
 - Quality: `high`
 
 ```text
@@ -21,7 +21,7 @@ Avoid: hard digital gradients, fake labels, crowded background.
 
 ## Travel Sketch
 
-- Size: `1536x1024`
+- Example canvas: `1536x1024`
 - Quality: `medium`
 
 ```text

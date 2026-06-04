@@ -8,7 +8,7 @@ Source: adapted from `gpt_image_2_skill` gallery category `Architecture & Interi
 
 ## Interior Concept
 
-- Size: `1536x1024`
+- Example canvas: `1536x1024`
 - Quality: `high`
 
 ```text
@@ -21,7 +21,7 @@ Avoid: impossible furniture scale, clutter, fake wall text.
 
 ## Architectural Exterior
 
-- Size: `1536x1024`
+- Example canvas: `1536x1024`
 - Quality: `high`
 
 ```text

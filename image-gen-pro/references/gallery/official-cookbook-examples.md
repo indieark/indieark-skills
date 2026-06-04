@@ -8,7 +8,7 @@ Source: adapted from `gpt_image_2_skill` cookbook/gallery snapshot; prompts are 
 
 ## Minimal Generation Case
 
-- Size: `1024x1024`
+- Example canvas: `1024x1024`
 - Quality: `medium`
 
 ```text
@@ -20,7 +20,7 @@ Constraints: no text, no watermark, no extra objects.
 
 ## Minimal Edit Case
 
-- Size: `auto`
+- Example canvas: `auto`
 - Quality: `medium`
 
 ```text
