@@ -23,7 +23,7 @@
 
 ### 中心构图（center / symmetrical）
 
-![对称](media/composition/comp_symmetrical.mp4)
+<video src="media/composition/comp_symmetrical.mp4" controls loop muted width="480"></video>
 
 - 画面语言效果：主体居中或左右镜像对称，制造庄重、仪式感、稳定或刻意的"规整美"（韦斯·安德森式）。
 - 选用判据：要威严/仪式/秩序感，或刻意营造工整到略不安的氛围时用；正反打对话慎用（易呆板）。
@@ -32,7 +32,7 @@
 
 ### 引导线（leading lines）
 
-![引导线](media/composition/comp_leading-lines.mp4)
+<video src="media/composition/comp_leading-lines.mp4" controls loop muted width="480"></video>
 
 - 画面语言效果：用道路、建筑、光线等线条把视线导向主体，强化纵深与方向感。
 - 选用判据：要观众的视线"被牵着走"向某个主体或灭点、或强调纵深时用。
@@ -41,7 +41,7 @@
 
 ### 框架式（frame within frame）
 
-![框架式](media/composition/comp_frame-in-frame.mp4)
+<video src="media/composition/comp_frame-in-frame.mp4" controls loop muted width="480"></video>
 
 - 画面语言效果：用门、窗、拱、树枝等在画面内再造一个"框"套住主体，增加层次、窥视感或隔离感。
 - 选用判据：要营造窥探、隔阂、封闭，或给主体加一层视觉重点时用。
@@ -50,7 +50,7 @@
 
 ### 负空间（negative space）
 
-![负空间](media/composition/comp_negative-space.mp4)
+<video src="media/composition/comp_negative-space.mp4" controls loop muted width="480"></video>
 
 - 画面语言效果：主体周围大量留白/空旷，强调孤立、渺小、规模或情绪的"空"。
 - 选用判据：要表达孤独、渺小、辽阔、留白的情绪张力时用。
@@ -78,7 +78,7 @@
 
 ### 高角度俯拍（high angle）
 
-![高角度](media/composition/angle_high.mp4)
+<video src="media/composition/angle_high.mp4" controls loop muted width="480"></video>
 
 - 画面语言效果：镜头从上往下看主体，主体显得渺小、脆弱、被压制。
 - 选用判据：要让角色显弱势、被困、或交代群体队形/调度时用。
@@ -86,7 +86,7 @@
 
 ### 低角度仰拍（low angle）
 
-![低角度](media/composition/angle_low.mp4)
+<video src="media/composition/angle_low.mp4" controls loop muted width="480"></video>
 
 - 画面语言效果：镜头从下往上看主体，主体显得高大、威严、有压迫感或英雄感。
 - 选用判据：要塑造强势、威胁、崇高时用（反派登场、英雄定格）。
@@ -94,21 +94,21 @@
 
 ### 鸟瞰 / 顶视（bird's eye / top-down）
 
-![鸟瞰](media/composition/angle_birdseye.mp4)
+<video src="media/composition/angle_birdseye.mp4" controls loop muted width="480"></video>
 
 - 画面语言效果：正上方垂直俯视，把空间抽象成图案，制造上帝视角的疏离或秩序感。
 - 选用判据：要展示队形、路径、几何图案，或全知疏离感时用。
 
 ### 虫眼 / 极低仰视（worm's eye）
 
-![虫眼](media/composition/angle_wormseye.mp4)
+<video src="media/composition/angle_wormseye.mp4" controls loop muted width="480"></video>
 
 - 画面语言效果：极低位向上看，制造极端的高耸、压迫或被困（如坑底望天）。
 - 选用判据：极端压迫/仰望的特殊情绪镜。
 
 ### 过肩（over the shoulder）
 
-![过肩](media/composition/angle_ots.mp4)
+<video src="media/composition/angle_ots.mp4" controls loop muted width="480"></video>
 
 - 画面语言效果：从一方肩后拍向另一方，建立"谁在看谁"的对话关系与空间轴线。
 - 选用判据：对白正反打的主力角度；建立两人对峙/交流的方位关系。
@@ -116,7 +116,7 @@
 
 ### 主观视角 POV（point of view）
 
-![POV](media/composition/angle_pov.mp4)
+<video src="media/composition/angle_pov.mp4" controls loop muted width="480"></video>
 
 - 画面语言效果：呈现角色眼睛所见，强代入，观众"成为"角色。
 - 选用判据：要极致代入、模拟角色感知（恐惧、探索、第一人称动作）时用。
@@ -124,7 +124,7 @@
 
 ### 航拍（aerial / drone）
 
-![航拍](media/composition/angle_aerial.mp4)
+<video src="media/composition/angle_aerial.mp4" controls loop muted width="480"></video>
 
 - 画面语言效果：高空俯拍或飞行轨迹，展现地理规模、史诗感、宏大调度。
 - 选用判据：建立镜头、规模展示、段落转场。

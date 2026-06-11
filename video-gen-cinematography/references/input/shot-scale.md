@@ -14,7 +14,7 @@
 
 ### 大远景 / 极远景（extreme wide / establishing）
 
-![大远景](media/shot-scale/shot_extreme-wide.mp4)
+<video src="media/shot-scale/shot_extreme-wide.mp4" controls loop muted width="480"></video>
 
 - 画面语言效果：人物极小甚至不可见，环境与规模主导画面，用于交代地理、时代、体量，建立"这是哪、有多大"的世界观。
 - 选用判据：开场定场、场景切换的第一镜、要压出"个体在宏大环境里的渺小感"时用。一段戏只需一两个，多了拖节奏。
@@ -23,7 +23,7 @@
 
 ### 远景 / 全景（wide / full shot）
 
-![全景](media/shot-scale/shot_full.mp4)
+<video src="media/shot-scale/shot_full.mp4" controls loop muted width="480"></video>
 
 - 画面语言效果：人物全身可见且与环境同框，交代人物在空间里的位置、动作幅度、与他者的相对关系。
 - 选用判据：要看清全身动作（走、打斗、舞蹈）、或交代人物与场景/对手的空间关系时用。
@@ -32,7 +32,7 @@
 
 ### 中景（medium）
 
-![中景](media/shot-scale/shot_medium.mp4)
+<video src="media/shot-scale/shot_medium.mp4" controls loop muted width="480"></video>
 
 - 画面语言效果：取人物腰部/胸部以上，是叙事最常用景别——既看得清表情与上半身动作，又保留少量环境。对话、日常动作的主力景别。
 - 选用判据：拿不准用什么景别时的默认安全值；对白戏、人物执行某个动作的主镜多用它。
@@ -41,7 +41,7 @@
 
 ### 近景 / 中近景（close-up / medium close-up）
 
-![近景](media/shot-scale/shot_closeup.mp4)
+<video src="media/shot-scale/shot_closeup.mp4" controls loop muted width="480"></video>
 
 - 画面语言效果：取胸部/肩部以上，面部清晰，情绪开始主导画面，环境退为陪衬。强化角色当下的心理。
 - 选用判据：情绪转折点、需要观众读到细微表情（眼神、嘴角）时用；对白里的反应镜常用近景。
@@ -50,7 +50,7 @@
 
 ### 特写（close-up）
 
-![特写](media/shot-scale/shot_extreme-closeup.mp4)
+<video src="media/shot-scale/shot_extreme-closeup.mp4" controls loop muted width="480"></video>
 
 - 画面语言效果：面部或关键局部（手、眼、物件）填满画面，情绪/细节张力拉到最满，观众无处回避。
 - 选用判据：情绪爆点、关键道具的"亮相"或"状态变化"、悬念信息的揭示时用。慎用、用在刀刃上。
@@ -59,7 +59,7 @@
 
 ### 大特写 / 微距（extreme close-up / macro）
 
-![微距](media/shot-scale/shot_macro.mp4)
+<video src="media/shot-scale/shot_macro.mp4" controls loop muted width="480"></video>
 
 - 画面语言效果：瞳孔、嘴唇、水珠、材质纹理等极小细节被放到极大，制造超现实的注视感或质感冲击。
 - 选用判据：要把一个微小细节"事件化"（如瞳孔骤缩、血滴落下）、或产品材质的极致质感展示时用。
@@ -74,7 +74,7 @@
 
 ### 深焦（deep focus）
 
-![深焦](media/shot-scale/focus_deep.mp4)
+<video src="media/shot-scale/focus_deep.mp4" controls loop muted width="480"></video>
 
 - 画面语言效果：前景到背景全部清晰，信息量大、客观、纵深感强（公民凯恩式）。
 - 选用判据：要交代环境全貌、让前后景并重、或史诗感场面时用。
@@ -82,7 +82,7 @@
 
 ### 浅焦 / 浅景深（shallow focus）
 
-![浅焦](media/shot-scale/focus_shallow.mp4)
+<video src="media/shot-scale/focus_shallow.mp4" controls loop muted width="480"></video>
 
 - 画面语言效果：主体清晰、背景柔化虚化（bokeh），强烈聚焦主体、隔离杂乱、情绪私密。
 - 选用判据：要突出单一主体、营造人像质感或情绪氛围、虚化杂乱背景时用。
@@ -90,7 +90,7 @@
 
 ### 变焦点 / 焦点转移（rack focus）
 
-![变焦点](media/shot-scale/focus_rack.mp4)
+<video src="media/shot-scale/focus_rack.mp4" controls loop muted width="480"></video>
 
 - 画面语言效果：清晰点在前景与背景之间转移，引导观众视线从一个主体移到另一个，制造揭示或关联。
 - 选用判据：要把注意力从 A 引到 B、揭示背景里的关键信息、建立两元素关系时用。
@@ -98,7 +98,7 @@
 
 ### 柔焦（soft focus）
 
-![柔焦](media/shot-scale/focus_soft.mp4)
+<video src="media/shot-scale/focus_soft.mp4" controls loop muted width="480"></video>
 
 - 画面语言效果：整体略带朦胧柔化，梦幻、怀旧、浪漫或回忆质感。
 - 选用判据：闪回、梦境、浪漫/怀旧氛围时用。

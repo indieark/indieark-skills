@@ -14,7 +14,7 @@
 
 ### 固定 / 静止（static）
 
-![固定](media/camera-move/move_static.mp4)
+<video src="media/camera-move/move_static.mp4" controls loop muted width="480"></video>
 
 - 画面语言效果：机位完全不动，让动作在画框内发生，冷静、克制、observational。
 - 选用判据：要稳定观察、留给表演空间、或对照后续运镜制造反差时用。
@@ -23,7 +23,7 @@
 
 ### 推镜（push in / dolly in）
 
-![推镜](media/camera-move/move_push-in.mp4)
+<video src="media/camera-move/move_push-in.mp4" controls loop muted width="480"></video>
 
 - 画面语言效果：镜头向主体推近，聚焦、强调、代入感增强，情绪逐渐压上来。
 - 选用判据：情绪升温、揭示、把观众注意力锁向某主体时用。
@@ -31,7 +31,7 @@
 
 ### 拉镜（pull back / dolly out）
 
-![拉镜](media/camera-move/move_pull-back.mp4)
+<video src="media/camera-move/move_pull-back.mp4" controls loop muted width="480"></video>
 
 - 画面语言效果：镜头后退，environment 逐渐展开，制造释然、孤独、收束或"原来如此"的揭示。
 - 选用判据：段落收尾、揭示主体所处更大环境、情绪释放时用。
@@ -39,7 +39,7 @@
 
 ### 摇镜（pan，水平）
 
-![摇镜](media/camera-move/move_pan.mp4)
+<video src="media/camera-move/move_pan.mp4" controls loop muted width="480"></video>
 
 - 画面语言效果：机位固定、镜头水平左右转，扫过空间或在两主体间转移。
 - 选用判据：横向交代环境、从一主体转到另一主体、定场扫描时用。
@@ -47,7 +47,7 @@
 
 ### 俯仰（tilt，垂直）
 
-![俯仰](media/camera-move/move_tilt.mp4)
+<video src="media/camera-move/move_tilt.mp4" controls loop muted width="480"></video>
 
 - 画面语言效果：机位固定、镜头上下转，揭示高度或纵向关系（脚到头、地到天）。
 - 选用判据：揭示高大建筑/人物全貌、纵向揭示信息时用。
@@ -55,14 +55,14 @@
 
 ### 移镜（dolly，前后/轨道）
 
-![移镜](media/camera-move/move_dolly.mp4)
+<video src="media/camera-move/move_dolly.mp4" controls loop muted width="480"></video>
 
 - 画面语言效果：整个机位沿轨道前后移动（区别于变焦），透视自然变化，有真实纵深感。
 - 选用判据：跟随主体前进/后退、要真实空间穿越感时用。
 
 ### 横移（truck，左右平行）
 
-![横移](media/camera-move/move_truck.mp4)
+<video src="media/camera-move/move_truck.mp4" controls loop muted width="480"></video>
 
 - 画面语言效果：机位平行于主体左右移动，跟着横向运动的主体走，保持其在画面位置。
 - 选用判据：跟拍横向行走/奔跑的主体、横向展开长卷式场景时用。
@@ -70,7 +70,7 @@
 
 ### 跟拍（tracking）
 
-![跟拍](media/camera-move/move_tracking.mp4)
+<video src="media/camera-move/move_tracking.mp4" controls loop muted width="480"></video>
 
 - 画面语言效果：镜头跟着移动主体走（可在其后/侧/前），强代入、强动势。
 - 选用判据：要让观众"跟着"主体行动（奔跑、穿行人群）时用。
@@ -78,14 +78,14 @@
 
 ### 升降（pedestal，垂直平移）
 
-![升降](media/camera-move/move_pedestal.mp4)
+<video src="media/camera-move/move_pedestal.mp4" controls loop muted width="480"></video>
 
 - 画面语言效果：整个机位垂直上升/下降（区别于俯仰转动），平移地揭示纵向信息。
 - 选用判据：跟随主体起立/坐下、垂直揭示物件时用。
 
 ### 摇臂 / 升降臂（crane / jib）
 
-![摇臂](media/camera-move/move_crane.mp4)
+<video src="media/camera-move/move_crane.mp4" controls loop muted width="480"></video>
 
 - 画面语言效果：机位在机械臂上做大幅升降+横移的复合运动，气势大、揭示性强。
 - 选用判据：开场或收尾的大气揭示（从特写升到全景、从人群升到天空）时用。
@@ -93,7 +93,7 @@
 
 ### 环绕（orbit，360°）
 
-![环绕](media/camera-move/move_orbit.mp4)
+<video src="media/camera-move/move_orbit.mp4" controls loop muted width="480"></video>
 
 - 画面语言效果：镜头绕主体旋转一圈或半圈，全方位展示主体，制造聚焦、华丽或眩晕。
 - 选用判据：产品/角色的全方位展示、强调某个高光瞬间时用。
@@ -101,21 +101,21 @@
 
 ### 弧线（arc）
 
-![弧线](media/camera-move/move_arc.mp4)
+<video src="media/camera-move/move_arc.mp4" controls loop muted width="480"></video>
 
 - 画面语言效果：镜头沿弧线绕主体局部移动（非整圈），动感优雅，比环绕克制。
 - 选用判据：要动势但不必整圈环绕时用。
 
 ### 变焦（zoom）
 
-![变焦](media/camera-move/move_zoom.mp4)
+<video src="media/camera-move/move_zoom.mp4" controls loop muted width="480"></video>
 
 - 画面语言效果：镜头焦段变化使主体变大/变小（机位不动，区别于移镜），透视被压缩，略不自然但有特定语感。
 - 选用判据：快速拉近注意力、复古/电视感、或与移镜配合做特殊效果时用。
 
 ### 急推变焦（crash zoom）
 
-![急推变焦](media/camera-move/move_crash-zoom.mp4)
+<video src="media/camera-move/move_crash-zoom.mp4" controls loop muted width="480"></video>
 
 - 画面语言效果：极快猛烈变焦推进，制造突发、惊吓、强调的冲击。
 - 选用判据：突发事件、惊吓点、漫画式强调时用。
@@ -123,7 +123,7 @@
 
 ### 甩镜（whip pan）
 
-![甩镜](media/camera-move/move_whip-pan.mp4)
+<video src="media/camera-move/move_whip-pan.mp4" controls loop muted width="480"></video>
 
 - 画面语言效果：极快水平摇动产生运动模糊，常用作转场或连接两个画面。
 - 选用判据：快速转场、连接两个空间/人物、节奏加速时用。
@@ -131,7 +131,7 @@
 
 ### 手持（handheld）
 
-![手持](media/camera-move/move_handheld.mp4)
+<video src="media/camera-move/move_handheld.mp4" controls loop muted width="480"></video>
 
 - 画面语言效果：自然晃动与抖动，纪录片式真实、紧张、临场或混乱。
 - 选用判据：要真实粗粝感、紧张临场、纪实风格时用。
@@ -139,7 +139,7 @@
 
 ### 斯坦尼康 / 云台（steadicam / gimbal）
 
-![斯坦尼康](media/camera-move/move_steadicam.mp4) ![云台](media/camera-move/move_gimbal.mp4)
+<video src="media/camera-move/move_steadicam.mp4" controls loop muted width="480"></video> <video src="media/camera-move/move_gimbal.mp4" controls loop muted width="480"></video>
 
 - 画面语言效果：稳定器带来"边走边拍却丝滑无抖"的流畅运动，专业、沉浸、连贯。
 - 选用判据：要长距离平滑跟随（穿行、长镜头调度）且不要手持的粗粝时用。
