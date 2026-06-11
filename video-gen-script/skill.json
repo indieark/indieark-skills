@@ -1,0 +1,17 @@
+{
+  "name": "video-gen-script",
+  "version": "0.5.0",
+  "status": "alpha",
+  "role": "satellite",
+  "hub": "video-gen-pro",
+  "capabilities": [
+    "script_candidate_protocol",
+    "stage_reminder_obligation",
+    "intelligent_orchestration_split_gate",
+    "multi_segment_continuity_ledger",
+    "tail_frame_handoff_guidance",
+    "pre_generation_confirmation_gate",
+    "structured_revision_feedback",
+    "result_review_recap"
+  ]
+}

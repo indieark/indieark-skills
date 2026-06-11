@@ -168,13 +168,13 @@
 
 > 把镜头脚本与 API 拉起合成一层，让 agent 真的能"拍片"。
 
-`alpha` · `v0.4.2` · CLI: `seedance2`
+`alpha` · `v0.5.0` · CLI: `videogen`（别名 `seedance2`）
 
 - **导演工作流** — natural-language 镜头拆解 → scene card → 多段连续性规划 + tail-frame hand-off
 - **当前适配器**：Volcengine Ark · Seedance 2.0（`doubao-seedance-2-0-260128` / `*-fast`），仓内目前只有这一个适配器实现
-- **包名向后兼容**：实际安装目录仍是 [`seedance2-video-pro/`](./seedance2-video-pro)，CLI 仍是 `seedance2`；待二供方接入后才把顶层入口收敛到 `video-gen-pro`
+- **8-skill 技能族（0.5.0 起）**：hub [`video-gen-pro/`](./video-gen-pro)（枢纽+执行器，CLI 全留此）+ 7 个卫星 [`video-gen-script/`](./video-gen-script)、[`video-gen-guide/`](./video-gen-guide)、[`video-gen-advisor/`](./video-gen-advisor)、[`video-gen-director/`](./video-gen-director)、[`video-gen-storyboard/`](./video-gen-storyboard)、[`video-gen-assets/`](./video-gen-assets)、[`video-gen-cinematography/`](./video-gen-cinematography)，安装后同级，按意图互相引路
 
-→ [skill 目录](./seedance2-video-pro) · [SKILL.md](./seedance2-video-pro/SKILL.md) · [README](./seedance2-video-pro/README.md)
+→ [skill 目录](./video-gen-pro) · [SKILL.md](./video-gen-pro/SKILL.md) · [README](./video-gen-pro/README.md)
 
 ---
 
@@ -335,7 +335,7 @@ git status --short ; git diff --stat
 
 - `beta` — 仓内含可执行实现 + CLI，处于迭代细化（如 `image-gen-pro`）
 - `router-alpha` — 仓内只做路由 + 规划，渲染层委托给外部 extension（如 `ppt-gen-pro` / `html-gen-pro`）
-- `alpha` — 仓内含首个适配器实现，未来扩展为 provider-neutral（如 `video-gen-pro`，当前物理包名 `seedance2-video-pro`）
+- `alpha` — 仓内含首个适配器实现，未来扩展为 provider-neutral（如 `video-gen-pro` 8-skill 技能族：hub + 7 卫星）
 - `preview` — `v0.1.0-skeleton`，可被 agent 加载，CLI 与下游链未就位（如 `search-pro` / `office-pro` / `struct-pro` / `write-pro`）
 
 新增 skill 流程见各私库的 `plans/<编号>-new-skill-<name>.md`。

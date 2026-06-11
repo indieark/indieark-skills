@@ -1,6 +1,6 @@
 {
   "name": "indieark-skills",
-  "version": "2026.05.27",
+  "version": "2026.06.11",
   "repository": "https://github.com/indieark/indieark-skills",
   "install_target": "%USERPROFILE%\\.codex\\skills",
   "skills": [
@@ -35,18 +35,79 @@
       "cli": []
     },
     {
-      "name": "seedance2-video-pro",
-      "path": "seedance2-video-pro",
-      "version": "0.4.2",
+      "name": "video-gen-pro",
+      "path": "video-gen-pro",
+      "version": "0.5.0",
       "status": "alpha",
-      "source": "skills/video-gen-pro/skills/seedance2-video-pro",
+      "source": "skills/video-gen-pro/skills/video-gen-pro",
       "cli": [
+        {
+          "name": "videogen",
+          "entrypoint": "scripts/video_gen_pro.py",
+          "wrapper": "videogen.cmd"
+        },
         {
           "name": "seedance2",
           "entrypoint": "scripts/seedance2_video.py",
           "wrapper": "seedance2.cmd"
         }
       ]
+    },
+    {
+      "name": "video-gen-script",
+      "path": "video-gen-script",
+      "version": "0.5.0",
+      "status": "alpha",
+      "source": "skills/video-gen-pro/skills/video-gen-script",
+      "cli": []
+    },
+    {
+      "name": "video-gen-guide",
+      "path": "video-gen-guide",
+      "version": "0.5.0",
+      "status": "alpha",
+      "source": "skills/video-gen-pro/skills/video-gen-guide",
+      "cli": []
+    },
+    {
+      "name": "video-gen-advisor",
+      "path": "video-gen-advisor",
+      "version": "0.5.0",
+      "status": "alpha",
+      "source": "skills/video-gen-pro/skills/video-gen-advisor",
+      "cli": []
+    },
+    {
+      "name": "video-gen-director",
+      "path": "video-gen-director",
+      "version": "0.5.0",
+      "status": "alpha",
+      "source": "skills/video-gen-pro/skills/video-gen-director",
+      "cli": []
+    },
+    {
+      "name": "video-gen-storyboard",
+      "path": "video-gen-storyboard",
+      "version": "0.5.0",
+      "status": "alpha",
+      "source": "skills/video-gen-pro/skills/video-gen-storyboard",
+      "cli": []
+    },
+    {
+      "name": "video-gen-assets",
+      "path": "video-gen-assets",
+      "version": "0.5.0",
+      "status": "alpha",
+      "source": "skills/video-gen-pro/skills/video-gen-assets",
+      "cli": []
+    },
+    {
+      "name": "video-gen-cinematography",
+      "path": "video-gen-cinematography",
+      "version": "0.5.0",
+      "status": "alpha",
+      "source": "skills/video-gen-pro/skills/video-gen-cinematography",
+      "cli": []
     },
     {
       "name": "search-pro",

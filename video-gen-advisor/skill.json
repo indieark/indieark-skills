@@ -1,0 +1,16 @@
+{
+  "name": "video-gen-advisor",
+  "version": "0.5.0",
+  "status": "alpha",
+  "role": "satellite",
+  "hub": "video-gen-pro",
+  "capabilities": [
+    "advisor_reference_pack",
+    "master_prompt_with_platform_variants",
+    "shot_list_brief",
+    "asset_brief",
+    "sound_brief",
+    "judgement_checklist",
+    "read_only_cli_and_dry_run_only"
+  ]
+}

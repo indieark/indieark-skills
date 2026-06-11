@@ -1,0 +1,17 @@
+{
+  "name": "video-gen-assets",
+  "version": "0.5.0",
+  "status": "alpha",
+  "role": "satellite",
+  "hub": "video-gen-pro",
+  "capabilities": [
+    "character_sheet_generation_method",
+    "scene_sheet_generation_method",
+    "prop_sheet_generation_method",
+    "graphic_sheet_generation_method",
+    "setting_director_orchestration",
+    "asset_registry_and_cross_script_reuse",
+    "seedance_reference_image_handoff",
+    "external_image_gen_pro_delegation"
+  ]
+}

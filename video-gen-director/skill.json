@@ -1,0 +1,13 @@
+{
+  "name": "video-gen-director",
+  "version": "0.5.0",
+  "status": "alpha",
+  "role": "satellite",
+  "hub": "video-gen-pro",
+  "capabilities": [
+    "director_method_three_part_prompt",
+    "single_or_few_shot_language_control",
+    "temporal_progression_in_prompt",
+    "strict_three_part_no_append"
+  ]
+}

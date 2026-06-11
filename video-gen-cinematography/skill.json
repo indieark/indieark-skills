@@ -1,0 +1,18 @@
+{
+  "name": "video-gen-cinematography",
+  "version": "0.5.0",
+  "status": "alpha",
+  "role": "satellite",
+  "hub": "video-gen-pro",
+  "capabilities": [
+    "camera_move_reference",
+    "shot_scale_reference",
+    "composition_reference",
+    "lighting_tone_reference",
+    "visual_tone_reference",
+    "style_core_template_library",
+    "scene_atmosphere_tokens",
+    "image_input_placement_decision",
+    "human_facing_media_gallery"
+  ]
+}

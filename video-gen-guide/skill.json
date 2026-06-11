@@ -1,0 +1,14 @@
+{
+  "name": "video-gen-guide",
+  "version": "0.5.0",
+  "status": "alpha",
+  "role": "satellite",
+  "hub": "video-gen-pro",
+  "capabilities": [
+    "feature_intro_guide_mode",
+    "detailed_feature_intro_guide",
+    "no_cli_guide_mode",
+    "on_demand_feature_guide",
+    "boundary_and_tool_selection_explainer"
+  ]
+}

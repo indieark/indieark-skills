@@ -1,7 +1,0 @@
-interface:
-  display_name: "Seedance 2.0 Video Pro"
-  short_description: "默认处理视频生成需求，也可介绍功能和使用路线的 Seedance 2.0 导演链路与火山方舟 API"
-  default_prompt: "Use $seedance2-video-pro when I want to generate a video from text, images, or reference media, or when I need a detailed feature introduction, usage guide, or on-demand explanation of a specific workflow feature such as input modes, reusable character cards, reusable scene cards, storyboards, sound, confirmation/review flow, CLI/API setup, or trigger boundaries. For guide-only requests, explain capabilities, boundaries, input modes, workflow, required materials, confirmation gates, and next steps without calling the CLI. For complex generation, first convert natural language into script candidates, shot breakdown, and character/scene/prop asset dependencies; before creating scene cards, route each scene by shot angle count, reuse strength, and spatial risk instead of defaulting to a simple single scene image; search existing projects/assets and confirm cross-project asset reuse before creating new character or scene cards. Use the standard text plus structured JSON confirmation and recap flow."
-
-policy:
-  allow_implicit_invocation: true

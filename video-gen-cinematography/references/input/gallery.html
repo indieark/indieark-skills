@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seedance 视觉语言画廊</title>
+<style>
+  :root {
+    --bg: #08070a;           /* 影院黑，略带紫 */
+    --bg2: #0d0c10;
+    --ink: #ece6da;          /* 暖白文字 */
+    --muted: #8a8478;        /* 暖灰 */
+    --faint: #5a554b;
+    --gold: #d9a441;         /* 琥珀金主色 */
+    --gold-soft: #e8c06a;
+    --amber: #c8763c;        /* 暖橙副色 */
+    --line: #211f25;
+    --glass: rgba(20,18,24,.72);
+    --serif: "Source Han Serif SC", "Songti SC", "STSong", "SimSun", Georgia, "Times New Roman", serif;
+    --sans: -apple-system, "Segoe UI", "Microsoft YaHei", system-ui, sans-serif;
+    --mono: "Consolas", "SFMono-Regular", "Courier New", monospace;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  /* 页面级滚动条：暗金胶片风，与背景融合、滑块半透明金 */
+  html::-webkit-scrollbar { width: 10px; }
+  html::-webkit-scrollbar-track { background: var(--bg); }
+  html::-webkit-scrollbar-thumb {
+    background: rgba(217,164,65,.3); border: 2px solid var(--bg);
+    border-radius: 999px;
+  }
+  html::-webkit-scrollbar-thumb:hover { background: rgba(217,164,65,.5); }
+  body {
+    margin: 0; color: var(--ink); background: var(--bg);
+    font-family: var(--sans); line-height: 1.65;
+    /* 粘性页脚：内容不满一屏时 main 撑开剩余高度，footer 贴到视口底，消除底部悬空间隙 */
+    min-height: 100vh; display: flex; flex-direction: column;
+    /* 胶片颗粒：极淡噪点叠加 */
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(217,164,65,.06), transparent 70%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E");
+  }
+  ::selection { background: rgba(217,164,65,.3); color: #fff; }
+
+  /* ============ 顶栏 ============ */
+  header {
+    position: sticky; top: 0; z-index: 20;
+    background: var(--glass); backdrop-filter: blur(14px) saturate(1.2);
+    border-bottom: 1px solid var(--line);
+  }
+  .head-inner { max-width: 1680px; margin: 0 auto; padding: 22px 40px 0; }
+  .brand { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; }
+  .brand .mark {
+    font-family: var(--serif); font-size: 13px; letter-spacing: .42em;
+    color: var(--gold); text-transform: uppercase;
+  }
+  h1 {
+    margin: 0; font-family: var(--serif); font-weight: 600;
+    font-size: 27px; letter-spacing: .04em; color: var(--ink);
+  }
+  h1 .thin { color: var(--muted); font-weight: 400; }
+
+  /* ============ 影院式分区导航 ============ */
+  .navrow { display: flex; align-items: flex-end; gap: 24px; margin-top: 20px; }
+  .tabs { display: flex; gap: 30px; overflow-x: auto; scrollbar-width: none; flex: 1; min-width: 0; }
+  .tabs::-webkit-scrollbar { display: none; }
+  /* 导演法两大段分组：【氛围与画质】+【画面内容】 */
+  .tab-group { display: flex; align-items: baseline; gap: 26px; position: relative; }
+  .tab-group + .tab-group { padding-left: 30px; }
+  .tab-group + .tab-group::before {
+    content: ""; position: absolute; left: 0; top: 10px; bottom: 12px; width: 1px;
+    background: linear-gradient(180deg, transparent, var(--line) 30%, var(--line) 70%, transparent);
+  }
+  .tab-group-label {
+    font-family: var(--serif); font-size: 12px; letter-spacing: .12em;
+    color: var(--faint); white-space: nowrap; align-self: center;
+    padding-right: 2px; user-select: none;
+  }
+  .tab {
+    position: relative; padding: 12px 2px 16px; cursor: pointer; user-select: none;
+    white-space: nowrap; color: var(--muted); transition: color .25s;
+    display: flex; align-items: baseline; gap: 8px;
+  }
+  .tab .tname { font-family: var(--serif); font-size: 16px; letter-spacing: .03em; }
+  .tab .count {
+    font-family: var(--mono); font-size: 11px; color: var(--faint);
+    border: 1px solid var(--line); border-radius: 999px; padding: 1px 7px;
+  }
+  .tab::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px;
+    background: linear-gradient(90deg, var(--gold), var(--amber));
+    transform: scaleX(0); transform-origin: left; transition: transform .3s ease;
+  }
+  .tab:hover { color: var(--ink); }
+  .tab.active { color: var(--gold-soft); }
+  .tab.active .count { color: var(--gold); border-color: rgba(217,164,65,.4); }
+  .tab.active::after { transform: scaleX(1); }
+
+  /* 维度内即时过滤搜索框 */
+  .search {
+    flex-shrink: 0; display: flex; align-items: center; gap: 7px;
+    margin-bottom: 8px; padding: 6px 12px; border-radius: 999px;
+    background: rgba(8,7,10,.5); border: 1px solid var(--line);
+    transition: border-color .25s, background .25s;
+  }
+  .search:focus-within { border-color: rgba(217,164,65,.45); background: rgba(8,7,10,.75); }
+  .search .ico { color: var(--faint); flex-shrink: 0; transition: color .25s; }
+  .search:focus-within .ico { color: var(--gold); }
+  .search input {
+    background: none; border: none; outline: none; color: var(--ink);
+    font-family: var(--sans); font-size: 12.5px; width: 200px; letter-spacing: .01em;
+  }
+  .search input::placeholder { color: var(--faint); }
+  .search input::-webkit-search-cancel-button { -webkit-appearance: none; }
+  .search .hits {
+    font-family: var(--mono); font-size: 10.5px; color: var(--gold-soft);
+    min-width: 30px; text-align: right; white-space: nowrap;
+  }
+  /* 搜索无结果提示 */
+  .grid .noresult {
+    grid-column: 1 / -1; text-align: center; color: var(--muted);
+    font-family: var(--serif); font-size: 14px; padding: 50px 0; letter-spacing: .04em;
+  }
+  @media (max-width: 720px) {
+    .navrow { flex-direction: column; align-items: stretch; gap: 12px; }
+    .search { align-self: flex-start; }
+  }
+
+  /* ============ 主体 ============ */
+  main { width: 100%; max-width: 1680px; margin: 0 auto; padding: 36px 40px 80px; flex: 1 0 auto; }
+  .dim-head { margin: 0 0 28px; display: flex; gap: 22px; align-items: flex-start; }
+  .dim-head .idx {
+    font-family: var(--serif); font-size: 52px; line-height: .9; color: var(--line);
+    -webkit-text-stroke: 1px var(--faint); flex-shrink: 0;
+  }
+  .dim-head .meta { padding-top: 4px; }
+  .dim-head .dim-name { font-family: var(--serif); font-size: 21px; color: var(--gold-soft); margin: 0 0 6px; letter-spacing: .04em; }
+  .dim-head .dim-desc { color: var(--muted); font-size: 13px; max-width: 920px; margin: 0; white-space: pre-line; }
+
+  .group-label {
+    grid-column: 1 / -1; display: flex; align-items: center; gap: 16px;
+    margin: 26px 0 4px; font-family: var(--serif); font-size: 15px;
+    color: var(--amber); letter-spacing: .14em; text-transform: uppercase;
+    scroll-margin-top: 150px;   /* 锚点滚动避开 sticky 顶栏（URL hash 兜底；JS 点击用 header.offsetHeight 精算） */
+  }
+  .group-label::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, var(--line), transparent); }
+
+  /* ============ 子目录锚点条：仅多分组维度出现，跨整行置于网格顶部 ============ */
+  .subnav {
+    grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 10px;
+    margin: 0 0 6px; padding-bottom: 16px; border-bottom: 1px solid var(--line);
+  }
+  .subnav-link {
+    font-family: var(--sans); font-size: 12px; letter-spacing: .04em;
+    color: var(--muted); text-decoration: none;
+    background: rgba(8,7,10,.5); border: 1px solid var(--line);
+    border-radius: 999px; padding: 5px 14px;
+    transition: color .2s, border-color .2s, background .2s;
+  }
+  .subnav-link:hover {
+    color: var(--gold-soft); border-color: rgba(217,164,65,.4);
+    background: rgba(217,164,65,.08);
+  }
+
+  /* ============ 回到顶部按钮：右下角浮现，滚过一屏才显示 ============ */
+  .to-top {
+    position: fixed; right: 28px; bottom: 28px; z-index: 30;
+    width: 44px; height: 44px; display: flex; align-items: center; justify-content: center;
+    color: var(--gold-soft); background: var(--glass); backdrop-filter: blur(8px) saturate(1.2);
+    border: 1px solid rgba(217,164,65,.35); border-radius: 50%; cursor: pointer;
+    opacity: 0; transform: translateY(12px); pointer-events: none;
+    transition: opacity .3s ease, transform .3s ease, color .2s, border-color .2s, background .2s;
+  }
+  .to-top.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+  .to-top:hover { color: var(--gold); border-color: var(--gold); background: rgba(217,164,65,.14); }
+  @media (max-width: 720px) { .to-top { right: 16px; bottom: 16px; } }
+
+  .grid {
+    display: grid; gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+
+  /* ============ 画面优先卡片 ============ */
+  .card {
+    position: relative; border-radius: 4px; overflow: hidden;
+    background: var(--bg2); border: 1px solid var(--line);
+    aspect-ratio: 16 / 10; cursor: default;
+    box-shadow: 0 1px 0 rgba(255,255,255,.02) inset;
+    transition: transform .4s cubic-bezier(.2,.7,.2,1), box-shadow .4s, border-color .4s;
+    opacity: 0; animation: rise .6s forwards;
+  }
+  @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  /* 兜底：减少动态偏好时直接显示，不依赖动画播放（也修截图/低性能环境停在 opacity:0） */
+  @media (prefers-reduced-motion: reduce) {
+    .card { opacity: 1; animation: none; }
+  }
+  .card:hover {
+    transform: translateY(-4px); border-color: rgba(217,164,65,.45);
+    box-shadow: 0 18px 40px -18px rgba(0,0,0,.9), 0 0 0 1px rgba(217,164,65,.15);
+    z-index: 2;
+  }
+  .card .media { position: absolute; inset: 0; overflow: hidden; background: #050507; }
+  .card .media img, .card .media video {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    transition: transform .9s cubic-bezier(.2,.7,.2,1), filter .5s;
+    filter: saturate(.92) contrast(1.02);
+  }
+  .card:hover .media img, .card:hover .media video { transform: scale(1.06); filter: saturate(1.05) contrast(1.05); }
+  /* contain 模式：按真实画幅完整显示，黑底衬底不裁切（视觉基调用） */
+  .card .media.fit {
+    background:
+      repeating-linear-gradient(45deg, #050507 0 8px, #07070a 8px 16px);
+  }
+  .card .media.fit img, .card .media.fit video { object-fit: contain; }
+  .card:hover .media.fit img, .card:hover .media.fit video { transform: scale(1.02); }
+
+  /* 序号角标 */
+  .card .no {
+    position: absolute; top: 10px; left: 12px; z-index: 3;
+    font-family: var(--mono); font-size: 11px; color: var(--gold-soft);
+    letter-spacing: .1em; text-shadow: 0 1px 4px rgba(0,0,0,.9);
+    opacity: .85;
+  }
+  .card .tagchip {
+    position: absolute; top: 10px; right: 12px; z-index: 3;
+    font-family: var(--sans); font-size: 10px; letter-spacing: .08em;
+    color: var(--ink); background: rgba(8,7,10,.6); backdrop-filter: blur(4px);
+    border: 1px solid rgba(217,164,65,.3); border-radius: 999px; padding: 2px 9px;
+  }
+
+  /* 标题条：常驻底部 */
+  .card .bartitle {
+    position: absolute; left: 0; right: 0; bottom: 0; z-index: 3;
+    padding: 30px 14px 13px; font-family: var(--serif); font-size: 15px;
+    color: var(--ink); letter-spacing: .03em;
+    background: linear-gradient(to top, rgba(5,5,7,.92) 0%, rgba(5,5,7,.55) 55%, transparent 100%);
+    transition: opacity .35s; pointer-events: none;
+  }
+  .card:hover .bartitle { opacity: 0; }
+
+  /* 详情浮层：hover 从底部滑出，只占下半部，留出上方图片 */
+  .card .reveal {
+    position: absolute; left: 0; right: 0; bottom: 0; z-index: 4;
+    padding: 30px 16px 14px; max-height: 78%;
+    display: flex; flex-direction: column; justify-content: flex-end; gap: 9px;
+    background: linear-gradient(to top, rgba(5,4,7,.96) 0%, rgba(5,4,7,.9) 55%, rgba(8,7,10,.7) 82%, transparent 100%);
+    opacity: 0; transform: translateY(10px); transition: opacity .35s ease, transform .35s ease; pointer-events: none;
+  }
+  .card:hover .reveal { opacity: 1; transform: translateY(0); pointer-events: auto; }
+  .card .reveal .rt { font-family: var(--serif); font-size: 16px; color: var(--gold-soft); letter-spacing: .03em; }
+  .card .reveal .scene { font-size: 12px; color: var(--muted); }
+  .card .reveal .scene b { color: var(--amber); font-weight: 600; font-style: normal; }
+  .card .reveal .prompt {
+    font-family: var(--mono); font-size: 11.5px; line-height: 1.55; color: var(--ink);
+    background: rgba(217,164,65,.07); border-left: 2px solid var(--gold);
+    padding: 8px 10px; border-radius: 2px; white-space: pre-wrap; word-break: break-word;
+  }
+
+  /* ============ prompt 块整块可点击复制（所有 prompt 块通用） ============ */
+  .pwrap { position: relative; }
+  .prompt { position: relative; cursor: pointer; transition: background .2s, border-color .2s; }
+  .prompt:hover { background: rgba(217,164,65,.14); }
+  .prompt.copied { border-color: var(--gold); background: rgba(217,164,65,.16); }
+  /* 复制成功角标：默认隐藏，.copied 时一闪 */
+  .copied-tip {
+    position: absolute; top: 6px; right: 8px; z-index: 5;
+    font-family: var(--sans); font-size: 10px; letter-spacing: .06em; line-height: 1;
+    color: var(--gold); background: rgba(8,7,10,.85); backdrop-filter: blur(3px);
+    border: 1px solid var(--gold); border-radius: 4px; padding: 3px 8px;
+    opacity: 0; transform: translateY(-3px); transition: opacity .2s, transform .2s;
+    pointer-events: none;
+  }
+  .prompt.copied .copied-tip { opacity: 1; transform: translateY(0); }
+
+  /* ============ 无图卡（视觉基调）：胶片齿孔文字卡 ============ */
+  .card.txt {
+    aspect-ratio: auto; min-height: 200px; cursor: default;
+    background:
+      linear-gradient(135deg, #100e13, #0a090c);
+    display: flex; flex-direction: column;
+  }
+  .card.txt::before, .card.txt::after {
+    content: ""; position: absolute; top: 0; bottom: 0; width: 16px;
+    background-image: radial-gradient(circle at center, #050507 2.5px, transparent 3px);
+    background-size: 16px 16px; background-position: center; opacity: .8;
+  }
+  .card.txt::before { left: 0; }
+  .card.txt::after { right: 0; }
+  .card.txt .inner { padding: 18px 26px; display: flex; flex-direction: column; gap: 10px; height: 100%; }
+  .card.txt .rt { font-family: var(--serif); font-size: 17px; color: var(--gold-soft); letter-spacing: .03em; }
+  .card.txt .scene { font-size: 12px; color: var(--muted); }
+  .card.txt .scene b { color: var(--amber); font-weight: 600; }
+  .card.txt .pwrap { margin-top: auto; }
+  .card.txt .prompt {
+    font-family: var(--mono); font-size: 11.5px; line-height: 1.6; color: var(--ink);
+    background: rgba(217,164,65,.06); border-left: 2px solid var(--gold);
+    padding: 9px 11px; border-radius: 2px; white-space: pre-wrap; word-break: break-word;
+  }
+
+  /* ============ 预设卡：横跨大卡 · 左图右文 ============ */
+  .card.preset {
+    aspect-ratio: auto; grid-column: span 2; min-height: 0; cursor: default;
+    background: linear-gradient(135deg, rgba(217,164,65,.05), rgba(10,9,12,.4));
+    border-color: rgba(217,164,65,.22);
+    display: grid; grid-template-columns: 300px 1fr; align-items: stretch;
+  }
+  .card.preset .media {
+    position: relative; inset: auto; height: 100%; min-height: 170px;
+    border-right: 1px solid var(--line);
+  }
+  .card.preset .media img { object-fit: contain; }
+  .card.preset .inner { padding: 20px 24px; display: flex; flex-direction: column; gap: 11px; justify-content: center; }
+  @media (max-width: 560px) { .card.preset { grid-template-columns: 1fr; } .card.preset .media { min-height: 150px; border-right: none; border-bottom: 1px solid var(--line); } }
+  .card.preset .rt { font-family: var(--serif); font-size: 18px; color: var(--gold-soft); }
+  .card.preset .rt .star { color: var(--gold); }
+  .card.preset .scene { font-size: 12px; color: var(--muted); }
+  .card.preset .scene b { color: var(--amber); font-weight: 600; }
+  .card.preset .prompt {
+    font-family: var(--mono); font-size: 12px; line-height: 1.65; color: var(--ink);
+    background: rgba(8,7,10,.5); border: 1px solid var(--line); border-left: 2px solid var(--gold);
+    padding: 11px 13px; border-radius: 2px; white-space: pre-wrap; word-break: break-word;
+  }
+  @media (max-width: 720px) { .card.preset { grid-column: 1 / -1; } }
+
+  footer {
+    color: var(--faint); font-size: 11.5px; padding: 30px 40px; text-align: center;
+    border-top: 1px solid var(--line); letter-spacing: .04em; font-family: var(--serif);
+  }
+  code { font-family: var(--mono); }
+</style>
+</head>
+<body>
+<header>
+  <div class="head-inner">
+    <div class="brand">
+      <span class="mark">Seedance</span>
+      <h1>视觉语言画廊</h1>
+    </div>
+    <div class="navrow">
+      <div class="tabs" id="tabs"></div>
+      <div class="search">
+        <svg class="ico" viewBox="0 0 20 20" width="14" height="14" aria-hidden="true"><circle cx="9" cy="9" r="6" fill="none" stroke="currentColor" stroke-width="1.6"/><line x1="13.5" y1="13.5" x2="18" y2="18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <input id="q" type="search" placeholder="搜索全部维度：名称 / 适用 / 提示词" autocomplete="off" spellcheck="false">
+        <span class="hits" id="hits"></span>
+      </div>
+    </div>
+  </div>
+</header>
+<main>
+  <div class="dim-head">
+    <div class="idx" id="dimIdx">01</div>
+    <div class="meta">
+      <h2 class="dim-name" id="dimName"></h2>
+      <p class="dim-desc" id="dimDesc"></p>
+    </div>
+  </div>
+  <div class="grid" id="grid"></div>
+</main>
+<footer>
+  Seedance · 视觉语言画廊 · 154 项镜头语汇
+</footer>
+
+<button id="toTop" class="to-top" title="回到顶部" aria-label="回到顶部">
+  <svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true"><path d="M10 5l5 6H5z" fill="currentColor"/></svg>
+</button>
+
+<script>
+// ============ 媒体根（相对 _work/） ============
+const M = "media/";
+
+// ============ 六维度数据（蒸馏自对应 md） ============
+const DATA = {
+  "shot-scale": {
+    name: "景别 / 焦点",
+    desc: "景别是镜头取景的远近，决定画面里装多少环境、人物占多大、情绪有多近；焦点决定哪儿清晰哪儿虚。\n填导演法【画面内容】的景别子字段。",
+    items: [
+      { t:"大远景 / 极远景", m:"shot-scale/shot_extreme-wide.mp4", scene:"开场定场、场景切换首镜、压渺小感", prompt:"大远景，<环境主体>占满画面，人物渺小或不入画，<时间光影>，<天气>，电影级广角，空间层次清楚" },
+      { t:"远景 / 全景", m:"shot-scale/shot_full.mp4", scene:"看清全身动作、交代人物与空间关系", prompt:"全景，<人物>全身入画站/走于<环境>，<动作>，环境细节丰富，<光影>" },
+      { t:"中景", m:"shot-scale/shot_medium.mp4", scene:"对白戏、日常动作主力（默认安全值）", prompt:"中景，<人物>腰部以上，<表情/上半身动作>，<场景背景>虚化或保留，<光影>" },
+      { t:"近景 / 中近景", m:"shot-scale/shot_closeup.mp4", scene:"情绪转折、需读到微表情、反应镜", prompt:"近景，<人物>面部清晰，<具体情绪/微表情>，浅景深背景虚化，<光影>" },
+      { t:"特写", m:"shot-scale/shot_extreme-closeup.mp4", scene:"情绪爆点、关键道具亮相、悬念揭示", prompt:"特写，<面部或局部>充满画面，<情绪/细节>，浅景深，<光影>" },
+      { t:"大特写 / 微距", m:"shot-scale/shot_macro.mp4", scene:"微小细节事件化、产品材质极致展示", prompt:"大特写/微距，<极小细节>放大充满画面，<动态变化>，<质感/反光>" },
+      { t:"深焦", m:"shot-scale/focus_deep.mp4", scene:"交代环境全貌、前后景并重、史诗场面", prompt:"深焦，前景到远景全部清晰锐利，大景深，<场景>" },
+      { t:"浅焦 / 浅景深", m:"shot-scale/focus_shallow.mp4", scene:"突出单一主体、人像质感、虚化杂乱背景", prompt:"浅景深，<主体>清晰，背景柔和虚化成光斑bokeh，焦点锁定<主体>" },
+      { t:"变焦点 / 焦点转移", m:"shot-scale/focus_rack.mp4", scene:"把注意力从 A 引到 B、揭示背景信息", prompt:"焦点转移rack focus，焦点从<前景主体>平滑转移到<背景主体>，前者渐虚后者渐实" },
+      { t:"柔焦", m:"shot-scale/focus_soft.mp4", scene:"闪回、梦境、浪漫/怀旧氛围", prompt:"柔焦，整体轻微朦胧柔化，梦幻怀旧氛围，<场景>" }
+    ]
+  },
+  "composition": {
+    name: "构图 / 机位角度",
+    desc: "构图决定视线往哪走、主体放哪、画面是否平衡；机位角度是镜头相对被摄体的高低方位，改变观众与主体的权力关系。\n填导演法【画面内容】的构图子字段。",
+    items: [
+      { t:"三分法", m:"composition/comp_rule-of-thirds.webp", scene:"拿不准时默认值、面部/地平线放三分线", prompt:"三分法构图，<主体>置于画面<左/右>三分点，<视线/留白方向>" },
+      { t:"中心构图 / 对称", m:"composition/comp_symmetrical.mp4", scene:"威严/仪式/秩序感、韦斯·安德森式工整", prompt:"中心对称构图，<主体>居中，左右元素镜像平衡，<风格>" },
+      { t:"引导线", m:"composition/comp_leading-lines.mp4", scene:"视线被牵向主体或灭点、强调纵深", prompt:"引导线构图，<道路/线条>延伸引导视线至<主体>，强透视纵深" },
+      { t:"框架式", m:"composition/comp_frame-in-frame.mp4", scene:"窥探、隔阂、封闭感、给主体加视觉重点", prompt:"框架式构图，透过<门/窗/拱>看向<主体>，前景框暗、主体亮" },
+      { t:"负空间", m:"composition/comp_negative-space.mp4", scene:"孤独、渺小、辽阔、留白的情绪张力", prompt:"负空间构图，<主体>极小置于画面一角，大面积<环境/留白>包围" },
+      { t:"对角线", m:"composition/comp_diagonal.webp", scene:"动势、冲突、失衡（追逐、坠落、对峙）", prompt:"对角线构图，<主体/动线>沿画面对角延伸，动感强烈" },
+      { t:"平视（eye level）", m:"composition/angle_eye-level.webp", scene:"常规对白、客观叙事的默认角度", prompt:"平视，镜头与主体视线齐平，中性客观平等" },
+      { t:"高角度俯拍", m:"composition/angle_high.mp4", scene:"角色显弱势、被困、交代群体队形", prompt:"高角度俯拍，镜头自上方俯视<主体>，主体显渺小" },
+      { t:"低角度仰拍", m:"composition/angle_low.mp4", scene:"塑造强势、威胁、崇高（反派/英雄登场）", prompt:"低角度仰拍，镜头自下方仰视<主体>，主体显高大威严" },
+      { t:"鸟瞰 / 顶视", m:"composition/angle_birdseye.mp4", scene:"展示队形、路径、几何图案、全知疏离", prompt:"（机位角度·正上方垂直俯视，空间抽象成图案，上帝视角）" },
+      { t:"虫眼 / 极低仰视", m:"composition/angle_wormseye.mp4", scene:"极端压迫/仰望的特殊情绪镜", prompt:"（机位角度·极低位向上看，极端高耸、压迫、被困）" },
+      { t:"过肩", m:"composition/angle_ots.mp4", scene:"对白正反打主力、建立对峙方位关系", prompt:"过肩镜头，从<A>肩后越过看向<B>，<B>清晰<A>虚化" },
+      { t:"主观视角 POV", m:"composition/angle_pov.mp4", scene:"极致代入、模拟角色感知（恐惧/探索）", prompt:"第一人称主观视角POV，模拟<角色>所见，<手/动作>从画面下方入画，轻微呼吸晃动" },
+      { t:"航拍", m:"composition/angle_aerial.mp4", scene:"建立镜头、规模展示、段落转场", prompt:"（机位角度·高空俯拍或飞行轨迹，展现地理规模与史诗感）" }
+    ]
+  },
+  "camera-move": {
+    name: "运镜手法",
+    desc: "运镜是镜头自身的移动或转动，给静止画面注入情绪与节奏，是 AI 视频最需明写的控制点。\n填导演法【画面内容】的运镜手法子字段。速度（缓慢/匀速/快速）可单独叠加。\n五类速查词库：\n①建立镜头—远景/大全景/俯拍/低角度仰拍；\n②角色镜头—中近景/特写/过肩/侧后方跟拍；\n③运动镜头—缓慢推镜/快速拉远/横向平移/环绕/升降/手持晃动；\n④产品镜头—微距特写/棚拍转台/光线扫过/材质细节拉近；\n⑤情绪镜头—浅景深/焦点转移/慢动作/逆光轮廓/闪回过渡。",
+    items: [
+      { t:"固定 / 静止", m:"camera-move/move_static.mp4", scene:"稳定观察、留表演空间、对照后续制造反差", prompt:"固定镜头，机位完全不动，<主体在画框内的动作>；镜头在整段中保持完全静止，运动只来自主体" },
+      { t:"推镜（push in）", m:"camera-move/move_push-in.mp4", scene:"情绪升温、揭示、把注意力锁向主体", prompt:"缓慢推镜，镜头逐渐靠近<主体面部/物件>，背景渐虚化" },
+      { t:"拉镜（pull back）", m:"camera-move/move_pull-back.mp4", scene:"段落收尾、揭示更大环境、情绪释放", prompt:"缓慢拉镜，镜头后退，从<近>拉至<远>，逐渐展开<环境>" },
+      { t:"摇镜（pan，水平）", m:"camera-move/move_pan.mp4", scene:"横向交代环境、两主体间转移、定场扫描", prompt:"水平摇镜，从固定机位<左至右/右至左>扫过<场景>，停在<主体>" },
+      { t:"俯仰（tilt，垂直）", m:"camera-move/move_tilt.mp4", scene:"揭示高度或纵向关系（脚到头、地到天）", prompt:"垂直俯仰，镜头自<下而上/上而下>，从<底部细节>升到<顶部全貌>" },
+      { t:"移镜（dolly，前后）", m:"camera-move/move_dolly.mp4", scene:"跟随主体前进/后退、真实空间穿越感", prompt:"（机位沿轨道前后移动，透视自然变化，真实纵深感）" },
+      { t:"横移（truck，左右）", m:"camera-move/move_truck.mp4", scene:"跟拍横向行走/奔跑、长卷式场景", prompt:"镜头向<左/右>横移，平行跟随<主体>行走，背景横向流过" },
+      { t:"跟拍（tracking）", m:"camera-move/move_tracking.mp4", scene:"让观众跟着主体行动（奔跑、穿行人群）", prompt:"跟拍镜头，稳定跟随<主体>奔跑/穿行，背景流动" },
+      { t:"升降（pedestal，垂直平移）", m:"camera-move/move_pedestal.mp4", scene:"跟随主体起立/坐下、垂直揭示物件", prompt:"（机位垂直上升/下降，平移地揭示纵向信息）" },
+      { t:"摇臂 / 升降臂（crane）", m:"camera-move/move_crane.mp4", scene:"开场或收尾的大气揭示", prompt:"摇臂镜头，平滑<上升/下降>，从<近景主体>揭示到<广阔环境>" },
+      { t:"环绕（orbit，360°）", m:"camera-move/move_orbit.mp4", scene:"产品/角色全方位展示、强调高光瞬间", prompt:"缓慢环绕镜头，360度绕<主体>旋转，逐一展示各角度细节" },
+      { t:"弧线（arc）", m:"camera-move/move_arc.mp4", scene:"要动势但不必整圈环绕", prompt:"（镜头沿弧线绕主体局部移动，动感优雅，比环绕克制）" },
+      { t:"变焦（zoom）", m:"camera-move/move_zoom.mp4", scene:"快速拉近注意力、复古/电视感", prompt:"（焦段变化使主体变大/变小，机位不动，透视被压缩）" },
+      { t:"急推变焦（crash zoom）", m:"camera-move/move_crash-zoom.mp4", scene:"突发事件、惊吓点、漫画式强调", prompt:"急推变焦，镜头猛然快速推近<主体面部/物件>" },
+      { t:"甩镜（whip pan）", m:"camera-move/move_whip-pan.mp4", scene:"快速转场、连接两空间/人物、节奏加速", prompt:"快速甩镜转场，画面模糊横扫，从<画面A>切到<画面B>" },
+      { t:"手持（handheld）", m:"camera-move/move_handheld.mp4", scene:"真实粗粝感、紧张临场、纪实风格", prompt:"手持镜头，自然轻微晃动，纪录片质感，<场景>（要剧烈则写剧烈抖动）" },
+      { t:"斯坦尼康（steadicam）", m:"camera-move/move_steadicam.mp4", scene:"长距离平滑跟随、长镜头调度且不要手持粗粝", prompt:"斯坦尼康/云台镜头，平滑稳定地跟随<主体>穿行<环境>，无抖动" },
+      { t:"云台（gimbal）", m:"camera-move/move_gimbal.mp4", scene:"同斯坦尼康——稳定器边走边拍丝滑无抖", prompt:"斯坦尼康/云台镜头，平滑稳定地跟随<主体>穿行<环境>，无抖动" }
+    ]
+  },
+  "lighting-tone": {
+    name: "色彩与影调",
+    desc: "色彩与影调管画面是暖是冷、对比强弱、明调暗调、有无颗粒滤镜，是风格核心与视觉基调之下随段落微调的一层——靠它做情绪起伏。\n填导演法【氛围与画质】的「色彩与影调」槽。27 种电影光影分七类。",
+    items: [
+      { t:"黄金时刻（暖调）", m:"lighting-tone/14_golden-hour.mp4", scene:"温暖、怀旧、希望、收尾释然、高光时刻", prompt:"黄金时刻暖光，低角度落日逆光浸透画面，暖橙薄雾，树木逆光，长投影，电影感风光" },
+      { t:"烛光 / 巴洛克（暖调）", m:"lighting-tone/19_candlelight.mp4", scene:"私密、危险逼近、宗教古典庄重、独处", prompt:"烛光照明，火光局部照亮主体，大面积深沉阴影，暖色辉光，明暗对照强烈chiaroscuro，亲密氛围" },
+      { t:"棕褐西部（暖调）", m:"lighting-tone/13_sepia.mp4", scene:"年代久远、西部荒野、旧照片怀旧", prompt:"棕褐色调sepia，单色棕褐染色，西部片美学，暖调做旧，老照片质感" },
+      { t:"蓝调时刻（冷调）", m:"lighting-tone/15_blue-hour.mp4", scene:"忧郁、孤独、临界、夜将至的怅惘", prompt:"蓝调时刻twilight，日落后深蓝天光，冷色调，深蓝，低饱和，忧郁光线" },
+      { t:"北欧冷郁（冷调）", m:"lighting-tone/05_nordic-noir.mp4", scene:"压抑、阴沉、犯罪悬疑、北地疏离冷感", prompt:"北欧冷郁风Nordic noir，去饱和蓝灰色调，阴天散射光，色彩寡淡，阴冷压抑氛围" },
+      { t:"钠灯工业（冷调）", m:"lighting-tone/17_sodium-vapor.mp4", scene:"都市夜、工业区、孤冷城市感", prompt:"钠灯照明，橙黄路灯单色光，城市夜，工业氛围" },
+      { t:"高调明亮（高低调）", m:"lighting-tone/18_high-key.mp4", scene:"明快、干净、商业、轻松（广告、日常）", prompt:"高调照明high key，画面明亮通透，低对比，干净白净色调，商业美学" },
+      { t:"黑白明暗对照（高低调）", m:"lighting-tone/04_film-noir.mp4", scene:"宿命、悬疑、硬派、复古黑色电影", prompt:"黑色电影film noir，黑白单色，明暗对照chiaroscuro，高对比单色，戏剧性阴影" },
+      { t:"剪影（高低调）", m:"lighting-tone/20_silhouette.mp4", scene:"神秘、孤绝、图形化张力、隐藏身份", prompt:"剪影风格，强逆光主体，高对比，前景纯黑剪影" },
+      { t:"漂白旁路（高低调）", m:"lighting-tone/02_bleach-bypass.mp4", scene:"粗粝、冷酷、战争/末世、纪实硬派", prompt:"漂白旁路bleach bypass，银盐保留，去饱和，高对比，粗粝颗粒质感" },
+      { t:"青橙大片调（商业）", m:"lighting-tone/01_teal-orange.mp4", scene:"好莱坞商业大片高级感默认调", prompt:"青橙调色teal and orange，肤色暖橙、阴影青蓝，互补色对比，商业大片美学" },
+      { t:"韦斯·安德森粉彩（商业）", m:"lighting-tone/07_wes-anderson.mp4", scene:"工整、童趣、复古文艺、对称仪式感", prompt:"粉彩色板，韦斯·安德森风格，35mm 胶片质感，平光，对称构图" },
+      { t:"柯达克罗姆（复古胶片）", m:"lighting-tone/11_kodachrome.mp4", scene:"怀旧、年代感、纪实、温暖旧时光", prompt:"柯达克罗姆Kodachrome胶片，复古摄影，暖色调，档案影像，模拟胶片质感" },
+      { t:"CineStill 800T 夜景（复古胶片）", m:"lighting-tone/12_cinestill-800t.mp4", scene:"都市夜、霓虹、迷离现代感、胶片夜", prompt:"CineStill 800T 胶片，高光红色光晕halation，钨丝灯白平衡，电影感夜晚，35mm 胶片" },
+      { t:"特艺三色（复古胶片）", m:"lighting-tone/03_technicolor.mp4", scene:"浓烈、华丽、黄金时代好莱坞鲜艳古典", prompt:"特艺三色Technicolor，三色染印，超饱和，复古影院，艳丽色彩" },
+      { t:"局部留色（单色双色）", m:"lighting-tone/24_selective-color.mp4", scene:"强调单一关键元素、罪恶之城式风格化", prompt:"局部留色selective color，整体黑白，仅<某物>保留鲜艳<红>色，罪恶之城风格，色彩隔离" },
+      { t:"双色调（单色双色）", m:"lighting-tone/23_duotone.mp4", scene:"海报感、波普、风格化平面美学", prompt:"双色调duotone，双色曝光，<色A>与<色B>双色板，波普艺术" },
+      { t:"交叉冲印（单色双色）", m:"lighting-tone/25_cross-processed.mp4", scene:"失真、迷幻、lomo 复古、不安化学感", prompt:"交叉冲印cross-processed，色彩偏移，非自然色，lomo 风格，化学失衡色调" },
+      { t:"赛博朋克霓虹（科幻特殊光）", m:"lighting-tone/16_cyberpunk.mp4", scene:"科幻、都市夜、迷离高科技（影调层）", prompt:"赛博朋克霓虹，品红青色霓虹照明，反光面，霓虹黑色电影neon noir，湿润街道" },
+      { t:"矩阵绿（科幻特殊光）", m:"lighting-tone/06_matrix-green.mp4", scene:"数字虚拟、反乌托邦、监控/代码世界", prompt:"绿色染调，荧光绿，矩阵Matrix美学，反乌托邦色板" },
+      { t:"夜视监控（科幻特殊光）", m:"lighting-tone/10_night-vision.mp4", scene:"监控、潜入、伪纪录的紧张窥探感", prompt:"监控录像CCTV，夜视，单色绿，安防摄像头，颗粒噪点，监控信号画面" },
+      { t:"生物荧光（科幻特殊光）", m:"lighting-tone/21_bioluminescence.mp4", scene:"奇幻、梦境、深海/森林秘境的魔法感", prompt:"生物荧光bioluminescence，发光植物，深蓝夜，有机霓虹，魔幻氛围" },
+      { t:"紫外黑光（科幻特殊光）", m:"lighting-tone/27_ultraviolet.mp4", scene:"迷幻派对、超现实、荧光夜店", prompt:"紫外黑光blacklight，荧光发亮，UV 反应色，深紫调" },
+      { t:"红外航空（科幻特殊光）", m:"lighting-tone/22_infrared.mp4", scene:"超现实、异星、梦境般颠倒色世界", prompt:"红外摄影infrared，柯达Aerochrome，粉红树木，伪色，超现实色彩" },
+      { t:"热成像（科幻特殊光）", m:"lighting-tone/26_thermal.mp4", scene:"科技窥视、狩猎/追踪、非人视角", prompt:"热成像thermal imaging，热力图，红外相机，温度色谱，掠食者视角" },
+      { t:"太阳朋克（科幻特殊光）", m:"lighting-tone/08_solarpunk.mp4", scene:"明亮乐观的生态未来、绿色乌托邦", prompt:"太阳朋克solarpunk，生态未来主义，繁茂绿植，明亮阳光，白绿色板" },
+      { t:"蒸汽朋克（科幻特殊光）", m:"lighting-tone/09_steampunk.mp4", scene:"维多利亚工业、黄铜机械、复古蒸汽时代", prompt:"蒸汽朋克steampunk，黄铜紫铜质感，维多利亚工业，暖金氛围，蒸汽" }
+    ]
+  },
+  "style-core": {
+    name: "风格核心 / 画风",
+    desc: "风格核心定整片是什么质感的世界、哪个题材流派，整片不变。\n下列 94 个具名风格逐字对齐即梦官方风格库三个 tab（真人 / 2D / 3D），中文风格名直接当 prompt 锚点粘进【氛围与画质】的「风格核心」。",
+    group: true,
+    items: [
+      // ——— 真人 ———
+      ["真人","复古科幻原子朋克","01_retro-atompunk.webp","复古科幻原子朋克风格，原子时代流线型设计，复古暖橙冷蓝高对比，胶片颗粒，真人实景质感"],
+      ["真人","宫斗权谋冷峻风格","02_palace-intrigue.webp","宫斗权谋冷峻风格，低饱和冷调，烛光暖点缀，阴翳布光，繁复宫装陈设，压抑张力，真人实景"],
+      ["真人","国产悬疑冷调","03_cn-suspense-cold.webp","国产悬疑冷调，冷青蓝灰主调，阴郁低对比，写实纪实质感，克制布光，真人实景"],
+      ["真人","古偶唯美柔光","04_guzhuang-soft.webp","古偶唯美柔光，柔焦高光晕，粉白暖调，浅景深虚化，飘逸古装，梦幻氛围，真人实景"],
+      ["真人","日式青春胶片","05_jp-youth-film.webp","日式青春胶片，自然柔光，清新低饱和，35mm 胶片颗粒，生活化构图，淡雅通透"],
+      ["真人","日式生活自然","06_jp-life-natural.webp","日式生活自然主义，自然光，真实生活场景，柔和低对比，温润纪实质感"],
+      ["真人","韩剧都市柔光","07_kdrama-soft.webp","韩剧都市柔光，通透柔光，高级灰冷调，浅景深，精致时尚质感，真人实景"],
+      ["真人","国产都市写实","08_cn-urban-real.webp","国产都市写实，自然写实布光，贴近生活色调，真实都市场景，纪实质感"],
+      ["真人","武侠江湖写实摄影风格","09_wuxia-real.webp","武侠江湖写实摄影，苍劲质感，烟尘风沙，低饱和冷暖，自然外光，厚重历史感，真人实景"],
+      ["真人","90年代写实电影风格","10_90s-realism.webp","90 年代写实电影风格，胶片质感，偏暖泛黄，轻微颗粒暗角，年代陈设，朴素写实"],
+      ["真人","复古叙事电影风格","11_retro-narrative.webp","复古叙事电影风格，复古暖调，柔和胶片质感，考究构图，低对比，叙事性布光"],
+      ["真人","美式复古好莱坞","12_us-retro-hollywood.webp","美式复古好莱坞，高光泽布光，华丽暖金调，经典三点打光，戏剧性质感，真人实景"],
+      ["真人","霓虹赛博电影风格","13_neon-cyber.webp","霓虹赛博电影风格，霓虹招牌与雨后反光街道，青品红强对比，暗部迷离，《银翼杀手》氛围，真人实景"],
+      ["真人","90 年代中国农村电影风格","14_90s-cn-rural.webp","90 年代中国农村电影风格，泛黄暖土调，自然外光，朴素乡村陈设，胶片颗粒，纪实生活感"],
+      ["真人","中式暖调蓝辉风格","15_cn-warm-blue.webp","中式暖调蓝辉风格，暖橙主调点缀冷蓝辉光，温润布光，柔和对比，中式生活场景，真人实景"],
+      ["真人","老式工业影视风格","16_old-industrial.webp","老式工业影视风格，冷硬金属灰，厂房机械，低饱和，粗粝质感，硬光投影，真人实景"],
+      ["真人","日本黑白胶片摄影风格","17_jp-bw-film.webp","日本黑白胶片摄影，黑白胶片，丰富灰阶，自然颗粒，克制构图，静谧文艺感"],
+      ["真人","韩国冷淡风电影风格","18_kr-cool-minimal.webp","韩国冷淡风电影风格，冷灰极简，留白构图，低饱和，自然散光，疏离克制氛围，真人实景"],
+      ["真人","荒野电影风格","19_wilderness.webp","荒野电影风格，广袤自然外景，自然天光，大地色调，粗粝质感，苍茫纵深，真人实景"],
+      ["真人","橙黄色电影风格","20_amber-yellow.webp","橙黄色电影风格，整片橙黄统调，暖金高光，低饱和暖土，柔和对比，怀旧胶片质感，真人实景"],
+      ["真人","复古战争电影风格","21_retro-war.webp","复古战争电影风格，低饱和土褐冷绿，烟尘硝烟，粗粝胶片，自然硬光，厚重历史质感"],
+      ["真人","恐怖电影风格","22_horror.webp","恐怖电影风格，高反差暗调，阴影包裹，冷绿冷蓝，局部硬光，压抑惊悚氛围，真人实景"],
+      ["真人","复古电影摄影风格","23_retro-cinephoto.webp","复古电影摄影风格，经典胶片质感，柔和高光滚降，有机色彩，考究布光，电影感纵深"],
+      ["真人","美式复古怪异影视风格","24_us-retro-weird.webp","美式复古怪异影视风格，复古美式陈设，诡异饱和配色，不安构图，戏剧硬光，怪异疏离感"],
+      ["真人","荒诞高调白色色调电影风格","25_absurd-highkey-white.webp","荒诞高调白色色调电影风格，高调过曝白，极低对比，大面积留白，柔和无影布光，疏离荒诞感，真人实景"],
+      ["真人","蓝橙色调影视风格","28_teal-orange-tone.webp","蓝橙色调影视风格，蓝橙互补高对比，肤色暖橙，暗部冷青，强戏剧布光，电影通透质感，真人实景"],
+      ["真人","工业电影风格","29_industrial-film.webp","工业电影风格，冷硬金属质感，厂区机械，冷蓝灰，硬光高光，精密机械细节，真人实景"],
+      ["真人","美式经济上行风格","30_us-boom.webp","美式经济上行风格，明亮乐观暖调，繁华都市，复古时尚妆造，饱满布光，繁荣气质，真人实景"],
+      ["真人","90年代港片风格","31_90s-hk.webp","90 年代港片风格，霓虹与暖钨光，潮湿市井街景，高饱和复古，胶片颗粒，港味烟火气"],
+      ["真人","科技感电影风格","32_techy-film.webp","科技感电影风格，冷蓝高光泽，通透洁净，精密界面与材质，硬朗布光，未来科技质感，真人实景"],
+      ["真人","悬疑电影风格","33_suspense-film.webp","悬疑电影风格，低调暗部，冷调克制，阴影分割，局部硬光，紧张未知氛围，真人实景"],
+      ["真人","希腊神话电影风格","34_greek-myth.webp","希腊神话电影风格，大理石与金光，古典布景，暖金高光，史诗纵深，庄严神性质感，真人实景"],
+      ["真人","美式复古影视风格","35_us-retro-film.webp","美式复古影视风格，复古暖调，美式陈设，柔和胶片质感，考究布光，怀旧生活感，真人实景"],
+      ["真人","好莱坞黑白电影风格","36_hollywood-bw.webp","好莱坞黑白电影风格，黑白高光泽，戏剧性硬光与阴影，丰富灰阶，经典构图，古典华丽感"],
+      ["真人","紫色色调电影风格","43_purple-tone.webp","紫色色调电影风格，紫调统一，品红与冷紫渐变，暗部偏紫，迷离柔光，梦幻暧昧氛围，真人实景"],
+      // ——— 2D ———
+      ["2D","二次元概念艺术风格","41_anime-concept-art.webp","二次元概念艺术风格，精细二次元造型，概念美术构图，丰富细节，氛围光，绘画质感"],
+      ["2D","美国游戏概念艺术风格","57_us-game-concept.webp","美国游戏概念艺术风格，欧美写实插画，宏大场景概念，厚涂质感，戏剧氛围光，绘画构成"],
+      ["2D","日系平涂插画风格","59_jp-flat-illust.webp","日系平涂插画风格，扁平平涂上色，干净线条，清新配色，简洁阴影，二维平面感"],
+      ["2D","插画蒸汽波风格","60_illust-vaporwave.webp","插画蒸汽波风格，粉青紫粉彩双色调，几何网格地平线，复古元素，扫描线辉光，梦幻氛围"],
+      ["2D","赛博朋克数字插画风格","62_cyberpunk-illust.webp","赛博朋克数字插画风格，霓虹光效，雨夜反光，青品红强对比，数字厚涂，科幻氛围"],
+      ["2D","游戏概念艺术风格","63_game-concept-art.webp","游戏概念艺术风格，概念美术构图，厚涂质感，氛围光影，丰富细节，绘画构成"],
+      ["2D","国漫二次元常用风格","64_guoman-anime.webp","国漫二次元常用风格，国漫造型，清晰线条，赛璐珞上色，明亮配色，二次元质感"],
+      ["2D","达利风格","70_dali.webp","达利风格，超现实意象，扭曲变形，荒诞构成，油画质感，梦境氛围"],
+      ["2D","黑白水墨风格","72_bw-ink.webp","黑白水墨风格，墨色浓淡晕染，大量留白，毛笔笔触，写意东方质感"],
+      ["2D","美国漫画动画插画风格","75_us-comic-illust.webp","美国漫画动画插画风格，粗黑描边，网点与平涂，高饱和配色，夸张动势，美漫质感"],
+      ["2D","复古肌理迷幻插画风格","76_retro-psychedelic-illust.webp","复古肌理迷幻插画风格，复古肌理，迷幻配色，流动有机图形，做旧质感，致幻氛围"],
+      ["2D","儿童蜡笔手绘插画风","77_kids-crayon.webp","儿童蜡笔手绘插画风，蜡笔笔触，稚拙线条，明亮糖果色，纸面纹理，童真手绘感"],
+      ["2D","黑白二维漫画动画风格","78_bw-2d-comic.webp","黑白二维漫画动画风格，黑白线稿，网点阴影，清晰描边，高对比，漫画分镜质感"],
+      ["2D","高质量2D热血漫风格","79_hq-2d-shonen.webp","高质量 2D 热血漫风格，动感速度线，夸张动势，鲜明饱和，强烈光影，热血张力"],
+      ["2D","大友克洋风格","80_otomo-katsuhiro.webp","大友克洋风格，精密机械与都市，写实硬核线条，冷硬配色，宏大场面，复古科幻质感"],
+      ["2D","暗色调厚涂风格插画","81_dark-impasto-illust.webp","暗色调厚涂风格插画，浓郁厚涂笔触，暗调低饱和，戏剧光影，油画质感，阴郁氛围"],
+      ["2D","手冢治虫时代卡通画风","82_tezuka-era.webp","手冢治虫时代卡通画风，圆润复古造型，简洁线条，复古配色，经典赛璐珞，怀旧卡通质感"],
+      ["2D","上美画风","83_shangmei.webp","上美画风，中国传统美术，装饰性造型，民族配色，工笔与水墨质感，民族动画韵味"],
+      ["2D","中国神话风格","84_cn-myth.webp","中国神话风格，东方神话意象，祥云山海，金红主调，神性光晕，磅礴史诗质感"],
+      ["2D","二维卡通插画风格","85_2d-toon-illust.webp","二维卡通插画风格，卡通造型，清晰线条，平涂上色，明亮配色，二维平面感"],
+      ["2D","黑暗原画概念风格","86_dark-keyart.webp","黑暗原画概念风格，暗调厚涂，压抑配色，戏剧光影，宏大暗黑场景，阴郁概念美术"],
+      ["2D","皮影戏插画风格","87_shadow-puppet.webp","皮影戏插画风格，剪影造型，镂空纹样，暖黄透光，平面剪纸质感，传统民俗韵味"],
+      ["2D","美式黑暗插画风格","88_us-dark-illust.webp","美式黑暗插画风格，暗调厚涂，阴郁配色，戏剧硬光，扭曲造型，美式暗黑质感"],
+      ["2D","黑暗奇幻插画风格","89_dark-fantasy-illust.webp","黑暗奇幻插画风格，暗黑奇幻意象，低饱和暗调，戏剧光影，厚涂质感，宏大阴郁氛围"],
+      ["2D","暗黑漫画风格","90_dark-manga.webp","暗黑漫画风格，高对比黑白，浓重阴影，锐利线条，网点质感，压抑暗黑氛围"],
+      ["2D","简洁插画风格","91_clean-illust.webp","简洁插画风格，极简造型，大面积留白，干净线条，清爽配色，平面设计感"],
+      ["2D","复古半色调暗色调哥特风格","92_retro-halftone-goth.webp","复古半色调暗色调哥特风格，半色调网点，暗调哥特配色，做旧印刷质感，阴郁造型，复古恐怖氛围"],
+      ["2D","东方水墨画风","93_oriental-ink.webp","东方水墨画风，水墨晕染，留白意境，淡彩点染，毛笔笔触，写意东方韵味"],
+      ["2D","像素风","94_pixel-art.webp","像素风，方块像素，有限色板，点阵抖动，复古游戏质感，像素动画"],
+      // ——— 3D ———
+      ["3D","高品质动画渲染风格","26_hq-anim-render.webp","高品质动画渲染风格，精细次表面散射，柔和体积光，细腻材质，电影级 3D 渲染"],
+      ["3D","3D风格化渲染","27_3d-stylized.webp","3D 风格化渲染，夸张比例造型，风格化材质，艺术化布光，鲜明色彩，三维体积"],
+      ["3D","3D卡通微缩景观","37_3d-toon-miniature.webp","3D 卡通微缩景观，微缩模型质感，移轴浅景深，可爱卡通造型，柔和布光，精致小场景"],
+      ["3D","3D西方卡通风格的绘制","38_3d-western-toon-paint.webp","3D 西方卡通绘制风格，手绘笔触叠加三维体积，欧美卡通造型，暖明配色，绘制质感"],
+      ["3D","欧美风格化3D渲染","39_western-stylized-3d.webp","欧美风格化 3D 渲染，欧美审美造型，风格化材质配色，戏剧布光，夸张张力，三维体积"],
+      ["3D","3D数字雕刻风格","40_3d-sculpt.webp","3D 数字雕刻风格，高模雕刻细节，清晰结构面，棚拍布光，材质纹理，雕塑体量感"],
+      ["3D","3D国风高清渲染风格","42_3d-guofeng-hd.webp","3D 国风高清渲染风格，东方造型与服饰，精细高清材质，柔和体积光，国风配色，三维体积"],
+      ["3D","3D美式卡通游戏美术","44_3d-us-toon-game.webp","3D 美式卡通游戏美术，美式卡通造型，鲜明饱和配色，游戏美术质感，清晰描边，三维体积"],
+      ["3D","3D盲盒涂装风","45_3d-blindbox.webp","3D 盲盒涂装风，手办涂装质感，圆润可爱造型，磨砂塑料材质，柔和棚光，潮玩精致感"],
+      ["3D","动漫三渲二风格","46_anime-3d2d.webp","动漫三渲二风格，三维建模配二维赛璐珞上色，清晰描边，平面化阴影，二次元造型"],
+      ["3D","超现实3D渲染风格","47_surreal-3d.webp","超现实 3D 渲染风格，超现实构成，非常规材质与光，梦幻配色，漂浮元素，三维体积"],
+      ["3D","UE5写实渲染","48_ue5-realistic.webp","UE5 写实渲染，实时光追，写实材质，全局光照，高密度细节，电影级三维"],
+      ["3D","国风3D高清渲染风格","49_guofeng-3d-hd.webp","国风 3D 高清渲染风格，东方建筑与服饰，高清精细材质，磅礴体积光，国风配色，三维纵深"],
+      ["3D","3D卡通渲染风格","50_3d-toon-render.webp","3D 卡通渲染风格，圆润卡通造型，柔和材质，明亮配色，柔光布光，三维体积"],
+      ["3D","美国卡通3D渲染风格","51_us-toon-3d.webp","美国卡通 3D 渲染风格，美式夸张造型，弹性表情，鲜明配色，柔和布光，三维体积"],
+      ["3D","3D厚涂风格","52_3d-impasto.webp","3D 厚涂风格，厚涂笔触叠加三维体积，油画质感，浓郁配色，柔和布光"],
+      ["3D","3D真实感PBR渲染风格","53_3d-pbr.webp","3D 真实感 PBR 渲染风格，物理材质，精准反射与粗糙度，写实布光，高保真细节"],
+      ["3D","3D游戏渲染风格","54_3d-game-render.webp","3D 游戏渲染风格，游戏美术质感，风格化材质，戏剧布光，清晰角色造型，三维体积"],
+      ["3D","3D人物（简约卡通风）","55_3d-char-simple-toon.webp","3D 人物简约卡通风，简约几何造型，扁平配色，干净材质，柔和布光，极简卡通体积"],
+      ["3D","3D卡通动画风格","56_3d-toon-anim.webp","3D 卡通动画风格，卡通造型，流畅动画运动，明亮配色，柔和布光，三维体积"],
+      ["3D","复古Y2K奇幻风格","58_y2k-fantasy.webp","复古 Y2K 奇幻风格，千禧金属感，亮粉电蓝荧光，复古数码质感，高光泽，梦幻奇幻氛围"],
+      ["3D","3D魔幻角色扮演游戏","61_3d-rpg-fantasy.webp","3D 魔幻角色扮演游戏风格，奇幻装备造型，魔幻材质与特效，戏剧布光，宏大场景，三维纵深"],
+      ["3D","粘土动画风格","65_claymation.webp","粘土动画风格，粘土捏塑质感，指纹与凹凸，哑光材质，柔和布光，手作温度感"],
+      ["3D","3D加强版卡通渲染风格","66_3d-toon-plus.webp","3D 加强版卡通渲染风格，精细卡通造型，丰富次表面与材质，电影级布光，饱满配色"],
+      ["3D","3D中国奇幻动画","67_3d-cn-fantasy-anim.webp","3D 中国奇幻动画，东方奇幻造型，仙侠特效，磅礴体积光，国风配色，三维纵深"],
+      ["3D","3D光泽乳胶渲染风格","68_3d-glossy-latex.webp","3D 光泽乳胶渲染风格，乳胶高光泽材质，强反射高光，圆润造型，棚拍布光，时尚质感"],
+      ["3D","3D果冻状塑料风格","69_3d-jelly-plastic.webp","3D 果冻状塑料风格，半透明果冻材质，次表面通透，圆润弹性造型，柔和布光"],
+      ["3D","定格动画风格","71_stop-motion.webp","定格动画风格，实体偶材料质感，逐帧定格运动，手作布景，柔和布光，复古手工感"],
+      ["3D","3D西方卡通风格","73_3d-western-toon.webp","3D 西方卡通风格，欧美卡通造型，夸张表情，明亮配色，柔和布光，三维体积"],
+      ["3D","高清3D真实渲染风格","74_hd-3d-real.webp","高清 3D 真实渲染风格，高清写实材质，精细次表面，真实布光，高保真细节"]
+    ].map(function(x){ return { tag:x[0], t:x[1], m:"style-core/"+x[2], scene:x[0]+"风格", prompt:x[3] }; })
+  },
+  "visual-tone": {
+    name: "视觉基调",
+    desc: "视觉基调定这片子像用什么机器、什么画幅拍的（摄影机/镜头/画幅/胶片还是数字），整片不变，是画面的物理质感底色。\n按四子维分轴列选项，从四轴各挑一项叠成一句，或直接取文末精选预设。填导演法【氛围与画质】的「视觉基调」槽。",
+    fit: "contain",
+    items: [
+      { tag:"画幅", t:"变形宽银幕 2.39:1", m:"visual-tone/ratio_scope-2.39.webp", scene:"史诗、科幻、大场面的横向气派", prompt:"2.39:1 超宽银幕画幅anamorphic scope，宽幅电影构图，上下黑边letterbox，宏大横向纵深" },
+      { tag:"画幅", t:"平片宽幕 1.85:1", m:"visual-tone/ratio_flat-1.85.webp", scene:"剧情、喜剧、多数现代院线正片", prompt:"1.85:1 院线宽幕画幅flat widescreen，球面镜头自然透视，规整电影构图" },
+      { tag:"画幅", t:"学院画幅 1.37:1", m:"visual-tone/ratio_academy-1.37.webp", scene:"年代戏、文艺片、复古亲密的方盒子", prompt:"1.37:1 学院画幅Academy ratio，接近方形的复古画框，左右收窄，亲密古典构图" },
+      { tag:"画幅", t:"标准宽屏 16:9", m:"visual-tone/ratio_widescreen-16-9.webp", scene:"现代写实、网剧、流媒体、商业广告", prompt:"16:9 标准宽屏画幅，当代流媒体比例，无黑边，规整现代构图" },
+      { tag:"画幅", t:"IMAX 巨幕 1.43:1", m:"visual-tone/ratio_imax-1.43.webp", scene:"顶天立地的沉浸巨幕奇观", prompt:"IMAX 巨幕画幅1.43:1，接近方形的高画幅，强调垂直规模，沉浸式超高清晰度" },
+      { tag:"画幅", t:"竖屏 9:16", m:"visual-tone/ratio_vertical-9-16.webp", scene:"竖屏短剧、社媒原生内容", prompt:"9:16 竖屏画幅，纵向构图，人物充满竖画面，手机全屏原生观感" },
+      { tag:"拍摄格式", t:"Super 8 / 8mm 胶片", m:"visual-tone/fmt_super8.webp", scene:"回忆、闪回、家庭录像、梦境 lo-fi", prompt:"Super 8 毫米胶片质感，粗重颗粒，柔软发虚，画面轻微抖动跳格，暖旧偏色，怀旧家庭录像感" },
+      { tag:"拍摄格式", t:"16mm / Super 16 胶片", m:"visual-tone/fmt_super16.webp", scene:"独立电影、纪实、新好莱坞式粗粝", prompt:"16mm 胶片质感Super 16，明显而有机的胶片颗粒，扎实粗粝，略柔锐度，独立电影生活质感" },
+      { tag:"拍摄格式", t:"Super 35 胶片", m:"visual-tone/fmt_super35.webp", scene:"经典好莱坞正片、商业大片主力", prompt:"Super 35 胶片质感，细腻紧致胶片颗粒，丰富色彩，柔和高光滚降，标准好莱坞电影质感" },
+      { tag:"拍摄格式", t:"65mm / IMAX 胶片", m:"visual-tone/fmt_65mm.webp", scene:"史诗奇观、震撼风光、大场面巨制", prompt:"65mm 大画幅胶片质感65mm large format，近乎无颗粒，极致清晰，超高细节，浅景深，立体史诗临场感" },
+      { tag:"拍摄格式", t:"ARRI Alexa 数字", m:"visual-tone/fmt_arri-alexa.webp", scene:"现代电影、剧集、数字拍出胶片味", prompt:"ARRI Alexa 数字摄影质感，温暖奶油色彩，自然肤色，平滑高光滚降，高动态范围，干净有机的电影数字感" },
+      { tag:"拍摄格式", t:"RED 数字", m:"visual-tone/fmt_red.webp", scene:"高科技、动作、特效大片", prompt:"RED 数字摄影质感，8K 超高分辨率，锐利通透，暗部高对比戏剧感，浓郁色彩，现代数字感" },
+      { tag:"拍摄格式", t:"数字超清", m:"visual-tone/fmt_ultra-clean.webp", scene:"产品、商业广告、科技演示", prompt:"数字超清拍摄，极高锐度，高动态范围，干净无颗粒，精准色彩，8K 清晰，现代商业质感" },
+      { tag:"拍摄格式", t:"复古录像带 VHS", m:"visual-tone/fmt_vhs.webp", scene:"怀旧、伪纪录、复古 meme、80/90 电视感", prompt:"复古VHS录像带质感，扫描线，色彩溢出，磁带噪点，画面轻微抖动，低分辨率，怀旧家用录像感" },
+      { tag:"镜头性格", t:"变形宽银幕镜头", m:"visual-tone/lens_anamorphic.webp", scene:"科幻、动作、史诗的电影感光学签名", prompt:"变形宽银幕镜头anamorphic lens，横向蓝色水平眩光，竖向椭圆焦外光斑，中心锐利边缘渐软" },
+      { tag:"镜头性格", t:"球面镜头", m:"visual-tone/lens_spherical.webp", scene:"写实、纪实、亲密剧情的中性光学", prompt:"球面镜头spherical lens，圆形焦外bokeh，自然无变形透视，全画面均匀锐利" },
+      { tag:"镜头性格", t:"复古镀膜镜头", m:"visual-tone/lens_vintage.webp", scene:"复古、文艺、梦境的有灵魂瑕疵", prompt:"复古镀膜镜头vintage glass，低对比，柔光起雾眩光，高光晕开bloom，柔和有质感的复古光学" },
+      { tag:"镜头性格", t:"现代多层镀膜镜头", m:"visual-tone/lens_modern-coated.webp", scene:"商业、产品、现代写实的零瑕疵光学", prompt:"现代多层镀膜镜头，高对比高锐度，强抗眩光，通透干净，精准无瑕的当代光学" },
+      { tag:"胶片vs数字", t:"原生胶片质感", m:"visual-tone/mat_photochemical-film.webp", scene:"纯正胶片有机质感（颗粒/宽容度/光晕全有）", prompt:"原生胶片质感photochemical，银盐有机颗粒，柔和高光滚降，亮源处红橙光晕halation，大宽容度，有机色彩" },
+      { tag:"胶片vs数字", t:"数字干净质感", m:"visual-tone/mat_clean-digital.webp", scene:"现代写实、商业的纯数字材质", prompt:"数字干净质感clean digital，锐利无颗粒，像素级清晰，暗部干净，精准色彩，通透现代感" },
+      { tag:"胶片vs数字", t:"数字仿胶片质感", m:"visual-tone/mat_film-emulation.webp", scene:"数字拍摄但要胶片味（主流折中）", prompt:"数字仿胶片质感film emulation，叠加胶片颗粒，模拟柔光与高光晕，胶片色彩调色LUT，胶片感对比曲线" }
+    ],
+    presets: [
+      { t:"史诗大片（IMAX 史诗）", m:"visual-tone/preset_imax-epic.webp", use:"科幻巨制、战争史诗、震撼风光、大场面动作", prompt:"整片视觉基调：65mm 大画幅胶片质感65mm large format，2.39:1 超宽银幕画幅，变形宽银幕镜头横向蓝色水平眩光与竖向椭圆焦外，近乎无颗粒、极致清晰、立体如蚀刻的临场感，柔和高光滚降，宏大史诗质感。" },
+      { t:"文艺胶片（Super 16 独立片）", m:"visual-tone/preset_art-film.webp", use:"独立剧情、文艺片、纪实风、青春成长", prompt:"整片视觉基调：16mm 胶片质感Super 16，1.85:1 院线宽幕画幅，复古镀膜镜头柔光起雾眩光，明显而有机的胶片颗粒，扎实粗粝、略柔锐度，亮源处红橙光晕halation，扎根生活的独立电影质感。" },
+      { t:"现代商业（数字超清广告）", m:"visual-tone/preset_modern-commercial.webp", use:"产品广告、品牌大片、科技演示、现代都市写实", prompt:"整片视觉基调：数字超清拍摄、ARRI Alexa 数字质感，16:9 标准宽屏画幅，现代多层镀膜镜头高对比高锐度，干净无颗粒、高动态范围、精准色彩、平滑高光滚降，通透高级的当代商业质感。" },
+      { t:"经典好莱坞（Super 35 正片）", m:"visual-tone/preset_classic-hollywood.webp", use:"商业类型片、剧情长片、标准电影感通用底色", prompt:"整片视觉基调：Super 35 胶片质感，2.39:1 超宽银幕画幅，球面镜头圆形焦外、自然无变形透视，细腻紧致胶片颗粒，丰富色彩，柔和高光滚降，油润标准的经典好莱坞电影质感。" },
+      { t:"怀旧回忆（Super 8 录像）", m:"visual-tone/preset_nostalgia.webp", use:"闪回、梦境、回忆段落、lo-fi 复古 meme", prompt:"整片视觉基调：Super 8 毫米胶片质感，1.37:1 接近方形复古画框，复古镀膜镜头柔光起雾，粗重颗粒、柔软发虚、画面轻微抖动跳格，暖旧偏色，私密怀旧的家庭录像质感。" },
+      { t:"竖屏短剧（手机原生）", m:"visual-tone/preset_vertical-drama.webp", use:"竖屏短剧、社媒原生、口播带货、生活化 vlog", prompt:"整片视觉基调：数字干净质感、轻微手机镜头观感，9:16 竖屏画幅，球面镜头自然透视，锐利无颗粒、暗部干净、自然光，贴近生活的手机原生临场真实感。" }
+    ]
+  }
+};
+
+// ============ 渲染 ============
+const ORDER = ["style-core","visual-tone","lighting-tone","shot-scale","composition","camera-move"];
+const tabsEl  = document.getElementById("tabs");
+const gridEl  = document.getElementById("grid");
+const idxEl   = document.getElementById("dimIdx");
+const nameEl  = document.getElementById("dimName");
+const descEl  = document.getElementById("dimDesc");
+
+function esc(s){ return String(s).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c])); }
+function pad2(n){ return String(n).padStart(2,"0"); }
+
+function mediaHtml(item, fit){
+  const isVideo = /\.mp4$/i.test(item.m);
+  const src = M + item.m;
+  const cls = fit==="contain" ? ' class="media fit"' : ' class="media"';
+  if (isVideo) return '<div'+cls+'><video src="'+esc(src)+'" muted loop autoplay playsinline preload="metadata"></video></div>';
+  return '<div'+cls+'><img src="'+esc(src)+'" loading="lazy" alt="'+esc(item.t)+'"></div>';
+}
+
+// prompt 块：整块可点击复制（data-copy 存原文，点击复制；不再有独立按钮）
+function promptHtml(text){
+  return '<div class="pwrap">'
+    + '<div class="prompt" data-copy="'+esc(text)+'" title="点击复制提示词"><span class="copied-tip">已复制 ✓</span>'+esc(text)+'</div></div>';
+}
+
+// 卡片 data-search 标记（名称 + 标签 + 适用 + 提示词），HTML 转义后写入属性；
+// 全局搜索的实际匹配走 itemHit() 直接对数据对象算，此属性仅作语义标记保留
+function searchKey(o){
+  return esc([o.t, o.tag, o.scene, o.use, o.prompt].filter(Boolean).join(" ").toLowerCase());
+}
+
+// 画面优先卡：默认大画面+标题条，hover 浮出 scene + prompt
+function mediaCardHtml(item, no, delay, fit){
+  let h = '<div class="card" data-search="'+searchKey(item)+'" style="animation-delay:'+delay+'ms">';
+  h += mediaHtml(item, fit);
+  h += '<span class="no">'+esc(no)+'</span>';
+  if (item.tag) h += '<span class="tagchip">'+esc(item.tag)+'</span>';
+  h += '<div class="bartitle">'+esc(item.t)+'</div>';
+  h += '<div class="reveal">';
+  h += '<div class="rt">'+esc(item.t)+'</div>';
+  if (item.scene) h += '<div class="scene"><b>适用</b> '+esc(item.scene)+'</div>';
+  if (item.prompt) h += promptHtml(item.prompt);
+  h += '</div></div>';
+  return h;
+}
+
+// 无图文字卡（视觉基调）：胶片齿孔卡，全部常驻
+function txtCardHtml(item, delay){
+  let h = '<div class="card txt" data-search="'+searchKey(item)+'" style="animation-delay:'+delay+'ms"><div class="inner">';
+  h += '<div class="rt">'+esc(item.t)+'</div>';
+  if (item.scene) h += '<div class="scene"><b>适用</b> '+esc(item.scene)+'</div>';
+  if (item.prompt) h += promptHtml(item.prompt);
+  h += '</div></div>';
+  return h;
+}
+
+// 预设宽卡：左图右文
+function presetCardHtml(p, delay){
+  let h = '<div class="card preset" data-search="'+searchKey(p)+'" style="animation-delay:'+delay+'ms">';
+  if (p.m) h += mediaHtml(p, "contain");
+  h += '<div class="inner">';
+  h += '<div class="rt"><span class="star">★</span> '+esc(p.t)+'</div>';
+  h += '<div class="scene"><b>用于</b> '+esc(p.use)+'</div>';
+  h += promptHtml(p.prompt);
+  h += '</div></div>';
+  return h;
+}
+
+let groupSeq = 0;   // 分组序号，render 开头重置；供子目录锚点定位
+function groupLabel(text){
+  const id = "grp-" + (++groupSeq);
+  return '<div class="group-label" id="'+id+'" data-group="'+esc(text)+'">'+esc(text)+'</div>';
+}
+
+// 子目录锚点条：仅当本维度有 ≥2 个分组时生成，点击平滑滚到对应分组
+function subnavHtml(groups){
+  if (groups.length < 2) return "";
+  let h = '<nav class="subnav" aria-label="本维度分组导航">';
+  groups.forEach(g=>{ h += '<a class="subnav-link" href="#'+g.id+'" data-target="'+g.id+'">'+esc(g.text)+'</a>'; });
+  h += '</nav>';
+  return h;
+}
+
+let currentKey = ORDER[0];   // 当前浏览的维度；清空搜索时恢复它
+
+function render(key){
+  currentKey = key;
+  const dim = DATA[key];
+  const i = ORDER.indexOf(key);
+  idxEl.textContent  = pad2(i+1);
+  nameEl.textContent = dim.name;
+  descEl.textContent = dim.desc;
+
+  let html = "";
+  let n = 0;                         // 全维度连续序号
+  const step = 35;                   // 错峰动效步长(ms)
+  groupSeq = 0;                      // 重置分组序号，供子目录锚点
+
+  // 视觉基调：四子维分组 + 图文卡（按真实画幅 contain）+ 预设
+  if (dim.presets){
+    let lastTag = null;
+    dim.items.forEach(it=>{
+      if (it.tag !== lastTag){ html += groupLabel(it.tag); lastTag = it.tag; }
+      n++;
+      html += it.m ? mediaCardHtml(it, pad2(n), n*step, dim.fit) : txtCardHtml(it, n*step);
+    });
+    html += groupLabel("精选预设 · 开箱即用");
+    dim.presets.forEach(p=>{ html += presetCardHtml(p, (n++)*step); });
+  }
+  // 风格核心：真人/2D/3D 分组，画面优先卡
+  else if (dim.group){
+    let lastTag = null;
+    dim.items.forEach(it=>{
+      if (it.tag !== lastTag){ html += groupLabel(it.tag + " 风格"); lastTag = it.tag; }
+      n++;
+      html += mediaCardHtml(it, pad2(n), (n)*8);    // 94 张，步长更小
+    });
+  }
+  // 其余四维：画面优先卡
+  else {
+    dim.items.forEach(it=>{
+      n++;
+      html += it.m ? mediaCardHtml(it, pad2(n), n*step) : txtCardHtml(it, n*step);
+    });
+  }
+
+  gridEl.innerHTML = html;
+  // 子目录：渲染后收集本维度分组标题，≥2 组时在网格顶部注入锚点条
+  const groups = Array.from(gridEl.querySelectorAll(".group-label"))
+    .map(el=>({ id: el.id, text: el.getAttribute("data-group") || el.textContent }));
+  const subnav = subnavHtml(groups);
+  if (subnav) gridEl.insertAdjacentHTML("afterbegin", subnav);
+  document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active", t.dataset.key===key));
+  window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
+  if (qEl) { qEl.value = ""; hitsEl.textContent = ""; }   // 切维度清空搜索框（不触发 applyFilter，避免递归）
+}
+
+// 某项是否命中关键词（与 searchKey 同源字段：名称/标签/适用/用途/提示词）
+function itemHit(o, term){
+  return ([o.t, o.tag, o.scene, o.use, o.prompt].filter(Boolean).join(" ").toLowerCase()).indexOf(term) !== -1;
+}
+
+// ============ 全局搜索：跨 6 维列出所有命中项，按「来自某维度」分组 ============
+function renderGlobalSearch(term){
+  groupSeq = 0;
+  let html = "", total = 0, n = 0;
+  const step = 14;   // 跨维度可能很多卡，步长压小
+
+  ORDER.forEach(key=>{
+    const dim = DATA[key];
+    // 收集本维度命中项（含 visual-tone 的 presets）
+    const hitItems   = dim.items.filter(it=>itemHit(it, term));
+    const hitPresets = (dim.presets || []).filter(p=>itemHit(p, term));
+    if (!hitItems.length && !hitPresets.length) return;
+
+    html += groupLabel("来自 " + dim.name);   // 维度分隔标题
+    hitItems.forEach(it=>{
+      n++; total++;
+      html += it.m ? mediaCardHtml(it, pad2(total), n*step, dim.fit) : txtCardHtml(it, n*step);
+    });
+    hitPresets.forEach(p=>{ n++; total++; html += presetCardHtml(p, n*step); });
+  });
+
+  // 顶部维度大标题区切换为「搜索全部维度」语境
+  idxEl.textContent  = "⌕";
+  nameEl.textContent = "搜索全部维度";
+  descEl.textContent = '关键词「'+term+'」· 共 '+total+' 项匹配。清空搜索框返回分维度浏览。';
+
+  if (!total){
+    html = '<div class="noresult">无匹配「'+term+'」的项</div>';
+  }
+  gridEl.innerHTML = html;
+  document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));   // 全局态无单一激活维度
+  hitsEl.textContent = total + " 项";
+}
+
+// ============ 维度内即时过滤 ============
+const qEl    = document.getElementById("q");
+const hitsEl  = document.getElementById("hits");
+
+// 搜索调度：有词→全局跨维度搜索；清空→恢复当前维度的分维度浏览
+function applyFilter(){
+  const term = (qEl.value || "").trim().toLowerCase();
+  if (term){
+    renderGlobalSearch(term);
+  } else {
+    render(currentKey);   // 恢复分维度浏览（render 内会清空搜索框、重置 hits）
+  }
+}
+
+qEl.addEventListener("input", applyFilter);
+qEl.addEventListener("keydown", e=>{ if (e.key === "Escape"){ qEl.value = ""; applyFilter(); qEl.blur(); } });
+
+// ============ 子目录锚点（事件委托）：点击 chip 平滑滚到对应分组 ============
+gridEl.addEventListener("click", function(e){
+  const link = e.target.closest(".subnav-link");
+  if (!link) return;
+  e.preventDefault();
+  const target = document.getElementById(link.getAttribute("data-target"));
+  if (!target) return;
+  // 动态扣除 sticky 顶栏真实高度，避免分组标题被顶栏盖住（顶栏高度随视口/换行变化）
+  const headerH = document.querySelector("header").offsetHeight;
+  const y = target.getBoundingClientRect().top + window.pageYOffset - headerH - 12;
+  window.scrollTo({ top: y, behavior: "smooth" });
+});
+
+// ============ prompt 复制（事件委托）：点击 prompt 块即复制 ============
+gridEl.addEventListener("click", function(e){
+  const el = e.target.closest(".prompt");
+  if (!el) return;
+  const text = el.getAttribute("data-copy") || "";
+  const ok = ()=>{
+    el.classList.add("copied");
+    setTimeout(()=>{ el.classList.remove("copied"); }, 1400);
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(ok).catch(()=>fallbackCopy(text, ok));
+  } else {
+    fallbackCopy(text, ok);
+  }
+});
+function fallbackCopy(text, done){
+  const ta = document.createElement("textarea");
+  ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+  document.body.appendChild(ta); ta.select();
+  try { document.execCommand("copy"); done(); } catch(_){}
+  document.body.removeChild(ta);
+}
+
+// 顶栏按导演法两大段分组：【氛围与画质】整片观感 + 【画面内容】分镜镜头
+const TAB_GROUPS = [
+  { label: "【氛围与画质】", keys: ["style-core","visual-tone","lighting-tone"] },
+  { label: "【画面内容】",   keys: ["shot-scale","composition","camera-move"] }
+];
+let firstTab = true;
+TAB_GROUPS.forEach(group=>{
+  const wrap = document.createElement("div");
+  wrap.className = "tab-group";
+  const lab = document.createElement("span");
+  lab.className = "tab-group-label";
+  lab.textContent = group.label;
+  wrap.appendChild(lab);
+  group.keys.forEach(key=>{
+    const dim = DATA[key];
+    const el = document.createElement("div");
+    el.className = "tab" + (firstTab ? " active" : "");
+    firstTab = false;
+    el.dataset.key = key;
+    el.innerHTML = '<span class="tname">'+esc(dim.name)+'</span><span class="count">'+dim.items.length+'</span>';
+    el.onclick = ()=>render(key);
+    wrap.appendChild(el);
+  });
+  tabsEl.appendChild(wrap);
+});
+
+// ============ 回到顶部：滚过一屏才显示，点击平滑回顶 ============
+const toTopEl = document.getElementById("toTop");
+window.addEventListener("scroll", ()=>{
+  toTopEl.classList.toggle("show", window.pageYOffset > window.innerHeight * 0.6);
+}, { passive: true });
+toTopEl.addEventListener("click", ()=>window.scrollTo({ top: 0, behavior: "smooth" }));
+
+render(ORDER[0]);
+</script>
+</body>
+</html>

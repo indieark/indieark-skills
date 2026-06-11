@@ -1,0 +1,15 @@
+{
+  "name": "video-gen-storyboard",
+  "version": "0.5.0",
+  "status": "alpha",
+  "role": "satellite",
+  "hub": "video-gen-pro",
+  "capabilities": [
+    "storyboard_method_master_image_control",
+    "grid_storyboard_layout",
+    "four_column_storyboard_layout",
+    "script_composed_storyboard_layout",
+    "project_asset_library_and_history",
+    "storyboard_4k_confirmation_gate"
+  ]
+}
