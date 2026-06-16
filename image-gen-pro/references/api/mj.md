@@ -20,6 +20,7 @@
 | remote task id | recorded as `remote_task` when returned by submit |
 | progress | adapter polls until success/failure/timeout |
 | URL output | implemented; URLs are downloaded to local output files |
+| HD / 2K direct render | not a CLI flag; put `--hd` in `--prompt` to let V8.1 render 2K without a separate upscale step |
 | advanced MJ actions | not implemented in CLI flags |
 
 ## Credential Sources
@@ -130,10 +131,17 @@ MJ usage is prompt-parameter driven. Version, aspect ratio, quality, style refer
 
 If a compatible MJ API is mounted under an extra prefix, put that prefix in the shared or model-specific base URL. For example, base URL `http://host:port/mjapi` submits to `/mjapi/mj/submit/imagine` and polls `/mjapi/mj/task/<taskId>/fetch`. The adapter does not retry hardcoded fallback prefixes after 404/405.
 
-Some MJ UIs default new prompts to `--v 8.1`, and V8 quality control may use `--sd` or `--hd`, not `--q`. This CLI does not inject those UI defaults automatically. Put them in `--prompt`, for example:
+Per Midjourney docs, V8.1 released on 2026-04-30 and became the platform default version on 2026-06-10. Because it is already the server-side default, prompts without an explicit `--v` run on V8.1. This CLI does not inject a version automatically; pass `--v <n>` inside `--prompt` only when you need a non-default version.
+
+V8.1 controls output resolution with `--sd` / `--hd`, separate from the `--q` / `--quality` parameter:
+
+- `--sd`: standard definition (about 0.8 minutes of GPU time).
+- `--hd`: HD images that render 2K directly without a separate upscale step (about 1.3 minutes of GPU time).
+
+This CLI does not map `--sd` / `--hd` to dedicated flags; keep them in `--prompt`, for example:
 
 ```powershell
-imagen generate --model mj --prompt "product hero render --v 8.1 --hd --ar 16:9" --route api-key
+imagen generate --model mj --prompt "product hero render --hd --ar 16:9" --route api-key
 ```
 
 This first adapter only implements the drawing entry: `submit/imagine` plus task polling. Advanced MJ actions require their own CLI flags and reference updates before implementation.
@@ -147,3 +155,4 @@ Reference sources for the learned calling shape, not runtime dependencies:
 - `C:\Vibe_Coding\IndieArk\20005-aigc\docs\architecture\model-parameters.md`
 - `https://docs.midjourney.com/hc/en-us/articles/32023408776205-Prompt-Basics`
 - `https://docs.midjourney.com/hc/en-us/articles/32859204029709-Parameter-List`
+- `https://docs.midjourney.com/hc/en-us/articles/32199405667853-Version` (V8.1 release/default dates, HD/2K, `--sd` / `--hd`)
